@@ -10,16 +10,9 @@ public class JsonMandatory {
     private int connectedJsonStructures;
     private int JsonStatus;
 
-    public JsonMandatory(JsonServiceProvider serviceProvider, long iviIdentificationNumber,
-                         LocalDateTime timestamp, LocalDateTime validForm, LocalDateTime validTo,
-                         int connectedJsonStructures, int JsonStatus) {
-        this.serviceProvider = serviceProvider;
-        this.iviIdentificationNumber = iviIdentificationNumber;
-        this.timestamp = timestamp;
-        this.validForm = validForm;
-        this.validTo = validTo;
-        this.connectedJsonStructures = connectedJsonStructures;
-        this.JsonStatus = JsonStatus;
+
+    public JsonMandatory() {
+        this.serviceProvider = new JsonServiceProvider();
     }
 
     public JsonServiceProvider getServiceProvider() {

@@ -1,4 +1,5 @@
 public class InternalJsonMessageBuilder {
 
-    private
+    private InternalIVIMMessage ivimMessage;
+    
 }
