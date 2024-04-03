@@ -1,5 +1,5 @@
 public class InternalIVIMMessage {
-
+    private IVIMHeader header;
     private JsonMandatory mandatory;
     private JsonSignal iviSignal;
 
@@ -74,7 +74,12 @@ public class InternalIVIMMessage {
         this.iviSignal = iviSignal;
     }
 
-    //Falta o IVIMHeader que não sei se foi apagado na classe do C# ou o que se passou!!!!!!
+    public IVIMHeader getHeader() {
+        return header;
+    }
 
+    public void setHeader(IVIMHeader header) {
+        this.header = header;
+    }
 }
 
