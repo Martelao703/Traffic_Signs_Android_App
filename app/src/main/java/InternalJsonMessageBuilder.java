@@ -122,6 +122,45 @@ public class InternalJsonMessageBuilder {
         messageZones.getIvIZones().add(iviZone);
     }
 
+    public void AddZone(IVIZone zone, IVIMEngine.iviZoneEnum zoneType, int laneWidth){
+
+        this.AssignLaneWidthToZone(zone, laneWidth);
+
+        switch (zoneType){
+            case IVI_ZONE_DETECTION:
+                this.AssignBearingsToZone(zone, false);
+                this.ivimMessage.getDetectionZone().getIvIZones().add(zone);
+                break;
+            case IVI_ZONE_RELEVANCE:
+                this.AssignBearingsToZone(zone, true);
+                this.ivimMessage.getRelevanceZone().getIvIZones().add(zone);
+                break;
+            case IVI_ZONE_AWARENESS:
+                this.AssignBearingsToZone(zone, false);
+                this.ivimMessage.getAwarenessZones().getIvIZones().add(zone);
+                break;
+        }
+    }
+
+    public void AssignBearingsToZone(IVIZone zone, boolean isRelevanceZone){
+        GeoCalculator gc = new GeoCalculator();
+
+        for (IVIMSegment segment : zone.getSegments()) {
+            if (isRelevanceZone){
+                segment.setBearing(gc.GetBearing(segment.getOrigin(), segment.getDestination()));
+            }else{
+                segment.setBearing(gc.GetBearing(segment.getDestination(), segment.getOrigin()));
+
+            }
+        }
+    }
+
+    private void AssignLaneWidthToZone(IVIZone zone, int laneWidth){
+        for (IVIMSegment segment : zone.getSegments()) {
+            segment.setSegmentWidth(laneWidth);
+        }
+    }
+
 
 
 }

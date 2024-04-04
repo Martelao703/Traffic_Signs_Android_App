@@ -16,4 +16,11 @@ public class PolygonalLine {
         this.destination = destination;
     }
 
+    public GPSCoordinate getOrigin() {
+        return origin;
+    }
+
+    public GPSCoordinate getDestination() {
+        return destination;
+    }
 }

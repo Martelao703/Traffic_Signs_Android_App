@@ -6,4 +6,10 @@ public class IVIMEngine {
         IVI_STATE_CURRENTLY_NOT_IN_ZONE
     }
 
+    public enum iviZoneEnum{
+        IVI_ZONE_AWARENESS,
+        IVI_ZONE_DETECTION,
+        IVI_ZONE_RELEVANCE
+    }
+
 }
