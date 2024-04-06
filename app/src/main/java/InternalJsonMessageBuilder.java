@@ -1,9 +1,8 @@
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class InternalJsonMessageBuilder {
 
-    private InternalIVIMMessage ivimMessage;
+    private InternalJsonMessage ivimMessage;
 
     private ZonesAdapter awarenessZones;
     private ZonesAdapter detectionZone;
@@ -12,7 +11,7 @@ public class InternalJsonMessageBuilder {
     private GPSCoordinate lastGPSCoordinate;
 
     public InternalJsonMessageBuilder() {
-        this.ivimMessage = new InternalIVIMMessage();
+        this.ivimMessage = new InternalJsonMessage();
         this.awarenessZones = new ZonesAdapter();
         this.detectionZone = new ZonesAdapter();
         this.relevanceZone = new ZonesAdapter();
@@ -70,7 +69,7 @@ public class InternalJsonMessageBuilder {
 
     //Add awareness, detection and relevance zone points if there are any
 
-    public InternalIVIMMessage BuildMessage(){
+    public InternalJsonMessage BuildMessage(){
 
         for (ZoneAdapter zone : this.awarenessZones.getZones()) {
             // Build awareness zone
