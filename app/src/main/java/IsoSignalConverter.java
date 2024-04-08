@@ -1,13 +1,16 @@
 public class IsoSignalConverter {
 
     public int getServiceCategoryCode(ISO14823Code.PictogramCodeType pictogramCode) {
-        switch (pictogramCode.getServiceCategoryCode().getSelected()) {
+        switch (pictogramCode.ServiceCategoryCode.getSelected()) {
             case TrafficSignPictogramChosen:
-                return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram().getValue());
+                return getTrafficSignPictogramCode(pictogramCode.ServiceCategoryCode.getTrafficSignPictogram());
+                //return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram().getValue());
             case PublicFacilitiesPictogramChosen:
-                return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram().getValue());
+                return getPublicFacilitiesPictogramCode(pictogramCode.ServiceCategoryCode.getPublicFacilitiesPictogram());
+                //return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram().getValue());
             case AmbientOrRoadConditionPictogramChosen:
-                return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram().getValue());
+                return getAmbientOrRoadConditionPictogramCode(pictogramCode.ServiceCategoryCode.getAmbientOrRoadConditionPictogram());
+                //return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram().getValue());
             default:
                 return 0;
         }

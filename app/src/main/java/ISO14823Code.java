@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 public class ISO14823Code {
-    public class PictogramCodeType {
-        public class ServiceCategoryCodeType {
+    public static class PictogramCodeType {
+        public static class ServiceCategoryCodeType {
             public enum Id {
                 Unselected,
                 TrafficSignPictogramChosen,
@@ -61,8 +61,8 @@ public class ISO14823Code {
         }
 
         public class PictogramCategoryCodeType implements Serializable {
-            private int Nature;
-            private int SerialNumber;
+            public int Nature;
+            public int SerialNumber;
 
             @Override
             public boolean equals(Object right) {
@@ -83,11 +83,11 @@ public class ISO14823Code {
             }
         }
 
-        private byte[] CountryCode;
-        private ServiceCategoryCodeType ServiceCategoryCode;
-        private PictogramCategoryCodeType PictogramCategoryCode;
+        public byte[] CountryCode;
+        public ServiceCategoryCodeType ServiceCategoryCode;
+        public PictogramCategoryCodeType PictogramCategoryCode;
     }
 
-    private PictogramCodeType PictogramCode;
+    public PictogramCodeType PictogramCode;
     //private ISO14823Attributes Attributes;
 }
