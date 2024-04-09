@@ -7,9 +7,9 @@ public class InternalJsonMessage {
     private IVIZoneType detectionZone;
     private IVIZoneType relevanceZone;
 
-    private IVIMEngine.iviUIStateEum uIAwarenessZoneState;
-    private IVIMEngine.iviUIStateEum uIDetectionZoneState;
-    private IVIMEngine.iviUIStateEum uIRelevanceZoneState;
+    private iviUIStateEnum uIAwarenessZoneState;
+    private iviUIStateEnum uIDetectionZoneState;
+    private iviUIStateEnum uIRelevanceZoneState;
 
     public InternalJsonMessage() {
         this.mandatory = new JsonMandatory();
@@ -17,9 +17,9 @@ public class InternalJsonMessage {
         this.awarenessZones = new IVIZoneType();
         this.detectionZone = new IVIZoneType();
         this.relevanceZone = new IVIZoneType();
-        this.uIAwarenessZoneState = IVIMEngine.iviUIStateEum.IVI_STATE_CURRENTLY_NOT_IN_ZONE;
-        this.uIDetectionZoneState = IVIMEngine.iviUIStateEum.IVI_STATE_CURRENTLY_NOT_IN_ZONE;
-        this.uIRelevanceZoneState = IVIMEngine.iviUIStateEum.IVI_STATE_CURRENTLY_NOT_IN_ZONE;
+        this.uIAwarenessZoneState = iviUIStateEnum.iviStateCurrentlyNotInZone;
+        this.uIDetectionZoneState = iviUIStateEnum.iviStateCurrentlyNotInZone;
+        this.uIRelevanceZoneState = iviUIStateEnum.iviStateCurrentlyNotInZone;
     }
 
     public IVIZoneType getAwarenessZones() {
@@ -34,27 +34,27 @@ public class InternalJsonMessage {
         return relevanceZone;
     }
 
-    public IVIMEngine.iviUIStateEum getuIAwarenessZoneState() {
+    public iviUIStateEnum getuIAwarenessZoneState() {
         return uIAwarenessZoneState;
     }
 
-    public void setuIAwarenessZoneState(IVIMEngine.iviUIStateEum uIAwarenessZoneState) {
+    public void setuIAwarenessZoneState(iviUIStateEnum uIAwarenessZoneState) {
         this.uIAwarenessZoneState = uIAwarenessZoneState;
     }
 
-    public IVIMEngine.iviUIStateEum getuIDetectionZoneState() {
+    public iviUIStateEnum getuIDetectionZoneState() {
         return uIDetectionZoneState;
     }
 
-    public void setuIDetectionZoneState(IVIMEngine.iviUIStateEum uIDetectionZoneState) {
+    public void setuIDetectionZoneState(iviUIStateEnum uIDetectionZoneState) {
         this.uIDetectionZoneState = uIDetectionZoneState;
     }
 
-    public IVIMEngine.iviUIStateEum getuIRelevanceZoneState() {
+    public iviUIStateEnum getuIRelevanceZoneState() {
         return uIRelevanceZoneState;
     }
 
-    public void setuIRelevanceZoneState(IVIMEngine.iviUIStateEum uIRelevanceZoneState) {
+    public void setuIRelevanceZoneState(iviUIStateEnum uIRelevanceZoneState) {
         this.uIRelevanceZoneState = uIRelevanceZoneState;
     }
 

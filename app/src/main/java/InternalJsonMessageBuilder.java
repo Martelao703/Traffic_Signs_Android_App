@@ -121,20 +121,20 @@ public class InternalJsonMessageBuilder {
         messageZones.getIvIZones().add(iviZone);
     }
 
-    public void AddZone(IVIZone zone, IVIMEngine.iviZoneEnum zoneType, int laneWidth){
+    public void AddZone(IVIZone zone, iviZoneEnum zoneType, int laneWidth){
 
         this.AssignLaneWidthToZone(zone, laneWidth);
 
         switch (zoneType){
-            case IVI_ZONE_DETECTION:
+            case iviZoneDetection:
                 this.AssignBearingsToZone(zone, false);
                 this.ivimMessage.getDetectionZone().getIvIZones().add(zone);
                 break;
-            case IVI_ZONE_RELEVANCE:
+            case iviZoneRelevance:
                 this.AssignBearingsToZone(zone, true);
                 this.ivimMessage.getRelevanceZone().getIvIZones().add(zone);
                 break;
-            case IVI_ZONE_AWARENESS:
+            case iviZoneAwareness:
                 this.AssignBearingsToZone(zone, false);
                 this.ivimMessage.getAwarenessZones().getIvIZones().add(zone);
                 break;
