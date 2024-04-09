@@ -1,35 +1,38 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-interface Notify {
-    void notify(Object sender, IVIMDataEventArgs e);
+interface AwarenessZoneEnteredListener {
+    void onAwarenessZoneEntered(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
 }
 
-enum iviUIStateEnum {
-    iviStateCurrentlyInZone,
-    iviStateCurrentlyNotInZone
+interface AwarenessZoneLeavedListener {
+    void onAwarenessZoneLeaved(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
 }
 
-enum iviZoneEnum {
-    iviZoneAwareness,
-    iviZoneDetection,
-    iviZoneRelevance
+interface DetectionZoneEnteredListener {
+    void onDetectionZoneEntered(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
 }
 
-class IVIMEngine {
-    public interface Notify1 extends Notify {}
-    public interface Notify2 extends Notify {}
-    public interface Notify3 extends Notify {}
-    public interface Notify4 extends Notify {}
-    public interface Notify5 extends Notify {}
-    public interface Notify6 extends Notify {}
+interface DetectionZoneLeavedListener {
+    void onDetectionZoneLeaved(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
+}
 
-    private Notify1 awarenessZoneEntered;
-    private Notify2 awarenessZoneLeaved;
-    private Notify3 detectionZoneEntered;
-    private Notify4 detectionZoneLeaved;
-    private Notify5 relevanceZoneEntered;
-    private Notify6 relevanceZoneLeaved;
+interface RelevanceZoneEnteredListener {
+    void onRelevanceZoneEntered(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
+}
+
+interface RelevanceZoneLeavedListener {
+    void onRelevanceZoneLeaved(InternalIVIMMessage internalIVIMMessage, IVIMDataEventArgs ivimEventArgs);
+}
+
+public class IVIMEngine {
+    private AwarenessZoneEnteredListener awarenessZoneEnteredListener;
+    private AwarenessZoneLeavedListener awarenessZoneLeavedListener;
+    private DetectionZoneEnteredListener detectionZoneEnteredListener;
+    private DetectionZoneLeavedListener detectionZoneLeavedListener;
+    private RelevanceZoneEnteredListener relevanceZoneEnteredListener;
+    private RelevanceZoneLeavedListener relevanceZoneLeavedListener;
 
     private IVIMMemoryStructures memoryStructures;
     private IGeoOperator geoOperator;
@@ -51,11 +54,11 @@ class IVIMEngine {
     }
 
     public void run() {
-        IVIMMemoryStructures iVIMMemoryStructures = this.ivimController.ReadNewIVIMMessages();
+        IVIMMemoryStructures iVIMMemoryStructures = ivimController.readNewIVIMMessages();
     }
 
     public void stopIVIController() {
-        this.ivimController.disconnectFromServer();
+        ivimController.disconnectFromServer();
     }
 
     public void setIVIController(IIVIMController ivimController) {
@@ -68,34 +71,74 @@ class IVIMEngine {
 
         this.currentGPSLocation = gpsLocation;
 
-        for (InternalIVIMMessage iviMessage : this.memoryStructures.getInternalIVIMessages()) {
+        for (InternalIVIMMessage iviMessage : memoryStructures.getInternalIVIMessages()) {
+            // Iterate awarenessZone
             this.inAwarenessZone = false;
 
-            for (IVIZone iviZone : iviMessage.getAwarenessZones().getIvIZones()) {
+            for (IVIZone iviZone : iviMessage.getAwarenessZones().getIVIZones()) {
                 for (IVIMSegment ivimSegment : iviZone.getSegments()) {
-                    segmentInsideZone = this.geoOperator.isInsideZone(gpsLocation, ivimSegment, ivimSegment.getSegmentWidth());
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, ivimSegment, ivimSegment.getSegmentWidth());
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, ivimSegment);
                         if (validBearing) {
                             this.inAwarenessZone = true;
-                            this.eventHandler(iviZoneEnum.iviZoneAwareness, iviMessage, segmentInsideZone);
+                            this.eventHandler(IVIZoneEnum.IVI_ZONE_AWARENESS, iviMessage, segmentInsideZone);
                         }
                     }
                 }
             }
 
             if (!this.inAwarenessZone) {
-                this.eventHandler(iviZoneEnum.iviZoneAwareness, iviMessage, false);
+                this.eventHandler(IVIZoneEnum.IVI_ZONE_AWARENESS, iviMessage, this.inAwarenessZone);
             }
 
-            // Similar loops for detectionZone and relevanceZone
+            // Iterate detectionZone
+            this.inDetectionZone = false;
+            for (IVIZone iviZone : iviMessage.getDetectionZones().getIVIZones()) {
+                for (IVIMSegment ivimSegment : iviZone.getSegments()) {
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, ivimSegment, ivimSegment.getSegmentWidth());
+
+                    if (segmentInsideZone) {
+                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, ivimSegment);
+                        if (validBearing) {
+                            this.inDetectionZone = true;
+                            this.eventHandler(IVIZoneEnum.IVI_ZONE_DETECTION, iviMessage, segmentInsideZone);
+                        }
+                    }
+                }
+            }
+
+            if (!this.inDetectionZone) {
+                this.eventHandler(IVIZoneEnum.IVI_ZONE_DETECTION, iviMessage, this.inDetectionZone);
+            }
+
+            // Iterate relevanceZone
+            this.inRelevanceZone = false;
+            for (IVIZone iviZone : iviMessage.getRelevanceZones().getIVIZones()) {
+                for (IVIMSegment ivimSegment : iviZone.getSegments()) {
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, ivimSegment, ivimSegment.getSegmentWidth());
+
+                    if (segmentInsideZone) {
+                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, ivimSegment);
+                        if (validBearing) {
+                            this.inRelevanceZone = true;
+                            this.eventHandler(IVIZoneEnum.IVI_ZONE_RELEVANCE, iviMessage, segmentInsideZone);
+                        }
+                    }
+                }
+            }
+
+            if (!this.inRelevanceZone) {
+                this.eventHandler(IVIZoneEnum.IVI_ZONE_RELEVANCE, iviMessage, this.inRelevanceZone);
+            }
         }
     }
 
     private boolean engineHasIVIMessage(InternalIVIMMessage newIviMessage) {
-        for (InternalIVIMMessage iviMessage : this.memoryStructures.getInternalIVIMessages()) {
-            if (iviMessage.getHeader().getStationId() == newIviMessage.getHeader().getStationId() && iviMessage.getMandatory().getIviIdentificationNumber() == newIviMessage.getMandatory().getIviIdentificationNumber()) {
+        for (InternalIVIMMessage iviMessage : memoryStructures.getInternalIVIMessages()) {
+            if (iviMessage.getHeader().getStationId() == newIviMessage.getHeader().getStationId() &&
+                    iviMessage.getMandatory().getIviIdentificationNumber() == newIviMessage.getMandatory().getIviIdentificationNumber()) {
                 return true;
             }
         }
@@ -108,8 +151,80 @@ class IVIMEngine {
         }
     }
 
-    private void eventHandler(iviZoneEnum zone, InternalIVIMMessage internalIVIMMessage, boolean segmentInsideZone) {
-        // Implementation of event handling
+    private void copyNewIVIMessagesToEngine(IVIMMemoryStructures iVIMMemoryStructures) {
+        for (InternalIVIMMessage iviMessage : iVIMMemoryStructures.getInternalIVIMessages()) {
+            if (!this.engineHasIVIMessage(iviMessage)) {
+                this.memoryStructures.getInternalIVIMessages().add(iviMessage);
+            }
+        }
+    }
+
+    private void eventHandler(IVIZoneEnum zone, InternalIVIMMessage internalIVIMMessage, boolean segmentInsideZone) {
+        if (zone == IVIZoneEnum.IVI_ZONE_AWARENESS) {
+            if (segmentInsideZone && internalIVIMMessage.getUIAwarenessZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE) {
+                internalIVIMMessage.setUIAwarenessZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (awarenessZoneEnteredListener != null) {
+                    awarenessZoneEnteredListener.onAwarenessZoneEntered(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+
+            if (!segmentInsideZone && internalIVIMMessage.getUIAwarenessZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                internalIVIMMessage.setUIAwarenessZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (awarenessZoneLeavedListener != null) {
+                    awarenessZoneLeavedListener.onAwarenessZoneLeaved(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+        }
+
+        if (zone == IVIZoneEnum.IVI_ZONE_DETECTION) {
+            if (segmentInsideZone && internalIVIMMessage.getUIDetectionZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE) {
+                internalIVIMMessage.setUIDetectionZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (detectionZoneEnteredListener != null) {
+                    detectionZoneEnteredListener.onDetectionZoneEntered(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+
+            if (!segmentInsideZone && internalIVIMMessage.getUIDetectionZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                internalIVIMMessage.setUIDetectionZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (detectionZoneLeavedListener != null) {
+                    detectionZoneLeavedListener.onDetectionZoneLeaved(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+        }
+
+        if (zone == IVIZoneEnum.IVI_ZONE_RELEVANCE) {
+            if (segmentInsideZone && internalIVIMMessage.getUIRelevanceZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE) {
+                internalIVIMMessage.setUIRelevanceZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (relevanceZoneEnteredListener != null) {
+                    relevanceZoneEnteredListener.onRelevanceZoneEntered(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+
+            if (!segmentInsideZone && internalIVIMMessage.getUIRelevanceZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                internalIVIMMessage.setUIRelevanceZoneState(IVIUIStateEnum.IVI_STATE_CURRENTLY_NOT_IN_ZONE);
+                // build event parameters
+                IVIMDataEventArgs ivimEventArgs = new IVIMDataEventArgs(internalIVIMMessage, this.currentGPSLocation);
+                // raise event
+                if (relevanceZoneLeavedListener != null) {
+                    relevanceZoneLeavedListener.onRelevanceZoneLeaved(internalIVIMMessage, ivimEventArgs);
+                }
+            }
+        }
     }
 
     public void clearInternalStructures() {
@@ -121,26 +236,22 @@ class IVIMEngine {
     }
 
     public void clearInternalMessageById(long iviIdentificationNumber) {
-        List<InternalIVIMMessage> messagesToRemove = new ArrayList<>();
-        for (InternalIVIMMessage message : this.memoryStructures.getInternalIVIMessages()) {
+        Iterator<InternalIVIMMessage> iterator = this.memoryStructures.getInternalIVIMessages().iterator();
+        while (iterator.hasNext()) {
+            InternalIVIMMessage message = iterator.next();
             if (message.getMandatory().getIviIdentificationNumber() == iviIdentificationNumber) {
-                if (message.getUIAwarenessZoneState() == iviUIStateEnum.iviStateCurrentlyInZone) {
-                    this.eventHandler(iviZoneEnum.iviZoneAwareness, message, false);
+                if (message.getUIAwarenessZoneState() ==IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                    this.eventHandler(IVIZoneEnum.IVI_ZONE_AWARENESS, message, false);
                 }
-
-                if (message.getUIDetectionZoneState() == iviUIStateEnum.iviStateCurrentlyInZone) {
-                    this.eventHandler(iviZoneEnum.iviZoneDetection, message, false);
+                if (message.getUIDetectionZoneState() ==IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                    this.eventHandler(IVIZoneEnum.IVI_ZONE_DETECTION, message, false);
                 }
-
-                if (message.getUIRelevanceZoneState() == iviUIStateEnum.iviStateCurrentlyInZone) {
-                    this.eventHandler(iviZoneEnum.iviZoneRelevance, message, false);
+                if (message.getUIRelevanceZoneState() == IVIUIStateEnum.IVI_STATE_CURRENTLY_IN_ZONE) {
+                    this.eventHandler(IVIZoneEnum.IVI_ZONE_RELEVANCE, message, false);
                 }
-
-                messagesToRemove.add(message);
+                iterator.remove();
                 break;
             }
         }
-        this.memoryStructures.getInternalIVIMessages().removeAll(messagesToRemove);
     }
 }
-

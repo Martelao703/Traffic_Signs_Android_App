@@ -1,6 +1,5 @@
 public interface IIVIMController {
-
-    IVIMMemoryStructures ReadNewIVIMMessages();
+    IVIMMemoryStructures readNewIVIMMessages();
     void rebootController();
     void disconnectFromServer();
 }

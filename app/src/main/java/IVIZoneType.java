@@ -2,18 +2,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IVIZoneType {
-
-    private List<IVIZone> ivIZones;
+    private List<IVIZone> iVIZones;
 
     public IVIZoneType() {
-        this.ivIZones = new ArrayList<IVIZone>();
+        this.iVIZones = new ArrayList<>();
     }
 
-    public List<IVIZone> getIvIZones() {
-        return ivIZones;
+    public List<IVIZone> getIVIZones() {
+        return iVIZones;
     }
 
-    public void setIvIZones(List<IVIZone> ivIZones) {
-        this.ivIZones = ivIZones;
+    public void setIVIZones(List<IVIZone> iVIZones) {
+        this.iVIZones = iVIZones;
     }
 }

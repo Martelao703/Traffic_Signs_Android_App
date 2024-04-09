@@ -29,8 +29,8 @@ public class GeoCalculator {
     /// </summary>
     /// <param name="origin">Origin position</param>
     /// <param name="destination">Destination Position</param>
-    /// <returns></returns>
-    public double GetBearing(GPSCoordinate origin, GPSCoordinate destination){
+    /// <returns></returns>getBearing
+    public double getBearing(GPSCoordinate origin, GPSCoordinate destination){
         // RESULTADO MAL
         // X = cos θb * sin ∆L
         // Y = cos θa* sin θb – sin θa * cos θb * cos ∆L
@@ -61,26 +61,26 @@ public class GeoCalculator {
     /// <param name="pointB">In degree</param>
     /// <returns>In meters</returns>
 
-    public double GetDistance(GPSCoordinate pointA, GPSCoordinate pointB){
+    public double getDistance(GPSCoordinate pointA, GPSCoordinate pointB){
         double radOriginLat = Math.toRadians(pointA.getLatitude());
         double radDestinationLat = Math.toRadians(pointB.getLatitude());
         double deltaOrigin = Math.toRadians(pointB.getLatitude() - pointA.getLatitude());
         double deltaDestination = Math.toRadians(pointB.getLongitude() - pointA.getLongitude());
         double a = Math.pow(deltaOrigin / 2, 2) + Math.cos(radOriginLat) * Math.cos(radDestinationLat) * Math.pow((Math.sin(deltaDestination)) / 2, 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return this.GetEarthRadius(pointA.getLatitude(), 0) * c;
+        return this.getEarthRadius(pointA.getLatitude(), 0) * c;
         //return GeoCalculator.EARTH_RADIUS * c;
     }
 
-    public GPSCoordinate GetIntersectionTwoPointsAndBearing(GPSCoordinate pointA, GPSCoordinate pointB, double bearingA, double bearingB){
-        LatLonSpherical latlon = this.GetIntersectionTwoPointsAndBearingLatLonSpherical(pointA, pointB, bearingA, bearingB);
+    public GPSCoordinate getIntersectionTwoPointsAndBearing(GPSCoordinate pointA, GPSCoordinate pointB, double bearingA, double bearingB){
+        LatLonSpherical latlon = this.getIntersectionTwoPointsAndBearingLatLonSpherical(pointA, pointB, bearingA, bearingB);
         if (latlon == null){
             return null;
         }
         return new GPSCoordinate(latlon.get_lat(), latlon.get_lon());
     }
 
-    protected LatLonSpherical GetIntersectionTwoPointsAndBearingLatLonSpherical(GPSCoordinate pointA, GPSCoordinate pointB, double bearingA, double bearingB){
+    protected LatLonSpherical getIntersectionTwoPointsAndBearingLatLonSpherical(GPSCoordinate pointA, GPSCoordinate pointB, double bearingA, double bearingB){
         double pointALat = Math.toRadians(pointA.getLatitude());
         double pointALng = Math.toRadians(pointA.getLongitude());
         double pointBLat = Math.toRadians(pointB.getLatitude());
@@ -137,11 +137,11 @@ public class GeoCalculator {
     /// <param name="distanceInMeters">In Meters</param>
     /// <param name="bearing"></param>
     /// <returns></returns>
-    public GPSCoordinate GetPointDistanceAndBearing(GPSCoordinate point, double distanceInMeters, double bearing)
+    public GPSCoordinate getPointDistanceAndBearing(GPSCoordinate point, double distanceInMeters, double bearing)
     {
         //ref: https://www.movable-type.co.uk/scripts/latlong.html*/
 
-        double angularDistance = distanceInMeters / GetEarthRadius(point.getLatitude(), 0);
+        double angularDistance = distanceInMeters / getEarthRadius(point.getLatitude(), 0);
         //double angularDistance = distanceInMeters / GeoCalculator.EARTH_RADIUS;
         double bearingRad = Math.toRadians(bearing);
 
@@ -186,7 +186,7 @@ public class GeoCalculator {
 	document.getElementById("e").value=2*z; // Earth diameter at sea level:
     }*/
 
-    public double GetEarthRadius(double latitude, double altitude){
+    public double getEarthRadius(double latitude, double altitude){
         double latRad = Math.toRadians(latitude);
         double one = Math.pow(GeoCalculator.EARTH_EQUATORIAL_RADIUS * GeoCalculator.EARTH_EQUATORIAL_RADIUS * Math.cos(latRad), 2) + Math.pow(GeoCalculator.EARTH_POLAR_RADIUS * GeoCalculator.EARTH_POLAR_RADIUS * Math.sin(latRad), 2);
         double two = Math.pow(GeoCalculator.EARTH_EQUATORIAL_RADIUS * Math.cos(latRad), 2) + Math.pow(GeoCalculator.EARTH_POLAR_RADIUS * Math.sin(latRad), 2);

@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZoneAdapter {
-
     private List<GPSCoordinate> GPSCoordinates;
 
     public ZoneAdapter() {

@@ -7,7 +7,7 @@ public class IVIZone {
     private List<IVIMSegment> segments;
 
     public IVIZone() {
-        this.segments = new ArrayList<IVIMSegment>();
+        this.segments = new ArrayList<>();
     }
 
     public List<IVIMSegment> getSegments() {
