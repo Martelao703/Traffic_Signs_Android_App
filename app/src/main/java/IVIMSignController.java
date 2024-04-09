@@ -2,17 +2,17 @@ import java.util.*;
 
 public class IVIMSignController implements IIVIMController {
     @Override
-    public IVIMMemoryStructures ReadNewIVIMMessages() {
+    public IVIMMemoryStructures readNewIVIMMessages() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void RebootController() {
+    public void rebootController() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void DisconnectFromServer() {
+    public void disconnectFromServer() {
         throw new UnsupportedOperationException();
     }
 }
