@@ -33,11 +33,9 @@ public class IVIMEngine {
     private DetectionZoneLeavedListener detectionZoneLeavedListener;
     private RelevanceZoneEnteredListener relevanceZoneEnteredListener;
     private RelevanceZoneLeavedListener relevanceZoneLeavedListener;
-
     private IVIMMemoryStructures memoryStructures;
     private IGeoOperator geoOperator;
     private GPSLocation currentGPSLocation;
-
     private IIVIMController ivimController;
 
     private boolean inAwarenessZone;
