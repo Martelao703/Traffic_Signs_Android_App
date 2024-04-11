@@ -1,0 +1,6 @@
+package OBUSDK;
+
+public enum IVIUIStateEnum {
+    IVI_STATE_CURRENTLY_IN_ZONE,
+    IVI_STATE_CURRENTLY_NOT_IN_ZONE
+}
