@@ -213,7 +213,7 @@ public class DataTransformer {
         return ((nature * 100) + serialNumber);
     }
 
-    public int GetCountryCategoryCode(ISO14823Code.PictogramCodeType pictogramCode) {
+    public int GetPictogramCountryCode(ISO14823Code.PictogramCodeType pictogramCode) {
         //Classe Convert não implementada perguntar na reunião da dll
         return Convert.ToInt32(pictogramCode.CountryCode);
     }
@@ -274,28 +274,5 @@ public class DataTransformer {
     public boolean hasAwarenessZone(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
