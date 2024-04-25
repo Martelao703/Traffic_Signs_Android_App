@@ -88,6 +88,30 @@ public class ISO14823Code {
         public byte[] CountryCode;
         public ServiceCategoryCodeType ServiceCategoryCode;
         public PictogramCategoryCodeType PictogramCategoryCode;
+
+        public byte[] getCountryCode() {
+            return CountryCode;
+        }
+
+        public void setCountryCode(byte[] countryCode) {
+            CountryCode = countryCode;
+        }
+
+        public ServiceCategoryCodeType getServiceCategoryCode() {
+            return ServiceCategoryCode;
+        }
+
+        public void setServiceCategoryCode(ServiceCategoryCodeType serviceCategoryCode) {
+            ServiceCategoryCode = serviceCategoryCode;
+        }
+
+        public PictogramCategoryCodeType getPictogramCategoryCode() {
+            return PictogramCategoryCode;
+        }
+
+        public void setPictogramCategoryCode(PictogramCategoryCodeType pictogramCategoryCode) {
+            PictogramCategoryCode = pictogramCategoryCode;
+        }
     }
 
     public PictogramCodeType PictogramCode;

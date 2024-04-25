@@ -3,15 +3,14 @@ package OBUSDK.JsonController;
 import java.util.ArrayList;
 import java.util.List;
 
-import OBUSDK.PerEncDel.GlcPart;
-import OBUSDK.PerEncDel.IVIM;
-import OBUSDK.PerEncDel.ItsPduHeader;
-import OBUSDK.PerEncDel.IviContainer;
-import OBUSDK.PerEncDel.IviManagementContainer;
-import OBUSDK.PerEncDel.Zone;
+import OBUSDK.PerEncDec.GlcPart;
+import OBUSDK.PerEncDec.IVIM;
+import OBUSDK.PerEncDec.ItsPduHeader;
+import OBUSDK.PerEncDec.IviContainer;
+import OBUSDK.PerEncDec.IviManagementContainer;
+import OBUSDK.PerEncDec.Zone;
 
 public class DataExtracter {
-
     private IVIM rootIVI;
 
     public DataExtracter(IVIM rootIVI) {
@@ -21,46 +20,46 @@ public class DataExtracter {
     public ItsPduHeader getItsPduHeader() {
         return this.rootIVI.getItsPduHeader();
     }
-    
-    public IviManagementContainer getMandatoryContainer(){
+
+    public IviManagementContainer getMandatoryContainer() {
         return this.rootIVI.getIviStructure().getMandatory();
     }
-    
-    public List<IviContainer> getAllGivContainers(){
-        List<IviContainer> givContainers = new ArrayList<IviContainer>();
+
+    public List<IviContainer> getAllGivContainers() {
+        List<IviContainer> givContainers = new ArrayList<>();
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-              if (container.getSelected() == IviContainer.Id.GivChosen) {
-                  givContainers.add(container);
-              }
+            if (container.getSelected() == IviContainer.Id.GivChosen) {
+                givContainers.add(container);
+            }
         }
         return givContainers;
     }
-    
-    public IviContainer GetGivContainer(){
+
+    public IviContainer GetGivContainer() {
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-              if (container.getSelected() == IviContainer.Id.GivChosen) {
-                  return container;
-              }
+            if (container.getSelected() == IviContainer.Id.GivChosen) {
+                return container;
+            }
         }
         return null;
     }
 
-    public IviContainer GetGlcContainer(){
+    public IviContainer GetGlcContainer() {
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-              if (container.getSelected() == IviContainer.Id.GlcChosen) {
-                  return container;
-              }
+            if (container.getSelected() == IviContainer.Id.GlcChosen) {
+                return container;
+            }
         }
         return null;
     }
 
-    public List<GlcPart> GetZonesById(int zoneId){
+    public List<GlcPart> GetZonesById(int zoneId) {
         List<GlcPart> glcPartes = new ArrayList<GlcPart>();
         IviContainer glcContainer = this.GetGlcContainer();
 
-        if (glcContainer != null){
+        if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
-                if (glcPart.getZoneId() == zoneId){
+                if (glcPart.getZoneId() == zoneId) {
                     glcPartes.add(glcPart);
                 }
             }
@@ -83,11 +82,11 @@ public class DataExtracter {
     //    }
     //}
 
-    public GlcPart GetZoneById(long zoneId){
+    public GlcPart GetZoneById(long zoneId) {
         IviContainer glcContainer = this.GetGlcContainer();
-        if (glcContainer != null){
+        if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
-                if (glcPart.getZoneId() == zoneId){
+                if (glcPart.getZoneId() == zoneId) {
                     return glcPart;
                 }
             }
@@ -95,13 +94,13 @@ public class DataExtracter {
         return null;
     }
 
-    public boolean GlcPartsHaveSegment(){
+    public boolean GlcPartsHaveSegment() {
         List<GlcPart> glcParts = new ArrayList<GlcPart>();
         IviContainer glcContainer = this.GetGlcContainer();
 
-        if (glcContainer != null){
+        if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
-                if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen){
+                if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
                     return true;
                 }
             }

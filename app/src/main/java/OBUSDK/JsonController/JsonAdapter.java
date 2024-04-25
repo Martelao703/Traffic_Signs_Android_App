@@ -1,6 +1,5 @@
 package OBUSDK.JsonController;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import OBUSDK.CoordinateConverter;
@@ -10,11 +9,11 @@ import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneEnum;
 import OBUSDK.InternalIVIMMessage;
 import OBUSDK.InternalIVIMMessageBuilder;
-import OBUSDK.PerEncDel.IVIM;
+import OBUSDK.PerEncDec.IVIM;
 import OBUSDK.IVIMMemoryStructures;
-import OBUSDK.PerEncDel.ItsPduHeader;
-import OBUSDK.PerEncDel.IviContainer;
-import OBUSDK.PerEncDel.IviManagementContainer;
+import OBUSDK.PerEncDec.ItsPduHeader;
+import OBUSDK.PerEncDec.IviContainer;
+import OBUSDK.PerEncDec.IviManagementContainer;
 import OBUSDK.SafeByteConverter;
 
 public class JsonAdapter implements IControllerAdapter {
@@ -67,7 +66,7 @@ public class JsonAdapter implements IControllerAdapter {
         Date validFrom = byteConverter.toIVIDateTime((long) mandatory.getValidFrom());
         Date validTo = byteConverter.toIVIDateTime((long) mandatory.getValidTo());
 
-        builder.createMandatory(countryCode, mandatory.getServiceProviderId().getProviderID(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, 0, mandatory.getIviStatus());
+        builder.createMandatory(countryCode, mandatory.getServiceProviderId().getProviderIdentifier(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, 0, mandatory.getIviStatus());
 
         IviContainer givContainer = extracter.GetGivContainer();
         IviContainer glcContainer = extracter.GetGlcContainer();
@@ -75,9 +74,9 @@ public class JsonAdapter implements IControllerAdapter {
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
 
-        serviceCategoryCode = transformer.GetServiceCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
-        pictogramCategoryCode = transformer.GetPictogramCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
-        countryCategoryCode = transformer.GetPictogramCountryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
+        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
+        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
+        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
 
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
@@ -90,8 +89,8 @@ public class JsonAdapter implements IControllerAdapter {
         detectionZoneIDs = transformer.getDetectionZoneIds(givContainer);
         for (long zoneID : detectionZoneIDs) {
             try {
-                zone = transformer.GetZoneById(zoneID);
-                laneWidth = transformer.getZoneLaneWidthId(zoneID);
+                zone = transformer.getZoneById(zoneID);
+                laneWidth = transformer.getZoneLaneWidthById(zoneID);
                 builder.addZone(zone, IVIZoneEnum.IVI_ZONE_DETECTION, laneWidth);
             } catch (Exception e) {
                 //TODO confirmar se é assim que se trata do erro
@@ -102,8 +101,8 @@ public class JsonAdapter implements IControllerAdapter {
         relevanceZoneIDs = transformer.getRelevantZoneIds(givContainer);
         for (long zoneID : relevanceZoneIDs) {
             try {
-                zone = transformer.GetZoneById(zoneID);
-                laneWidth = transformer.getZoneLaneWidthId(zoneID);
+                zone = transformer.getZoneById(zoneID);
+                laneWidth = transformer.getZoneLaneWidthById(zoneID);
                 builder.addZone(zone, IVIZoneEnum.IVI_ZONE_RELEVANCE, laneWidth);
             } catch (Exception e) {
                 //TODO confirmar se é assim que se trata do erro
@@ -115,8 +114,8 @@ public class JsonAdapter implements IControllerAdapter {
             awarenessZoneIDs = transformer.getAwarenessZoneIds(givContainer);
             for (long zoneID : awarenessZoneIDs) {
                 try {
-                    zone = transformer.GetZoneById(zoneID);
-                    laneWidth = transformer.getZoneLaneWidthId(zoneID);
+                    zone = transformer.getZoneById(zoneID);
+                    laneWidth = transformer.getZoneLaneWidthById(zoneID);
                     builder.addZone(zone, IVIZoneEnum.IVI_ZONE_AWARENESS, laneWidth);
                 } catch (Exception e) {
                     //TODO confirmar se é assim que se trata do erro
