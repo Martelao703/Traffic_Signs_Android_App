@@ -5,5 +5,5 @@ import retrofit2.http.*;
 
 public interface APIService {
     @GET("getivim/json/{id}")
-    Call<YourResponseClass> doGetIvimData(@Path("id") int id);
+    Call<IVIM> doGetIvimData(@Path("id") int id);
 }
