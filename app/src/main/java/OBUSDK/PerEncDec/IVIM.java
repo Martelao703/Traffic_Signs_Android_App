@@ -1,7 +1,11 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 public class IVIM {
+    @SerializedName("header")
     private ItsPduHeader itsPduHeader;
+    @SerializedName("ivi")
     private IviStructure iviStructure;
 
     public ItsPduHeader getItsPduHeader() {

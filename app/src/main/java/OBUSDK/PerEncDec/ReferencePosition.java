@@ -6,6 +6,14 @@ public class ReferencePosition {
     private PosConfidenceEllipse positionConfidenceEllipse;
     private Altitude altitude;
 
+    public ReferencePosition() {
+    }
+
+    public ReferencePosition(long latitude, long longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public long getLatitude() {
         return latitude;
     }
