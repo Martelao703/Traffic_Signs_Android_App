@@ -1,8 +1,11 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ReferencePosition {
     private long latitude;
     private long longitude;
+    @SerializedName("positionConfidenceElipse")
     private PosConfidenceEllipse positionConfidenceEllipse;
     private Altitude altitude;
 

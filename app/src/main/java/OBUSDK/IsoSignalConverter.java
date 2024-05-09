@@ -1,24 +1,25 @@
 package OBUSDK;
 
-public class IsoSignalConverter {
+import OBUSDK.PerEncDec.*;
 
-    public int getServiceCategoryCode(ISO14823Code.PictogramCodeType pictogramCode) {
-        switch (pictogramCode.ServiceCategoryCode.getSelected()) {
+public class IsoSignalConverter {
+    public int getServiceCategoryCode(PictogramCodeType pictogramCode) {
+        switch (pictogramCode.getServiceCategoryCode().getSelected()) {
             case TrafficSignPictogramChosen:
-                return getTrafficSignPictogramCode(pictogramCode.ServiceCategoryCode.getTrafficSignPictogram());
+                return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram());
                 //return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram().getValue());
             case PublicFacilitiesPictogramChosen:
-                return getPublicFacilitiesPictogramCode(pictogramCode.ServiceCategoryCode.getPublicFacilitiesPictogram());
+                return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram());
                 //return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram().getValue());
             case AmbientOrRoadConditionPictogramChosen:
-                return getAmbientOrRoadConditionPictogramCode(pictogramCode.ServiceCategoryCode.getAmbientOrRoadConditionPictogram());
+                return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram());
                 //return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram().getValue());
             default:
                 return 0;
         }
     }
 
-    private int getTrafficSignPictogramCode(ISO14823Code.PictogramCodeType.ServiceCategoryCodeType.TrafficSignPictogramType type) {
+    private int getTrafficSignPictogramCode(ServiceCategoryCodeType.TrafficSignPictogramType type) {
         switch (type) {
             case DangerWarning:
                 return 11;
@@ -31,7 +32,7 @@ public class IsoSignalConverter {
         }
     }
 
-    private int getPublicFacilitiesPictogramCode(ISO14823Code.PictogramCodeType.ServiceCategoryCodeType.PublicFacilitiesPictogramType type) {
+    private int getPublicFacilitiesPictogramCode(ServiceCategoryCodeType.PublicFacilitiesPictogramType type) {
         switch (type) {
             case PublicFacilities:
                 return 21;
@@ -40,7 +41,7 @@ public class IsoSignalConverter {
         }
     }
 
-    private int getAmbientOrRoadConditionPictogramCode(ISO14823Code.PictogramCodeType.ServiceCategoryCodeType.AmbientOrRoadConditionPictogramType type) {
+    private int getAmbientOrRoadConditionPictogramCode(ServiceCategoryCodeType.AmbientOrRoadConditionPictogramType type) {
         switch (type) {
             case AmbientCondition:
                 return 31;

@@ -1,28 +1,31 @@
 package OBUSDK.PerEncDec;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GicPart {
-    private ZoneIds detectionZoneIds;
+    private ArrayList<Long> detectionZoneIds;
     private VarLengthNumber itsRrid;
-    private ZoneIds relevanceZoneIds;
+    private ArrayList<Long> relevanceZoneIds;
     private Integer direction;
-    private ZoneIds driverAwarenessZoneIds;
+    private ArrayList<Long> driverAwarenessZoneIds;
     private Integer minimumAwarenessTime;
-    private LanePositions applicableLanes;
+    private ArrayList<Long> applicableLanes;
     private int iviType;
     private Integer iviPurpose;
     private Long laneStatus;
-    private VehicleCharacteristicsList vehicleCharacteristics;
+    private List<CompleteVehicleCharacteristics> vehicleCharacteristics;
     private Integer driverCharacteristics;
     private Long layoutId;
     private Long preStoredLayoutId;
-    private RoadSignCodes roadSignCodes;
-    private ConstraintTextLines1 extraText;
+    private ArrayList<RoadSignCode> roadSignCodes;
+    private ArrayList<Text> extraText;
 
-    public ZoneIds getDetectionZoneIds() {
+    public ArrayList<Long> getDetectionZoneIds() {
         return detectionZoneIds;
     }
 
-    public void setDetectionZoneIds(ZoneIds detectionZoneIds) {
+    public void setDetectionZoneIds(ArrayList<Long> detectionZoneIds) {
         this.detectionZoneIds = detectionZoneIds;
     }
 
@@ -34,11 +37,11 @@ public class GicPart {
         this.itsRrid = itsRrid;
     }
 
-    public ZoneIds getRelevanceZoneIds() {
+    public ArrayList<Long> getRelevanceZoneIds() {
         return relevanceZoneIds;
     }
 
-    public void setRelevanceZoneIds(ZoneIds relevanceZoneIds) {
+    public void setRelevanceZoneIds(ArrayList<Long> relevanceZoneIds) {
         this.relevanceZoneIds = relevanceZoneIds;
     }
 
@@ -50,11 +53,11 @@ public class GicPart {
         this.direction = direction;
     }
 
-    public ZoneIds getDriverAwarenessZoneIds() {
+    public ArrayList<Long> getDriverAwarenessZoneIds() {
         return driverAwarenessZoneIds;
     }
 
-    public void setDriverAwarenessZoneIds(ZoneIds driverAwarenessZoneIds) {
+    public void setDriverAwarenessZoneIds(ArrayList<Long> driverAwarenessZoneIds) {
         this.driverAwarenessZoneIds = driverAwarenessZoneIds;
     }
 
@@ -66,11 +69,11 @@ public class GicPart {
         this.minimumAwarenessTime = minimumAwarenessTime;
     }
 
-    public LanePositions getApplicableLanes() {
+    public ArrayList<Long> getApplicableLanes() {
         return applicableLanes;
     }
 
-    public void setApplicableLanes(LanePositions applicableLanes) {
+    public void setApplicableLanes(ArrayList<Long> applicableLanes) {
         this.applicableLanes = applicableLanes;
     }
 
@@ -98,11 +101,11 @@ public class GicPart {
         this.laneStatus = laneStatus;
     }
 
-    public VehicleCharacteristicsList getVehicleCharacteristics() {
+    public List<CompleteVehicleCharacteristics> getVehicleCharacteristics() {
         return vehicleCharacteristics;
     }
 
-    public void setVehicleCharacteristics(VehicleCharacteristicsList vehicleCharacteristics) {
+    public void setVehicleCharacteristics(List<CompleteVehicleCharacteristics> vehicleCharacteristics) {
         this.vehicleCharacteristics = vehicleCharacteristics;
     }
 
@@ -130,19 +133,19 @@ public class GicPart {
         this.preStoredLayoutId = preStoredLayoutId;
     }
 
-    public RoadSignCodes getRoadSignCodes() {
+    public ArrayList<RoadSignCode> getRoadSignCodes() {
         return roadSignCodes;
     }
 
-    public void setRoadSignCodes(RoadSignCodes roadSignCodes) {
+    public void setRoadSignCodes(ArrayList<RoadSignCode> roadSignCodes) {
         this.roadSignCodes = roadSignCodes;
     }
 
-    public ConstraintTextLines1 getExtraText() {
+    public ArrayList<Text> getExtraText() {
         return extraText;
     }
 
-    public void setExtraText(ConstraintTextLines1 extraText) {
+    public void setExtraText(ArrayList<Text> extraText) {
         this.extraText = extraText;
     }
 }

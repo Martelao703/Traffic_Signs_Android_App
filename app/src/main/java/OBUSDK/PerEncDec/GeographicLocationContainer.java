@@ -1,12 +1,14 @@
 package OBUSDK.PerEncDec;
 
+import java.util.List;
+
 public class GeographicLocationContainer {
 
     private ReferencePosition referencePosition;
     private Long referencePositionTime;
     private Heading referencePositionHeading;
     private Speed referencePositionSpeed;
-    private GlcParts glcParts;
+    private List<GlcPart> glcParts;
 
     public ReferencePosition getReferencePosition() {
         return referencePosition;
@@ -40,11 +42,11 @@ public class GeographicLocationContainer {
         this.referencePositionSpeed = referencePositionSpeed;
     }
 
-    public GlcParts getGlcParts() {
+    public List<GlcPart> getGlcParts() {
         return glcParts;
     }
 
-    public void setGlcParts(GlcParts glcParts) {
+    public void setGlcParts(List<GlcPart> glcParts) {
         this.glcParts = glcParts;
     }
 }

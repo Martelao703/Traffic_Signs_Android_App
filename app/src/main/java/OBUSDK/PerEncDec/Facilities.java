@@ -1,11 +1,16 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Facilities {
     private boolean enabled;
     private int AppInterval;
-    private IVIMap IVIMap;
+    @SerializedName("IVIMAPP")
+    private List<IVIMap> IVIMap;
 
-    public Facilities(boolean enabled, int appInterval, OBUSDK.PerEncDec.IVIMap IVIMap) {
+    public Facilities(boolean enabled, int appInterval, List<IVIMap> IVIMap) {
         this.enabled = enabled;
         AppInterval = appInterval;
         this.IVIMap = IVIMap;
@@ -30,11 +35,11 @@ public class Facilities {
         AppInterval = appInterval;
     }
 
-    public OBUSDK.PerEncDec.IVIMap getIVIMap() {
+    public List<IVIMap> getIVIMap() {
         return IVIMap;
     }
 
-    public void setIVIMap(OBUSDK.PerEncDec.IVIMap IVIMap) {
+    public void setIVIMap(List<IVIMap> IVIMap) {
         this.IVIMap = IVIMap;
     }
 }

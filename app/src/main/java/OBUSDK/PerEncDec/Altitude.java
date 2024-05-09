@@ -1,22 +1,22 @@
 package OBUSDK.PerEncDec;
 
 public class Altitude {
-    private long AltitudeValue;
-    private AltitudeConfidence AltitudeConfidence;
+    private long altitudeValue;
+    private AltitudeConfidence altitudeConfidence;
 
     public long getAltitudeValue() {
-        return AltitudeValue;
+        return altitudeValue;
     }
 
     public void setAltitudeValue(long altitudeValue) {
-        AltitudeValue = altitudeValue;
+        this.altitudeValue = altitudeValue;
     }
 
     public AltitudeConfidence getAltitudeConfidence() {
-        return AltitudeConfidence;
+        return altitudeConfidence;
     }
 
     public void setAltitudeConfidence(AltitudeConfidence altitudeConfidence) {
-        AltitudeConfidence = altitudeConfidence;
+        this.altitudeConfidence = altitudeConfidence;
     }
 }
