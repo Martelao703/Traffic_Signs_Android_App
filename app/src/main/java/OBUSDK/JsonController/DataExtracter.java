@@ -58,7 +58,7 @@ public class DataExtracter {
         IviContainer glcContainer = this.GetGlcContainer();
 
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
                 if (glcPart.getZoneId() == zoneId) {
                     glcPartes.add(glcPart);
                 }
@@ -85,7 +85,7 @@ public class DataExtracter {
     public GlcPart GetZoneById(long zoneId) {
         IviContainer glcContainer = this.GetGlcContainer();
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
                 if (glcPart.getZoneId() == zoneId) {
                     return glcPart;
                 }
@@ -99,7 +99,7 @@ public class DataExtracter {
         IviContainer glcContainer = this.GetGlcContainer();
 
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
                 if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
                     return true;
                 }

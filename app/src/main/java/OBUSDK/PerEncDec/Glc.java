@@ -1,9 +1,12 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Glc {
     private ReferencePosition referencePosition;
     private Long referencePositionTime;
-    private Parts parts;
+    @SerializedName("parts")
+    private GlcParts glcParts;
 
     //atributos heading e speed n vem no json, é preciso??
 
@@ -23,11 +26,11 @@ public class Glc {
         this.referencePositionTime = referencePositionTime;
     }
 
-    public Parts getParts() {
-        return parts;
+    public GlcParts getGlcParts() {
+        return glcParts;
     }
 
-    public void setParts(Parts parts) {
-        this.parts = parts;
+    public void setGlcParts(GlcParts glcParts) {
+        this.glcParts = glcParts;
     }
 }

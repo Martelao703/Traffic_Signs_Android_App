@@ -99,6 +99,7 @@ public class JsonAdapter implements IControllerAdapter {
         }
 
         relevanceZoneIDs = transformer.getRelevantZoneIds(givContainer);
+
         for (long zoneID : relevanceZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);

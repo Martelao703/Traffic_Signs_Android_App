@@ -11,4 +11,8 @@ public class IVIMHeader {
     public long getStationId() {
         return stationId;
     }
+
+    public void setStationId(long stationId) {
+        this.stationId = stationId;
+    }
 }

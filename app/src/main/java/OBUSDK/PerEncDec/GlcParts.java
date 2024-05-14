@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Parts {
+public class GlcParts {
     @SerializedName("GlcPart")
     private List<GlcPart> glcPart;
 
