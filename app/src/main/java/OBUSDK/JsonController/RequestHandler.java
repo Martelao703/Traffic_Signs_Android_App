@@ -15,7 +15,8 @@ public class RequestHandler {
 
     private RSU rsu;
 
-    public void doGetRSU(int id){
+    /*
+    public RSU doGetRSU(int id){
         String url = BASE_URL + "getrsu/" + id;
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,6 +49,38 @@ public class RequestHandler {
                 t.printStackTrace();
             }
         });
+        return rsu;
     }
+
+     */
+
+    public RSU doGetRSU(int id) {
+        String url = BASE_URL + "getrsu/" + id;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        APIService apiService = retrofit.create(APIService.class);
+
+        Call<RSU> call = apiService.doGetRsu(id);
+
+        try {
+            Response<RSU> response = call.execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            } else {
+                // Handle unsuccessful response
+                System.out.println(response.errorBody().string());
+            }
+        } catch (IOException e) {
+            // Handle IOException
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
 }
