@@ -28,27 +28,27 @@ public class DataExtracter {
     public List<IviContainer> getAllGivContainers() {
         List<IviContainer> givContainers = new ArrayList<>();
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-            if (container.getSelected() == IviContainer.Id.GivChosen) {
+            /*if (container.getSelected() == IviContainer.Id.GivChosen) {
                 givContainers.add(container);
-            }
+            }*/
         }
         return givContainers;
     }
 
     public IviContainer GetGivContainer() {
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-            if (container.getSelected() == IviContainer.Id.GivChosen) {
+            /*if (container.getSelected() == IviContainer.Id.GivChosen) {
                 return container;
-            }
+            }*/
         }
         return null;
     }
 
     public IviContainer GetGlcContainer() {
         for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-            if (container.getSelected() == IviContainer.Id.GlcChosen) {
+            /*if (container.getSelected() == IviContainer.Id.GlcChosen) {
                 return container;
-            }
+            }*/
         }
         return null;
     }

@@ -16,14 +16,14 @@ public interface APIService {
     Call<IVIM> doGetIvimNoTc(@Path("id") int id);
 
     @GET("getrsu/{id}")
-    Call<RSU> doGetRsu(@Path("id") int id); //Response class ??
+    Call<RSU> doGetRsu(@Path("id") int id);
 
     @POST("getivimsbydistance")
     Call<List<IVIM>> doGetIvimsByDistance(@Body Map<String, Object> requestBody);
 
     @POST("getnearestrsu")
-    Call<RSU> doGetNearestRsu(@Body Map<String, Object> requestBody);  //Response class ??
+    Call<RSU> doGetNearestRsu(@Body Map<String, Object> requestBody);
 
     @POST("getrsubydistance")
-    Call<List<IVIM>> doGetRsuByDistance(@Body Map<String, Object> requestBody);  //Response class ??
+    Call<List<IVIM>> doGetRsuByDistance(@Body Map<String, Object> requestBody);
 }

@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    implementation(libs.logging.interceptor)
+
     implementation(libs.gson)
     implementation(libs.activity)
     implementation(libs.constraintlayout)

@@ -5,6 +5,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import OBUSDK.JsonController.*;
+import OBUSDK.PerEncDec.*;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -13,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.main_page);
 
-        OBUSDK.JsonController.RequestHandler teste = new OBUSDK.JsonController.RequestHandler();
+        RequestHandler teste = new RequestHandler();
 
-        OBUSDK.PerEncDec.RSU rsu = teste.doGetRSU(1);
+        Call<RSU> call = APIService.doGetRsu(1);
 
         TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());

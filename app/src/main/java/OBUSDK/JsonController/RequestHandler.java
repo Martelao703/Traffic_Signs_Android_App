@@ -9,9 +9,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class RequestHandler {
     private static final String BASE_URL = "http://its-server.pt/api/";
+    private static Retrofit retrofit = null;
+
 
     private RSU rsu;
 
@@ -54,15 +58,21 @@ public class RequestHandler {
 
      */
 
-    public RSU doGetRSU(int id) {
+    public Retrofit doGetRSU(int id) {
         String url = BASE_URL + "getrsu/" + id;
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
 
-        APIService apiService = retrofit.create(APIService.class);
+        return retrofit;
+
+        /*APIService apiService = retrofit.create(APIService.class);
 
         Call<RSU> call = apiService.doGetRsu(id);
 
@@ -77,7 +87,7 @@ public class RequestHandler {
         } catch (IOException e) {
             // Handle IOException
             e.printStackTrace();
-        }
+        }*/
 
         return null;
     }
