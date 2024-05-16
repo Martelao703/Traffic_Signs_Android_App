@@ -1,16 +1,17 @@
 package OBUSDK.PerEncDec;
 
 import com.google.gson.annotations.SerializedName;
+import OBUSDK.PerEncDec.ITSApp;
 
 public class RSU {
     private VirtualRSU virtualRSU;
     @SerializedName("ITSAPP")
     private ITSApp ITSApp;
 
-    public RSU(VirtualRSU virtualRSU, OBUSDK.PerEncDec.ITSApp ITSApp) {
+    /*public RSU(VirtualRSU virtualRSU, ITSApp ITSApp) {
         this.virtualRSU = virtualRSU;
         this.ITSApp = ITSApp;
-    }
+    }*/
 
     public RSU() {
     }
@@ -23,11 +24,11 @@ public class RSU {
         this.virtualRSU = virtualRSU;
     }
 
-    public OBUSDK.PerEncDec.ITSApp getITSApp() {
+    public ITSApp getITSApp() {
         return ITSApp;
     }
 
-    public void setITSApp(OBUSDK.PerEncDec.ITSApp ITSApp) {
+    public void setITSApp(ITSApp ITSApp) {
         this.ITSApp = ITSApp;
     }
 }
