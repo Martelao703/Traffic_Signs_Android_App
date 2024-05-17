@@ -1,16 +1,11 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ITSApp {
     private boolean enabled;
+    @SerializedName("Facilities")
     private Facilities facilities;
-
-    public ITSApp(boolean enabled, Facilities facilities) {
-        this.enabled = enabled;
-        this.facilities = facilities;
-    }
-
-    public ITSApp() {
-    }
 
     public boolean isEnabled() {
         return enabled;

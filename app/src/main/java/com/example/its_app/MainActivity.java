@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RSU> call, Throwable t) {
+                System.out.println("RSU onFailure: " + t.getMessage());
+                Log.d("RSU", "RSU onFailure: " + t.getMessage());
                 call.cancel();
             }
         });

@@ -11,7 +11,7 @@ import OBUSDK.InternalIVIMMessage;
 import OBUSDK.InternalIVIMMessageBuilder;
 import OBUSDK.PerEncDec.IVIM;
 import OBUSDK.IVIMMemoryStructures;
-import OBUSDK.PerEncDec.ItsPduHeader;
+import OBUSDK.PerEncDec.Header;
 import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.IviManagementContainer;
 import OBUSDK.SafeByteConverter;
@@ -48,7 +48,7 @@ public class JsonAdapter implements IControllerAdapter {
         SafeByteConverter byteConverter = new SafeByteConverter();
 
         InternalIVIMMessageBuilder builder = new InternalIVIMMessageBuilder();
-        ItsPduHeader header = extracter.getItsPduHeader();
+        Header header = extracter.getItsPduHeader();
 
         if (header == null) {
             return null;

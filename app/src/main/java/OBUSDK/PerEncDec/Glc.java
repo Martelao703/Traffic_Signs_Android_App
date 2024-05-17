@@ -5,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class Glc {
     private ReferencePosition referencePosition;
     private Long referencePositionTime;
-    @SerializedName("parts")
-    private GlcParts glcParts;
+    private Parts parts;
 
     //atributos heading e speed n vem no json, é preciso??
 
@@ -26,11 +25,11 @@ public class Glc {
         this.referencePositionTime = referencePositionTime;
     }
 
-    public GlcParts getGlcParts() {
-        return glcParts;
+    public Parts getParts() {
+        return parts;
     }
 
-    public void setGlcParts(GlcParts glcParts) {
-        this.glcParts = glcParts;
+    public void setParts(Parts parts) {
+        this.parts = parts;
     }
 }

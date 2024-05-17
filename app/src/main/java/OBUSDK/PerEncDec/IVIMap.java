@@ -4,14 +4,6 @@ public class IVIMap {
     private boolean enabled;
     private IVIM ivim;
 
-    public IVIMap() {
-    }
-
-    public IVIMap(boolean enabled, IVIM ivim) {
-        this.enabled = enabled;
-        this.ivim = ivim;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }

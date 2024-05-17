@@ -2,9 +2,9 @@ package OBUSDK.PerEncDec;
 
 import java.util.List;
 
-public class IviStructure {
+public class Ivi {
     private IviManagementContainer mandatory;
-    private List<IviContainer> optional;
+    private List<Optional> optional;
 
     public IviManagementContainer getMandatory() {
         return mandatory;
@@ -14,11 +14,11 @@ public class IviStructure {
         this.mandatory = mandatory;
     }
 
-    public List<IviContainer> getOptional() {
+    public List<Optional> getOptional() {
         return optional;
     }
 
-    public void setOptional(List<IviContainer> optional) {
+    public void setOptional(List<Optional> optional) {
         this.optional = optional;
     }
 }

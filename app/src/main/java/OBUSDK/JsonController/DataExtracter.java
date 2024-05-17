@@ -5,9 +5,10 @@ import java.util.List;
 
 import OBUSDK.PerEncDec.GlcPart;
 import OBUSDK.PerEncDec.IVIM;
-import OBUSDK.PerEncDec.ItsPduHeader;
+import OBUSDK.PerEncDec.Header;
 import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.IviManagementContainer;
+import OBUSDK.PerEncDec.Optional;
 import OBUSDK.PerEncDec.Zone;
 
 public class DataExtracter {
@@ -17,18 +18,18 @@ public class DataExtracter {
         this.rootIVI = rootIVI;
     }
 
-    public ItsPduHeader getItsPduHeader() {
-        return this.rootIVI.getItsPduHeader();
+    public Header getItsPduHeader() {
+        return this.rootIVI.getHeader();
     }
 
     public IviManagementContainer getMandatoryContainer() {
-        return this.rootIVI.getIviStructure().getMandatory();
+        return this.rootIVI.getIvi().getMandatory();
     }
 
     public List<IviContainer> getAllGivContainers() {
         List<IviContainer> givContainers = new ArrayList<>();
-        for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-            /*if (container.getSelected() == IviContainer.Id.GivChosen) {
+        for (Optional optional : this.rootIVI.getIvi().getOptional()) {
+            /*if (optional.getIviContainer().getSelected() == IviContainer.Id.GivChosen) {
                 givContainers.add(container);
             }*/
         }
@@ -36,7 +37,7 @@ public class DataExtracter {
     }
 
     public IviContainer GetGivContainer() {
-        for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
+        for (Optional optional : this.rootIVI.getIvi().getOptional()) {
             /*if (container.getSelected() == IviContainer.Id.GivChosen) {
                 return container;
             }*/
@@ -45,8 +46,8 @@ public class DataExtracter {
     }
 
     public IviContainer GetGlcContainer() {
-        for (IviContainer container : this.rootIVI.getIviStructure().getOptional()) {
-            /*if (container.getSelected() == IviContainer.Id.GlcChosen) {
+        for (Optional optional : this.rootIVI.getIvi().getOptional()) {
+            /*if (optional.getIviContainer().getSelected() == IviContainer.Id.GlcChosen) {
                 return container;
             }*/
         }
@@ -58,7 +59,7 @@ public class DataExtracter {
         IviContainer glcContainer = this.GetGlcContainer();
 
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
                 if (glcPart.getZoneId() == zoneId) {
                     glcPartes.add(glcPart);
                 }
@@ -85,7 +86,7 @@ public class DataExtracter {
     public GlcPart GetZoneById(long zoneId) {
         IviContainer glcContainer = this.GetGlcContainer();
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
                 if (glcPart.getZoneId() == zoneId) {
                     return glcPart;
                 }
@@ -99,7 +100,7 @@ public class DataExtracter {
         IviContainer glcContainer = this.GetGlcContainer();
 
         if (glcContainer != null) {
-            for (GlcPart glcPart : glcContainer.getGlc().getGlcParts().getGlcPart()) {
+            for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
                 if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
                     return true;
                 }

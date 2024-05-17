@@ -6,18 +6,10 @@ import java.util.List;
 
 public class Facilities {
     private boolean enabled;
-    private int AppInterval;
+    @SerializedName("AppInterval")
+    private int appInterval;
     @SerializedName("IVIMAPP")
     private List<IVIMap> IVIMap;
-
-    public Facilities(boolean enabled, int appInterval, List<IVIMap> IVIMap) {
-        this.enabled = enabled;
-        AppInterval = appInterval;
-        this.IVIMap = IVIMap;
-    }
-
-    public Facilities() {
-    }
 
     public boolean isEnabled() {
         return enabled;
@@ -28,11 +20,11 @@ public class Facilities {
     }
 
     public int getAppInterval() {
-        return AppInterval;
+        return appInterval;
     }
 
     public void setAppInterval(int appInterval) {
-        AppInterval = appInterval;
+        this.appInterval = appInterval;
     }
 
     public List<IVIMap> getIVIMap() {
