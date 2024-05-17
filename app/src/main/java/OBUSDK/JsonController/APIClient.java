@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class APIClient {
-    private static final String BASE_URL = "http://its-server.pt/api";
+    private static final String BASE_URL = "http://its-server.pt/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

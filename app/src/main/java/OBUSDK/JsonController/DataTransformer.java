@@ -205,7 +205,7 @@ public class DataTransformer {
         return buffer.getInt();
     }
 
-    // ???????????? Substituí o return type de int para A5 ????????????
+    /* ???????????? Substituí o return type de int para A5 ????????????
     public A5 getExtraTextLanguage(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getExtraText().get(0).getLanguage();
     }
@@ -262,4 +262,6 @@ public class DataTransformer {
     public boolean hasAwarenessZone(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
     }
+
+     */
 }
