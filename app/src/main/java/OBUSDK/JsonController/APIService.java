@@ -15,8 +15,13 @@ public interface APIService {
     @GET("getivimnotc/json/{id}")
     Call<IVIM> doGetIvimNoTc(@Path("id") int id);
 
+<<<<<<< Updated upstream
     @GET("getrsu/{id}")
     Call<RSU> doGetRsu(@Path("id") int id); //Response class ??
+=======
+    @GET("api/getrsu/{id}")
+    Call<String> doGetRsu(@Path("id") int id);
+>>>>>>> Stashed changes
 
     @POST("getivimsbydistance")
     Call<List<IVIM>> doGetIvimsByDistance(@Body Map<String, Object> requestBody);
