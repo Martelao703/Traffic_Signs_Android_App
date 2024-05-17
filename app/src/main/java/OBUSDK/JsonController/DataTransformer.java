@@ -5,7 +5,7 @@ import java.util.List;
 
 import OBUSDK.CoordinateConverter;
 import OBUSDK.GPSCoordinate;
-import OBUSDK.ISO14823Code;
+import OBUSDK.PerEncDec.ISO14823Code;
 import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneType;
@@ -14,6 +14,7 @@ import OBUSDK.PerEncDec.A5;
 import OBUSDK.PerEncDec.DeltaPosition;
 import OBUSDK.PerEncDec.GlcPart;
 import OBUSDK.PerEncDec.IviContainer;
+import OBUSDK.PerEncDec.PictogramCodeType;
 import OBUSDK.PerEncDec.Segment;
 import OBUSDK.PerEncDec.Zone;
 
@@ -186,20 +187,20 @@ public class DataTransformer {
         return iviZone;
     }
 
-    public int getServiceCategoryCode(ISO14823Code.PictogramCodeType pictogramCodeType) {
+    public int getServiceCategoryCode(PictogramCodeType pictogramCodeType) {
         return this.signalConverter.getServiceCategoryCode(pictogramCodeType);
     }
 
-    public int getPictogramCategoryCode(ISO14823Code.PictogramCodeType pictogramCode) {
+    public int getPictogramCategoryCode(PictogramCodeType pictogramCode) {
         int nature;
         int serialNumber;
-        nature = pictogramCode.PictogramCategoryCode.Nature;
-        serialNumber = pictogramCode.PictogramCategoryCode.SerialNumber;
+        nature = pictogramCode.getPictogramCategoryCode().getNature();
+        serialNumber = pictogramCode.getPictogramCategoryCode().getSerialNumber();
 
         return ((nature * 100) + serialNumber);
     }
 
-    public int getPictogramCountryCode(ISO14823Code.PictogramCodeType pictogramCode) {
+    public int getPictogramCountryCode(PictogramCodeType pictogramCode) {
         ByteBuffer buffer = ByteBuffer.wrap(pictogramCode.getCountryCode());
         return buffer.getInt();
     }

@@ -1,14 +1,13 @@
 package OBUSDK.JsonController;
 
 import OBUSDK.PerEncDec.RSU;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.OkHttpClient;
-
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class APIClient {
-    private static final String BASE_URL = "http://its-server.pt/";
+    private static final String BASE_URL = "http://its-server.pt/api";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {

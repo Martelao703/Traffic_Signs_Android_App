@@ -1,6 +1,6 @@
 package OBUSDK.PerEncDec;
 
-public class ItsPduHeader {
+public class Header {
     private int protocolVersion;
     private int messageID;
     private long stationID;

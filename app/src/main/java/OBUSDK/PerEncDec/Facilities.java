@@ -1,18 +1,15 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Facilities {
     private boolean enabled;
-    private int AppInterval;
-    private IVIMap IVIMap;
-
-    public Facilities(boolean enabled, int appInterval, OBUSDK.PerEncDec.IVIMap IVIMap) {
-        this.enabled = enabled;
-        AppInterval = appInterval;
-        this.IVIMap = IVIMap;
-    }
-
-    public Facilities() {
-    }
+    @SerializedName("AppInterval")
+    private int appInterval;
+    @SerializedName("IVIMAPP")
+    private List<IVIMap> IVIMap;
 
     public boolean isEnabled() {
         return enabled;
@@ -23,18 +20,18 @@ public class Facilities {
     }
 
     public int getAppInterval() {
-        return AppInterval;
+        return appInterval;
     }
 
     public void setAppInterval(int appInterval) {
-        AppInterval = appInterval;
+        this.appInterval = appInterval;
     }
 
-    public OBUSDK.PerEncDec.IVIMap getIVIMap() {
+    public List<IVIMap> getIVIMap() {
         return IVIMap;
     }
 
-    public void setIVIMap(OBUSDK.PerEncDec.IVIMap IVIMap) {
+    public void setIVIMap(List<IVIMap> IVIMap) {
         this.IVIMap = IVIMap;
     }
 }

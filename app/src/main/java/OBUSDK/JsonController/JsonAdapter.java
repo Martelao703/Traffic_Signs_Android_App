@@ -11,7 +11,7 @@ import OBUSDK.InternalIVIMMessage;
 import OBUSDK.InternalIVIMMessageBuilder;
 import OBUSDK.PerEncDec.IVIM;
 import OBUSDK.IVIMMemoryStructures;
-import OBUSDK.PerEncDec.ItsPduHeader;
+import OBUSDK.PerEncDec.Header;
 import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.IviManagementContainer;
 import OBUSDK.SafeByteConverter;
@@ -48,7 +48,7 @@ public class JsonAdapter implements IControllerAdapter {
         SafeByteConverter byteConverter = new SafeByteConverter();
 
         InternalIVIMMessageBuilder builder = new InternalIVIMMessageBuilder();
-        ItsPduHeader header = extracter.getItsPduHeader();
+        Header header = extracter.getItsPduHeader();
 
         if (header == null) {
             return null;
@@ -74,9 +74,9 @@ public class JsonAdapter implements IControllerAdapter {
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
 
-        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
-        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
-        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().PictogramCode);
+        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
 
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
@@ -99,6 +99,7 @@ public class JsonAdapter implements IControllerAdapter {
         }
 
         relevanceZoneIDs = transformer.getRelevantZoneIds(givContainer);
+
         for (long zoneID : relevanceZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);

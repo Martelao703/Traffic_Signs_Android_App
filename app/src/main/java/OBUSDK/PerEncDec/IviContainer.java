@@ -1,35 +1,34 @@
 package OBUSDK.PerEncDec;
 
+import java.util.List;
+
 public class IviContainer {
+    private Glc glc;
+    private List<Giv> giv;
 
-    public enum Id {
-        Unselected,
-        GlcChosen,
-        GivChosen
+    //private List<TcPart> tc;
+
+    public Glc getGlc() {
+        return glc;
     }
 
-    private Id id;
-    private Object contained;
-
-    public Id getSelected() {
-        return id;
+    public void setGlc(Glc glc) {
+        this.glc = glc;
     }
 
-    public GeographicLocationContainer getGlc() {
-        return (id == Id.GlcChosen) ? (GeographicLocationContainer) contained : null;
+    public List<Giv> getGiv() {
+        return giv;
     }
 
-    public void setGlc(GeographicLocationContainer value) {
-        contained = value;
-        id = Id.GlcChosen;
+    public void setGiv(List<Giv> giv) {
+        this.giv = giv;
     }
 
-    public GeneralIviContainer getGiv() {
-        return (id == Id.GivChosen) ? (GeneralIviContainer) contained : null;
+    /*public List<TcPart> getTc() {
+        return tc;
     }
 
-    public void setGiv(GeneralIviContainer value) {
-        contained = value;
-        id = Id.GivChosen;
-    }
+    public void setTc(List<TcPart> tc) {
+        this.tc = tc;
+    }*/
 }

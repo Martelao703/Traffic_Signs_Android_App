@@ -1,14 +1,17 @@
 package OBUSDK.PerEncDec;
 
+import java.util.List;
+
 public class IviManagementContainer {
     private Provider serviceProviderId;
     private long iviIdentificationNumber;
     private Long timeStamp;
     private Long validFrom;
     private Long validTo;
-    private IviIdentificationNumbers connectedIviStructures;
+    private List<Long> connectedIviStructures;
     private int iviStatus;
-    private ConnectedDenms connectedDenms;
+
+    //private ConnectedDenms connectedDenms;
 
     public Provider getServiceProviderId() {
         return serviceProviderId;
@@ -50,11 +53,11 @@ public class IviManagementContainer {
         this.validTo = validTo;
     }
 
-    public IviIdentificationNumbers getConnectedIviStructures() {
+    public List<Long> getConnectedIviStructures() {
         return connectedIviStructures;
     }
 
-    public void setConnectedIviStructures(IviIdentificationNumbers connectedIviStructures) {
+    public void setConnectedIviStructures(List<Long> connectedIviStructures) {
         this.connectedIviStructures = connectedIviStructures;
     }
 
@@ -66,11 +69,11 @@ public class IviManagementContainer {
         this.iviStatus = iviStatus;
     }
 
-    public ConnectedDenms getConnectedDenms() {
+    /*public ConnectedDenms getConnectedDenms() {
         return connectedDenms;
     }
 
     public void setConnectedDenms(ConnectedDenms connectedDenms) {
         this.connectedDenms = connectedDenms;
-    }
+    }*/
 }

@@ -38,12 +38,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-<<<<<<< Updated upstream
-=======
-
     implementation(libs.logging.interceptor)
 
->>>>>>> Stashed changes
     implementation(libs.gson)
     implementation(libs.activity)
     implementation(libs.constraintlayout)

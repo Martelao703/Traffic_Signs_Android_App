@@ -5,8 +5,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< Updated upstream
-=======
 import OBUSDK.JsonController.*;
 import OBUSDK.PerEncDec.*;
 import retrofit2.Call;
@@ -15,25 +13,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
->>>>>>> Stashed changes
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main_page);
-
-        OBUSDK.JsonController.RequestHandler teste = new OBUSDK.JsonController.RequestHandler();
-
-        OBUSDK.PerEncDec.RSU rsu = teste.doGetRSU(1);
-
         TextView textView = findViewById(R.id.RSU_data);
-<<<<<<< Updated upstream
-        textView.setText("RSU data: " + rsu.toString());
-=======
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
@@ -88,8 +74,16 @@ public class MainActivity extends AppCompatActivity {
         });
         */
         /*TextView textView = findViewById(R.id.RSU_data);
+        textView.setText("RSU data: " + rsu.toString());
+                System.out.println("RSU onFailure: " + t.getMessage());
+                Log.d("RSU", "RSU onFailure: " + t.getMessage());
+                call.cancel();
+            }
+        });
+
+        /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
->>>>>>> Stashed changes
+
         /*
         EdgeToEdge.enable(this);
 

@@ -1,26 +1,22 @@
 package OBUSDK.PerEncDec;
 
-import com.google.gson.annotations.SerializedName;
-
 public class IVIM {
-    @SerializedName("header")
-    private ItsPduHeader itsPduHeader;
-    @SerializedName("ivi")
-    private IviStructure iviStructure;
+    private Header header;
+    private Ivi ivi;
 
-    public ItsPduHeader getItsPduHeader() {
-        return itsPduHeader;
+    public Header getHeader() {
+        return header;
     }
 
-    public void setItsPduHeader(ItsPduHeader itsPduHeader) {
-        this.itsPduHeader = itsPduHeader;
+    public void setHeader(Header header) {
+        this.header = header;
     }
 
-    public IviStructure getIviStructure() {
-        return iviStructure;
+    public Ivi getIvi() {
+        return ivi;
     }
 
-    public void setIviStructure(IviStructure iviStructure) {
-        this.iviStructure = iviStructure;
+    public void setIvi(Ivi ivi) {
+        this.ivi = ivi;
     }
 }
