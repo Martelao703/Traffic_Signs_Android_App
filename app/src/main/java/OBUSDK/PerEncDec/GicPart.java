@@ -1,48 +1,51 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GicPart {
-    private ArrayList<Long> detectionZoneIds;
-    private VarLengthNumber itsRrid;
-    private ArrayList<Long> relevanceZoneIds;
+    private List<ZoneIds> detectionZoneIds;
+    private List<ZoneIds> relevanceZoneIds;
+    private List<ZoneIds> driverAwarenessZoneIds;
     private Integer direction;
-    private ArrayList<Long> driverAwarenessZoneIds;
     private Integer minimumAwarenessTime;
-    private ArrayList<Long> applicableLanes;
     private int iviType;
     private Integer iviPurpose;
     private Long laneStatus;
-    private List<CompleteVehicleCharacteristics> vehicleCharacteristics;
     private Integer driverCharacteristics;
     private Long layoutId;
+    @SerializedName("preStoredlayoutId")
     private Long preStoredLayoutId;
-    private ArrayList<RoadSignCode> roadSignCodes;
-    private ArrayList<Text> extraText;
+    private List<RSCode> RSCodes;
+    private List<Text> extraText;
+    private VarLengthNumber itsRrid;
+    private ArrayList<Long> applicableLanes;
+    private List<CompleteVehicleCharacteristics> vehicleCharacteristics;
 
-    public ArrayList<Long> getDetectionZoneIds() {
+    public List<ZoneIds> getDetectionZoneIds() {
         return detectionZoneIds;
     }
 
-    public void setDetectionZoneIds(ArrayList<Long> detectionZoneIds) {
+    public void setDetectionZoneIds(List<ZoneIds> detectionZoneIds) {
         this.detectionZoneIds = detectionZoneIds;
     }
 
-    public VarLengthNumber getItsRrid() {
-        return itsRrid;
-    }
-
-    public void setItsRrid(VarLengthNumber itsRrid) {
-        this.itsRrid = itsRrid;
-    }
-
-    public ArrayList<Long> getRelevanceZoneIds() {
+    public List<ZoneIds> getRelevanceZoneIds() {
         return relevanceZoneIds;
     }
 
-    public void setRelevanceZoneIds(ArrayList<Long> relevanceZoneIds) {
+    public void setRelevanceZoneIds(List<ZoneIds> relevanceZoneIds) {
         this.relevanceZoneIds = relevanceZoneIds;
+    }
+
+    public List<ZoneIds> getDriverAwarenessZoneIds() {
+        return driverAwarenessZoneIds;
+    }
+
+    public void setDriverAwarenessZoneIds(List<ZoneIds> driverAwarenessZoneIds) {
+        this.driverAwarenessZoneIds = driverAwarenessZoneIds;
     }
 
     public Integer getDirection() {
@@ -53,28 +56,12 @@ public class GicPart {
         this.direction = direction;
     }
 
-    public ArrayList<Long> getDriverAwarenessZoneIds() {
-        return driverAwarenessZoneIds;
-    }
-
-    public void setDriverAwarenessZoneIds(ArrayList<Long> driverAwarenessZoneIds) {
-        this.driverAwarenessZoneIds = driverAwarenessZoneIds;
-    }
-
     public Integer getMinimumAwarenessTime() {
         return minimumAwarenessTime;
     }
 
     public void setMinimumAwarenessTime(Integer minimumAwarenessTime) {
         this.minimumAwarenessTime = minimumAwarenessTime;
-    }
-
-    public ArrayList<Long> getApplicableLanes() {
-        return applicableLanes;
-    }
-
-    public void setApplicableLanes(ArrayList<Long> applicableLanes) {
-        this.applicableLanes = applicableLanes;
     }
 
     public int getIviType() {
@@ -101,14 +88,6 @@ public class GicPart {
         this.laneStatus = laneStatus;
     }
 
-    public List<CompleteVehicleCharacteristics> getVehicleCharacteristics() {
-        return vehicleCharacteristics;
-    }
-
-    public void setVehicleCharacteristics(List<CompleteVehicleCharacteristics> vehicleCharacteristics) {
-        this.vehicleCharacteristics = vehicleCharacteristics;
-    }
-
     public Integer getDriverCharacteristics() {
         return driverCharacteristics;
     }
@@ -133,19 +112,43 @@ public class GicPart {
         this.preStoredLayoutId = preStoredLayoutId;
     }
 
-    public ArrayList<RoadSignCode> getRoadSignCodes() {
-        return roadSignCodes;
+    public List<RSCode> getRoadSignCodes() {
+        return RSCodes;
     }
 
-    public void setRoadSignCodes(ArrayList<RoadSignCode> roadSignCodes) {
-        this.roadSignCodes = roadSignCodes;
+    public void setRoadSignCodes(List<RSCode> RSCodes) {
+        this.RSCodes = RSCodes;
     }
 
-    public ArrayList<Text> getExtraText() {
+    public List<Text> getExtraText() {
         return extraText;
     }
 
-    public void setExtraText(ArrayList<Text> extraText) {
+    public void setExtraText(List<Text> extraText) {
         this.extraText = extraText;
+    }
+
+    public VarLengthNumber getItsRrid() {
+        return itsRrid;
+    }
+
+    public void setItsRrid(VarLengthNumber itsRrid) {
+        this.itsRrid = itsRrid;
+    }
+
+    public ArrayList<Long> getApplicableLanes() {
+        return applicableLanes;
+    }
+
+    public void setApplicableLanes(ArrayList<Long> applicableLanes) {
+        this.applicableLanes = applicableLanes;
+    }
+
+    public List<CompleteVehicleCharacteristics> getVehicleCharacteristics() {
+        return vehicleCharacteristics;
+    }
+
+    public void setVehicleCharacteristics(List<CompleteVehicleCharacteristics> vehicleCharacteristics) {
+        this.vehicleCharacteristics = vehicleCharacteristics;
     }
 }

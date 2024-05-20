@@ -19,6 +19,7 @@ import OBUSDK.PerEncDec.Segment;
 import OBUSDK.PerEncDec.Zone;
 
 public class DataTransformer {
+    /*
 
     private DataExtracter extracter;
     private CoordinateConverter converter;
@@ -152,7 +153,8 @@ public class DataTransformer {
  
         }
 
-    }*/
+    } */
+    /*
 
         return iviZone;
     }
@@ -262,4 +264,5 @@ public class DataTransformer {
     public boolean hasAwarenessZone(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
     }
+    */
 }

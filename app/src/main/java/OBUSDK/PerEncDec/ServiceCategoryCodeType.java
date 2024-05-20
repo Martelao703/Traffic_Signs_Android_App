@@ -1,6 +1,7 @@
 package OBUSDK.PerEncDec;
 
 public class ServiceCategoryCodeType {
+
     public enum Id {
         Unselected,
         TrafficSignPictogramChosen,

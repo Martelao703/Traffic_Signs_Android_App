@@ -1,49 +1,31 @@
 package OBUSDK.PerEncDec;
 
 public class CodeType {
-    public enum Id {
-        Unselected,
-        ViennaConventionChosen,
-        Iso14823Chosen,
-        ItisCodesChosen,
-        AnyCatalogueChosen
-    }
-
-    private Id id;
-    private Object contained;
-    private String itisCodes;
-
-    public Id getSelected() {
-        return id;
-    }
-
-    public void setSelected(Id id) {
-        this.id = id;
-    }
+    private ISO14823Code iso14823;
+    private ViennaConventionCode viennaConvention;
+    private Object itisCode;
 
     public ISO14823Code getIso14823() {
-        return (id == Id.Iso14823Chosen) ? (ISO14823Code) contained : null;
+        return iso14823;
     }
 
     public void setIso14823(ISO14823Code iso14823) {
-        this.contained = iso14823;
-        this.id = Id.Iso14823Chosen;
+        this.iso14823 = iso14823;
     }
 
     public ViennaConventionCode getViennaConvention() {
-        return (id == Id.ViennaConventionChosen) ? (ViennaConventionCode) contained : null;
+        return viennaConvention;
     }
 
     public void setViennaConvention(ViennaConventionCode viennaConvention) {
-        this.contained = viennaConvention;
-        this.id = Id.ViennaConventionChosen;
+        this.viennaConvention = viennaConvention;
     }
 
-    public String getItisCodes() {
-        return itisCodes;
+    public Object getItisCode() {
+        return itisCode;
     }
 
-    public void setItisCodes(String itisCodes) {
-        this.itisCodes = itisCodes;
+    public void setItisCode(Object itisCode) {
+        this.itisCode = itisCode;
     }
 }
