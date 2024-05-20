@@ -16,8 +16,8 @@ import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.IviManagementContainer;
 import OBUSDK.SafeByteConverter;
 
-public class JsonAdapter implements IControllerAdapter {
-    private IVIM rootIVI;
+//public class JsonAdapter implements IControllerAdapter {
+    /*private IVIM rootIVI;
 
     public JsonAdapter(IVIM rootIVI) {
         this.rootIVI = rootIVI;
@@ -127,4 +127,5 @@ public class JsonAdapter implements IControllerAdapter {
 
         return builder.buildMessage();
     }
-}
+    */
+//}
