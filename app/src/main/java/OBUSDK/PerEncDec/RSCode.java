@@ -1,6 +1,6 @@
 package OBUSDK.PerEncDec;
 
-public class RoadSignCode {
+public class RSCode {
     private Long layoutComponentId;
     private CodeType code;
 
@@ -19,6 +19,4 @@ public class RoadSignCode {
     public void setCode(CodeType code) {
         this.code = code;
     }
-
-    // troquei CodeType para uma classe separada
 }

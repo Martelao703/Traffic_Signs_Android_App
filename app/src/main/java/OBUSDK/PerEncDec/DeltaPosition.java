@@ -1,22 +1,22 @@
 package OBUSDK.PerEncDec;
 
 public class DeltaPosition {
-    private long DeltaLatitude;
-    private long DeltaLongitude;
+    private long deltaLatitude;
+    private long deltaLongitude;
 
     public long getDeltaLatitude() {
-        return DeltaLatitude;
+        return deltaLatitude;
     }
 
     public void setDeltaLatitude(long deltaLatitude) {
-        DeltaLatitude = deltaLatitude;
+        this.deltaLatitude = deltaLatitude;
     }
 
     public long getDeltaLongitude() {
-        return DeltaLongitude;
+        return deltaLongitude;
     }
 
     public void setDeltaLongitude(long deltaLongitude) {
-        DeltaLongitude = deltaLongitude;
+        this.deltaLongitude = deltaLongitude;
     }
 }

@@ -3,22 +3,22 @@ package OBUSDK.PerEncDec;
 import OBUSDK.PolygonalLine;
 
 public class Segment {
-    private PolygonalLineDec polygonalLineDec;
-    private Integer laneWidth;
+    private Line line;
+    private int laneWidth;
 
-    public PolygonalLineDec getPolygonalLine() {
-        return polygonalLineDec;
+    public Line getLine() {
+        return line;
     }
 
-    public void setPolygonalLine(PolygonalLineDec polygonalLineDec) {
-        this.polygonalLineDec = polygonalLineDec;
+    public void setLine(Line line) {
+        this.line = line;
     }
 
-    public Integer getLaneWidth() {
+    public int getLaneWidth() {
         return laneWidth;
     }
 
-    public void setLaneWidth(Integer laneWidth) {
+    public void setLaneWidth(int laneWidth) {
         this.laneWidth = laneWidth;
     }
 }

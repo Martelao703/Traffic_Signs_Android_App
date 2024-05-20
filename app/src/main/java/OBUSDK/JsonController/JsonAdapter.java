@@ -16,8 +16,8 @@ import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.IviManagementContainer;
 import OBUSDK.SafeByteConverter;
 
-public class JsonAdapter implements IControllerAdapter {
-    private IVIM rootIVI;
+//public class JsonAdapter implements IControllerAdapter {
+    /*private IVIM rootIVI;
 
     public JsonAdapter(IVIM rootIVI) {
         this.rootIVI = rootIVI;
@@ -73,15 +73,15 @@ public class JsonAdapter implements IControllerAdapter {
         GPSCoordinate refPosition = new GPSCoordinate(glcContainer.getGlc().getReferencePosition().getLatitude(), glcContainer.getGlc().getReferencePosition().getLongitude());
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
-        /*
-        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
-        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
-        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+
+        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
 
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
         //textLanguage = transformer.GetExtraTextLanguage(givContainer);
-        textLanguage = byteConverter.languageToInt32(givContainer.getGiv().get(0).getExtraText().get(0).getLanguage().getA501());
+        textLanguage = byteConverter.languageToInt32(givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getLanguage().getA501());
         textContent = transformer.getExtraTextContent(givContainer);
 
         builder.createSignalText(0, textLanguage, textContent);
@@ -125,9 +125,7 @@ public class JsonAdapter implements IControllerAdapter {
             }
         }
 
-
-         */
         return builder.buildMessage();
-
     }
-}
+    */
+//}

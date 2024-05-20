@@ -24,62 +24,37 @@ public class MainActivity extends AppCompatActivity {
         APIService apiService = APIClient.getClient().create(APIService.class);
 
         Call<String> call = apiService.doGetRsu(1);
-
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                String jsonResponse = response.body();
-                if (jsonResponse == null) {
+                String responseTest = response.body();
+                if (responseTest == null) {
                     System.out.println("RSU response is null");
                     Log.d("RSU", "RSU response is null");
-                    textView.setText("RSU data: null");
-                } else {
-                    // Log the raw JSON response
-                    System.out.println("RSU JSON Response: " + jsonResponse);
-                    Log.d("RSU", "RSU JSON Response: " + jsonResponse);
+                }
+                else {
+                    System.out.println("RSU response: " + responseTest);
+                    Log.d("RSU", "RSU response: " + responseTest);
 
-                    // Update the UI with the JSON response
-                    textView.setText("RSU data: " + jsonResponse);
+                    textView.setText("RSU data: " + responseTest);
+
+                    /*System.out.println("RSU ITSApp: " + rsu.getITSApp().isEnabled());
+                    System.out.println("RSU toString(): " + rsu.toString());
+                    Log.d("RSU", "RSU ITSApp: " + rsu.getITSApp().isEnabled());
+                    textView.setText("RSU data: " + rsu.toString());*/
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Failed to get RSU data: " + t.getMessage());
-                Log.d("RSU", "Failed to get RSU data: " + t.getMessage());
-                textView.setText("Failed to get RSU data");
-            }
-        });
-
-        /*call.enqueue(new Callback<RSU>() {
-            @Override
-            public void onResponse(Call<RSU> call, Response<RSU> response) {
-                RSU rsu = response.body();
-                if (rsu == null) {
-                    System.out.println("RSU is null");
-                    Log.d("RSU", "RSU is null");
-                }
-                else {
-                    System.out.println("RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    System.out.println("RSU toString(): " + rsu.toString());
-                    Log.d("RSU", "RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    textView.setText("RSU data: " + rsu.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RSU> call, Throwable t) {
+                System.out.println("Failed to get RSU date: " + t.getMessage());
+                Log.d("RSU", "Failed to get RSU date: " + t.getMessage());
+                textView.setText("Failed to get RSU date: ");
                 call.cancel();
             }
         });
-        */
-        /*TextView textView = findViewById(R.id.RSU_data);
-        textView.setText("RSU data: " + rsu.toString());
-                System.out.println("RSU onFailure: " + t.getMessage());
-                Log.d("RSU", "RSU onFailure: " + t.getMessage());
-                call.cancel();
-            }
-        });
+
+        System.out.println("RSU data: " + call.toString());
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/

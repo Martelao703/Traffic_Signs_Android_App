@@ -19,6 +19,7 @@ import OBUSDK.PerEncDec.Segment;
 import OBUSDK.PerEncDec.Zone;
 
 public class DataTransformer {
+    /*
 
     private DataExtracter extracter;
     private CoordinateConverter converter;
@@ -152,7 +153,8 @@ public class DataTransformer {
  
         }
 
-    }*/
+    } */
+    /*
 
         return iviZone;
     }
@@ -205,7 +207,7 @@ public class DataTransformer {
         return buffer.getInt();
     }
 
-    /* ???????????? Substituí o return type de int para A5 ????????????
+    // ???????????? Substituí o return type de int para A5 ????????????
     public A5 getExtraTextLanguage(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getExtraText().get(0).getLanguage();
     }
@@ -262,6 +264,5 @@ public class DataTransformer {
     public boolean hasAwarenessZone(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
     }
-
-     */
+    */
 }

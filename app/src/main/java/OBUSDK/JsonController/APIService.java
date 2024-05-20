@@ -14,7 +14,7 @@ public interface APIService {
 
     @GET("getivimnotc/json/{id}")
     Call<IVIM> doGetIvimNoTc(@Path("id") int id);*/
-    
+
     @GET("api/getrsu/{id}")
     Call<String> doGetRsu(@Path("id") int id);
 
