@@ -2,7 +2,9 @@ package OBUSDK.PerEncDec;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ITSApp {
+import java.io.Serializable;
+
+public class ITSApp implements Serializable {
     private boolean enabled;
     @SerializedName("Facilities")
     private Facilities facilities;

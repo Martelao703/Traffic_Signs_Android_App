@@ -1,15 +1,15 @@
 package OBUSDK.PerEncDec;
 
 public class PictogramCodeType {
-    private byte[] countryCode;
+    private int countryCode;
     private ServiceCategoryCodeType serviceCategoryCode;
     private PictogramCategoryCodeType pictogramCategoryCode;
 
-    public byte[] getCountryCode() {
+    public int getCountryCode() {
         return countryCode;
     }
 
-    public void setCountryCode(byte[] countryCode) {
+    public void setCountryCode(int countryCode) {
         this.countryCode = countryCode;
     }
 

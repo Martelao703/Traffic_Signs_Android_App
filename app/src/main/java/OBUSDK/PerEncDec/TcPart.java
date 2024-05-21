@@ -15,7 +15,8 @@ public class TcPart {
     private Long layoutId;
     @SerializedName("preStoredlayoutId")
     private Long preStoredLayoutId;
-    private List<Text> text;
+    @SerializedName("text")
+    private List<ExtraText> extraText;
     private int data;
 
     public List<ZoneIds> getDetectionZone() {
@@ -66,12 +67,12 @@ public class TcPart {
         this.preStoredLayoutId = preStoredLayoutId;
     }
 
-    public List<Text> getText() {
-        return text;
+    public List<ExtraText> getText() {
+        return extraText;
     }
 
-    public void setText(List<Text> text) {
-        this.text = text;
+    public void setText(List<ExtraText> text) {
+        this.extraText = text;
     }
 
     public int getData() {

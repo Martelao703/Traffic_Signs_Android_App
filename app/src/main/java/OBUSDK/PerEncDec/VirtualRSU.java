@@ -1,6 +1,10 @@
 package OBUSDK.PerEncDec;
 
-public class VirtualRSU {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class VirtualRSU implements Serializable {
     private int virtualStationID;
     private String reference;
     private String description;

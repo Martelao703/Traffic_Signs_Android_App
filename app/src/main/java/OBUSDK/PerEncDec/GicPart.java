@@ -18,8 +18,8 @@ public class GicPart {
     private Long layoutId;
     @SerializedName("preStoredlayoutId")
     private Long preStoredLayoutId;
-    private List<RSCode> RSCodes;
-    private List<Text> extraText;
+    private List<RoadSignCode> roadSignCodes;
+    private List<ExtraText> extraText;
     private VarLengthNumber itsRrid;
     private ArrayList<Long> applicableLanes;
     private List<CompleteVehicleCharacteristics> vehicleCharacteristics;
@@ -112,19 +112,19 @@ public class GicPart {
         this.preStoredLayoutId = preStoredLayoutId;
     }
 
-    public List<RSCode> getRoadSignCodes() {
-        return RSCodes;
+    public List<RoadSignCode> getRoadSignCodes() {
+        return roadSignCodes;
     }
 
-    public void setRoadSignCodes(List<RSCode> RSCodes) {
-        this.RSCodes = RSCodes;
+    public void setRoadSignCodes(List<RoadSignCode> RoadSignCodes) {
+        this.roadSignCodes = RoadSignCodes;
     }
 
-    public List<Text> getExtraText() {
+    public List<ExtraText> getExtraText() {
         return extraText;
     }
 
-    public void setExtraText(List<Text> extraText) {
+    public void setExtraText(List<ExtraText> extraText) {
         this.extraText = extraText;
     }
 

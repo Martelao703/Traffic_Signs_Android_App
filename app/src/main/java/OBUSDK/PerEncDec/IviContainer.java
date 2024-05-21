@@ -5,7 +5,7 @@ import java.util.List;
 public class IviContainer {
     private Glc glc;
     private List<Giv> giv;
-    private List<TcPart> tc;
+    private List<TC> tc;
 
     public Glc getGlc() {
         return glc;
@@ -23,11 +23,11 @@ public class IviContainer {
         this.giv = giv;
     }
 
-    public List<TcPart> getTc() {
+    public List<TC> getTc() {
         return tc;
     }
 
-    public void setTc(List<TcPart> tc) {
+    public void setTc(List<TC> tc) {
         this.tc = tc;
     }
 }

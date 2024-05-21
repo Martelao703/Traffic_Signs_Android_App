@@ -7,11 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import OBUSDK.JsonController.*;
 import OBUSDK.PerEncDec.*;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
+
 import android.util.Log;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,30 +28,60 @@ public class MainActivity extends AppCompatActivity {
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
-        Call<String> call = apiService.doGetRsu(1);
-        call.enqueue(new Callback<String>() {
+        Call<ResponseBody> call = apiService.doGetRsu(3);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String responseTest = response.body();
-                if (responseTest == null) {
-                    System.out.println("RSU response is null");
-                    Log.d("RSU", "RSU response is null");
-                }
-                else {
-                    System.out.println("RSU response: " + responseTest);
-                    Log.d("RSU", "RSU response: " + responseTest);
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String rawJson = response.body().string();
+                        System.out.println("Raw JSON response: " + rawJson);
+                        Log.d("RSU", "Raw JSON response: " + rawJson);
 
-                    textView.setText("RSU data: " + responseTest);
+                        Gson gson = new Gson();
+                        Rsu responseTest = gson.fromJson(rawJson, Rsu.class);
 
-                    /*System.out.println("RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    System.out.println("RSU toString(): " + rsu.toString());
-                    Log.d("RSU", "RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    textView.setText("RSU data: " + rsu.toString());*/
+                        if (responseTest == null) {
+                            System.out.println("Deserialized response is null: " + responseTest);
+                            Log.d("RSU", "Deserialized response is null: " + responseTest);
+                        } else {
+                            System.out.println("Deserialized RSU response: " + responseTest);
+                            Log.d("RSU", "Deserialized RSU response: " + responseTest);
+                            textView.setText("RSU data: " + responseTest);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d("RSU", "Error reading raw JSON response: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Raw response if not successful: " + response.raw().toString());
+                    Log.d("RSU", "Raw response if not successful: " + response.raw().toString());
                 }
+
+                /*if (response.isSuccessful()) {
+                    ResponseBody responseTest = response.body();
+                    if (responseTest == null) {
+                        System.out.println("Response if null: " + responseTest);
+                        Log.d("RSU", "Response if null: " + responseTest);
+
+                        System.out.println("Raw response if null: " + response.raw().body().toString());
+                        Log.d("RSU", "Raw response if null: " + response.raw().body().toString());
+                    } else {
+                        System.out.println("RSU response if not null: " + responseTest);
+                        Log.d("RSU", "RSU response if not null: " + responseTest);
+
+                        System.out.println("Raw response if not null: " + response.raw().body().toString());
+                        Log.d("RSU", "Raw response if not null: " + response.raw().body().toString());
+                        textView.setText("RSU data: " + responseTest);
+                    }
+                } else {
+                    System.out.println("Raw response if not suc: " + response.raw().body().toString());
+                    Log.d("RSU", "Raw response if not suc: " + response.raw().body().toString());
+                }*/
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("Failed to get RSU date: " + t.getMessage());
                 Log.d("RSU", "Failed to get RSU date: " + t.getMessage());
                 textView.setText("Failed to get RSU date: ");

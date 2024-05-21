@@ -5,13 +5,13 @@ import OBUSDK.PerEncDec.*;
 public class IsoSignalConverter {
     public int getServiceCategoryCode(PictogramCodeType pictogramCode) {
         switch (pictogramCode.getServiceCategoryCode().getSelected()) {
-            case TrafficSignPictogramChosen:
+            case 0:
                 return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram());
                 //return getTrafficSignPictogramCode(pictogramCode.getServiceCategoryCode().getTrafficSignPictogram().getValue());
-            case PublicFacilitiesPictogramChosen:
+            case 1:
                 return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram());
                 //return getPublicFacilitiesPictogramCode(pictogramCode.getServiceCategoryCode().getPublicFacilitiesPictogram().getValue());
-            case AmbientOrRoadConditionPictogramChosen:
+            case 2:
                 return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram());
                 //return getAmbientOrRoadConditionPictogramCode(pictogramCode.getServiceCategoryCode().getAmbientOrRoadConditionPictogram().getValue());
             default:

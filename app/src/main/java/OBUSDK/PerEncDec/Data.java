@@ -2,9 +2,7 @@ package OBUSDK.PerEncDec;
 
 import com.google.gson.annotations.SerializedName;
 
-import OBUSDK.PerEncDec.ITSApp;
-
-public class RSU {
+public class Data {
     private VirtualRSU virtualRSU;
     @SerializedName("ITSAPP")
     private ITSApp ITSApp;

@@ -1,6 +1,9 @@
 package OBUSDK.PerEncDec;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Optional {
+    @SerializedName("IviContainer")
     private IviContainer iviContainer;
 
     public IviContainer getIviContainer() {

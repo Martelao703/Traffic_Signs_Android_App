@@ -2,7 +2,7 @@ package OBUSDK.PerEncDec;
 
 public class Text {
     private Long layoutComponentId;
-    private A5 language;
+    private int language;
     private String textContent;
 
     public Long getLayoutComponentId() {
@@ -13,11 +13,11 @@ public class Text {
         this.layoutComponentId = layoutComponentId;
     }
 
-    public A5 getLanguage() {
+    public int getLanguage() {
         return language;
     }
 
-    public void setLanguage(A5 language) {
+    public void setLanguage(int language) {
         this.language = language;
     }
 

@@ -3,7 +3,7 @@ package OBUSDK.PerEncDec;
 public class CodeType {
     private ISO14823Code iso14823;
     private ViennaConventionCode viennaConvention;
-    private Object itisCode;
+    private String itisCode;
 
     public ISO14823Code getIso14823() {
         return iso14823;
@@ -21,11 +21,11 @@ public class CodeType {
         this.viennaConvention = viennaConvention;
     }
 
-    public Object getItisCode() {
+    public String getItisCode() {
         return itisCode;
     }
 
-    public void setItisCode(Object itisCode) {
+    public void setItisCode(String itisCode) {
         this.itisCode = itisCode;
     }
 }

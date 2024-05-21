@@ -1,14 +1,14 @@
 package OBUSDK.PerEncDec;
 
 public class Provider {
-    private A5 countryCode;
+    private int countryCode;
     private int providerIdentifier;
 
-    public A5 getCountryCode() {
+    public int getCountryCode() {
         return countryCode;
     }
 
-    public void setCountryCode(A5 countryCode) {
+    public void setCountryCode(int countryCode) {
         this.countryCode = countryCode;
     }
 
