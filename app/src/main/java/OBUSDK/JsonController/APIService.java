@@ -1,5 +1,6 @@
 package OBUSDK.JsonController;
 
+import OBUSDK.PerEncDec.Rsu;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -12,7 +13,7 @@ public interface APIService {
     Call<IVIM> doGetIvimNoTc(@Path("id") int id);*/
 
     @GET("api/getrsu/{id}")
-    Call<ResponseBody> doGetRsu(@Path("id") int id);
+    Call<Rsu> doGetRsu(@Path("id") int id);
 
     /*@POST("getivimsbydistance")
     Call<List<IVIM>> doGetIvimsByDistance(@Body Map<String, Object> requestBody);

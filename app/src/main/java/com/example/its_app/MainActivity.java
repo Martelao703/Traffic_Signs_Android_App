@@ -28,68 +28,31 @@ public class MainActivity extends AppCompatActivity {
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
-        Call<ResponseBody> call = apiService.doGetRsu(3);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Rsu> call = apiService.doGetRsu(3);
+        call.enqueue(new Callback<Rsu>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<Rsu> call, Response<Rsu> response) {
                 if (response.isSuccessful()) {
-                    try {
-                        String rawJson = response.body().string();
-                        System.out.println("Raw JSON response: " + rawJson);
-                        Log.d("RSU", "Raw JSON response: " + rawJson);
+                    Rsu rsu = response.body();
 
-                        Gson gson = new Gson();
-                        Rsu responseTest = gson.fromJson(rawJson, Rsu.class);
-
-                        if (responseTest == null) {
-                            System.out.println("Deserialized response is null: " + responseTest);
-                            Log.d("RSU", "Deserialized response is null: " + responseTest);
-                        } else {
-                            System.out.println("Deserialized RSU response: " + responseTest);
-                            Log.d("RSU", "Deserialized RSU response: " + responseTest);
-                            textView.setText("RSU data: " + responseTest);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.d("RSU", "Error reading raw JSON response: " + e.getMessage());
-                    }
-                } else {
-                    System.out.println("Raw response if not successful: " + response.raw().toString());
-                    Log.d("RSU", "Raw response if not successful: " + response.raw().toString());
-                }
-
-                /*if (response.isSuccessful()) {
-                    ResponseBody responseTest = response.body();
-                    if (responseTest == null) {
-                        System.out.println("Response if null: " + responseTest);
-                        Log.d("RSU", "Response if null: " + responseTest);
-
-                        System.out.println("Raw response if null: " + response.raw().body().toString());
-                        Log.d("RSU", "Raw response if null: " + response.raw().body().toString());
+                    if (rsu == null) {
+                        Log.d("RSU", "Rsu is null: " + rsu.toString());
                     } else {
-                        System.out.println("RSU response if not null: " + responseTest);
-                        Log.d("RSU", "RSU response if not null: " + responseTest);
-
-                        System.out.println("Raw response if not null: " + response.raw().body().toString());
-                        Log.d("RSU", "Raw response if not null: " + response.raw().body().toString());
-                        textView.setText("RSU data: " + responseTest);
+                        Log.d("RSU", "RSU: " + rsu.toString());
+                        textView.setText("RSU data: " + rsu.toString());
                     }
                 } else {
-                    System.out.println("Raw response if not suc: " + response.raw().body().toString());
-                    Log.d("RSU", "Raw response if not suc: " + response.raw().body().toString());
-                }*/
+                    Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                System.out.println("Failed to get RSU date: " + t.getMessage());
-                Log.d("RSU", "Failed to get RSU date: " + t.getMessage());
-                textView.setText("Failed to get RSU date: ");
+            public void onFailure(Call<Rsu> call, Throwable t) {
+                Log.d("RSU", "Failed to get RSU: " + t.getMessage());
+                textView.setText("Failed to get RSU data");
                 call.cancel();
             }
         });
-
-        System.out.println("RSU data: " + call.toString());
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
