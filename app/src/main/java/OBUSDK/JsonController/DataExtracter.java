@@ -3,6 +3,7 @@ package OBUSDK.JsonController;
 import java.util.ArrayList;
 import java.util.List;
 
+import OBUSDK.JsonData.Giv;
 import OBUSDK.JsonData.GlcPart;
 import OBUSDK.JsonData.IVIM;
 import OBUSDK.JsonData.Header;
@@ -25,12 +26,12 @@ public class DataExtracter {
         return this.rootIVI.getIvi().getMandatory();
     }
 
-    public List<IviContainer> getAllGivContainers() {
-        List<IviContainer> givContainers = new ArrayList<>();
+    public List<Giv> getAllGivContainers() {
+        List<Giv> givContainers = new ArrayList<>();
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
-            /*if (optional.getIviContainer().getSelected() == IviContainer.Id.GivChosen) {
-                givContainers.add(container);
-            }*/
+            if (optional.getIviContainer().getGiv() != null) {
+                givContainers.add(optional.getIviContainer().getGiv().get(0));
+            }
         }
         return givContainers;
     }
@@ -54,7 +55,7 @@ public class DataExtracter {
     }
 
     public List<GlcPart> GetZonesById(int zoneId) {
-        List<GlcPart> glcPartes = new ArrayList<GlcPart>();
+        List<GlcPart> glcPartes = new ArrayList<>();
         IviContainer glcContainer = this.GetGlcContainer();
 
         if (glcContainer != null) {
@@ -67,20 +68,22 @@ public class DataExtracter {
         return glcPartes;
     }
 
-    //public long GetZoneLaneWidthById(long zoneId)
-    //{
-    //    IVI.IVIModule.IviContainer glcContainer = this.GetGlcContainer();
-    //    if (glcContainer != null)
-    //    {
-    //        foreach (IVI.IVIModule.GlcPart glcPart in glcContainer.Glc.Parts)
-    //        {
-    //            if (glcPart.ZoneId == zoneId)
-    //            {
-    //                return glcPart;
-    //            }
-    //        }
-    //    }
-    //}
+    /*
+    public long GetZoneLaneWidthById(long zoneId)
+    {
+        IVI.IVIModule.IviContainer glcContainer = this.GetGlcContainer();
+        if (glcContainer != null)
+        {
+            foreach (IVI.IVIModule.GlcPart glcPart in glcContainer.Glc.Parts)
+            {
+                if (glcPart.ZoneId == zoneId)
+                {
+                    return glcPart;
+                }
+            }
+        }
+    }
+    */
 
     public GlcPart GetZoneById(long zoneId) {
         IviContainer glcContainer = this.GetGlcContainer();
@@ -100,9 +103,9 @@ public class DataExtracter {
 
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
-                /*if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
+                if (glcPart.getZone().getSegment() != null) {
                     return true;
-                }*/
+                }
             }
         }
         return false;

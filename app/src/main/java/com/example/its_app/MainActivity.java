@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Log.d("RSU", "RSU: " + rsu.toString());
                         textView.setText("RSU data: " + rsu.toString());
+
+
                     }
                 } else {
                     Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
