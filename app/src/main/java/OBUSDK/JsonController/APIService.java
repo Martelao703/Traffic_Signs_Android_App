@@ -1,7 +1,6 @@
 package OBUSDK.JsonController;
 
-import OBUSDK.PerEncDec.Rsu;
-import okhttp3.ResponseBody;
+import OBUSDK.JsonData.Rsu;
 import retrofit2.Call;
 import retrofit2.http.*;
 

@@ -6,17 +6,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import OBUSDK.JsonController.*;
-import OBUSDK.PerEncDec.*;
-import okhttp3.ResponseBody;
+import OBUSDK.JsonData.*;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.util.Log;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 

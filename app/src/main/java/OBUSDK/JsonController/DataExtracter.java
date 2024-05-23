@@ -3,13 +3,12 @@ package OBUSDK.JsonController;
 import java.util.ArrayList;
 import java.util.List;
 
-import OBUSDK.PerEncDec.GlcPart;
-import OBUSDK.PerEncDec.IVIM;
-import OBUSDK.PerEncDec.Header;
-import OBUSDK.PerEncDec.IviContainer;
-import OBUSDK.PerEncDec.IviManagementContainer;
-import OBUSDK.PerEncDec.Optional;
-import OBUSDK.PerEncDec.Zone;
+import OBUSDK.JsonData.GlcPart;
+import OBUSDK.JsonData.IVIM;
+import OBUSDK.JsonData.Header;
+import OBUSDK.JsonData.IviContainer;
+import OBUSDK.JsonData.IviManagementContainer;
+import OBUSDK.JsonData.Optional;
 
 public class DataExtracter {
     private IVIM rootIVI;

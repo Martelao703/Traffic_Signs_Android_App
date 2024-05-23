@@ -1,8 +1,10 @@
 package OBUSDK;
 
+import OBUSDK.JsonData.IviManagementContainer;
+
 public class InternalIVIMMessage {
     private IVIMHeader header;
-    private IVIMMandatory mandatory;
+    private IviManagementContainer mandatory;
     private IVISignal iviSignal;
 
     private IVIZoneType awarenessZones;
@@ -14,7 +16,7 @@ public class InternalIVIMMessage {
     private IVIUIStateEnum uIRelevanceZoneState;
 
     public InternalIVIMMessage() {
-        this.mandatory = new IVIMMandatory();
+        this.mandatory = new IviManagementContainer();
         this.iviSignal = new IVISignal();
         this.detectionZones = new IVIZoneType();
         this.relevanceZones = new IVIZoneType();
@@ -68,11 +70,11 @@ public class InternalIVIMMessage {
         this.header = header;
     }
 
-    public IVIMMandatory getMandatory() {
+    public IviManagementContainer getMandatory() {
         return mandatory;
     }
 
-    public void setMandatory(IVIMMandatory mandatory) {
+    public void setMandatory(IviManagementContainer mandatory) {
         this.mandatory = mandatory;
     }
 

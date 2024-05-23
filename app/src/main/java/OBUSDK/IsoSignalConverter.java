@@ -1,6 +1,6 @@
 package OBUSDK;
 
-import OBUSDK.PerEncDec.*;
+import OBUSDK.JsonData.*;
 
 public class IsoSignalConverter {
     public int getServiceCategoryCode(PictogramCodeType pictogramCode) {
