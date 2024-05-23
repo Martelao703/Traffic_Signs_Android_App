@@ -1,6 +1,10 @@
 package OBUSDK.JsonController;
 
+<<<<<<< Updated upstream
 import java.nio.ByteBuffer;
+=======
+import java.util.ArrayList;
+>>>>>>> Stashed changes
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
@@ -10,6 +14,7 @@ import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneType;
 import OBUSDK.IsoSignalConverter;
+<<<<<<< Updated upstream
 import OBUSDK.PerEncDec.A5;
 import OBUSDK.PerEncDec.DeltaPosition;
 import OBUSDK.PerEncDec.GlcPart;
@@ -17,6 +22,16 @@ import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.PictogramCodeType;
 import OBUSDK.PerEncDec.Segment;
 import OBUSDK.PerEncDec.Zone;
+=======
+import OBUSDK.JsonData.GlcPart;
+import OBUSDK.JsonData.ISO14823Code;
+import OBUSDK.JsonData.IviContainer;
+import OBUSDK.JsonData.PictogramCodeType;
+import OBUSDK.JsonData.Segment;
+import OBUSDK.JsonData.ServiceCategoryCodeType;
+import OBUSDK.JsonData.Zone;
+import OBUSDK.JsonData.ZoneIds;
+>>>>>>> Stashed changes
 
 public class DataTransformer {
     /*
@@ -70,9 +85,12 @@ public class DataTransformer {
         return null;
     }
 
+    //TODO - perguntar qual é o objetivo desta função
     public Integer getZoneLaneWidthById(long zoneId) {
+        /*
         GlcPart glcPart;
         glcPart = this.extracter.GetZoneById(zoneId);
+
 
         if (glcPart != null) {
             if (glcPart.getZone().getSegment().getLaneWidth() == null) {
@@ -82,18 +100,20 @@ public class DataTransformer {
                 //return glcPart.Zone.Segment.LaneWidth;
             }
         }
+        */
         return DEFAULT_LANE_WIDTH;
     }
 
-    public IVIZone getZoneById(long zoneId) throws Exception {
+    public IVIZone getZoneById(ZoneIds zId) throws Exception {
         GlcPart glcPart;
         IVIZone zone;
+        long zoneId = zId.getZid();
 
         glcPart = this.extracter.GetZoneById(zoneId);
 
         if (glcPart != null) {
             if (this.extracter.GlcPartsHaveSegment()) {
-                if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
+                if (glcPart.getZone().getSegment() != null) {
                     zone = this.processSegmentPart(glcPart.getZone().getSegment());
 
                     if (zone != null) {
@@ -119,7 +139,16 @@ public class DataTransformer {
                 return null;
         }
     }
+    /*
+        private IVIZone processAbsolutePositions(Segment segment) {
+            IVIZone iviZone = new IVIZone();
+            IVIMSegment internalSegment;
+            int index = 0;
+            boolean isFirstDelta = true;
+            GPSCoordinate endPoint = null;
+            GPSCoordinate lastEndPoint = new GPSCoordin(0, 0);
 
+<<<<<<< Updated upstream
     private IVIZone processAbsolutePositions(Segment segment) {
         IVIZone iviZone = new IVIZone();
         IVIMSegment internalSegment;
@@ -131,29 +160,34 @@ public class DataTransformer {
         /*    foreach (AbsolutePosition absolutePosition in segment.Line.AbsolutePositions) 
     { 
         if (isFirstDelta)
+=======
+            /*    foreach (AbsolutePosition absolutePosition in segment.Line.AbsolutePositions)
+>>>>>>> Stashed changes
         {
-            lastEndPoint = new GPSCoordinate(absolutePosition.Latitude, absolutePosition.Longitude);
-            lastEndPoint = converter.ConvertCoordinateInt2Double(lastEndPoint);
+            if (isFirstDelta)
+            {
+                lastEndPoint = new GPSCoordinate(absolutePosition.Latitude, absolutePosition.Longitude);
+                lastEndPoint = converter.ConvertCoordinateInt2Double(lastEndPoint);
 
-            isFirstDelta = false;
-        }
-        else
-        {
-            endPoint = new GPSCoordinate(absolutePosition.Latitude, absolutePosition.Longitude);
-            endPoint = converter.ConvertCoordinateInt2Double(endPoint);
-        }
+                isFirstDelta = false;
+            }
+            else
+            {
+                endPoint = new GPSCoordinate(absolutePosition.Latitude, absolutePosition.Longitude);
+                endPoint = converter.ConvertCoordinateInt2Double(endPoint);
+            }
 
-        if (endPoint != null)
-        {
-            internalSegment = new IVIMSegment(lastEndPoint, endPoint, index, Convert.ToInt32(segment.LaneWidth));
-            lastEndPoint = endPoint;
-            index++;
+            if (endPoint != null)
+            {
+                internalSegment = new IVIMSegment(lastEndPoint, endPoint, index, Convert.ToInt32(segment.LaneWidth));
+                lastEndPoint = endPoint;
+                index++;
 
-            iviZone.Segments.Add(internalSegment);
- 
-        }
+                iviZone.Segments.Add(internalSegment);
 
-    } */
+            }
+
+        } */
     /*
 
         return iviZone;
@@ -187,12 +221,14 @@ public class DataTransformer {
         }
 
         return iviZone;
-    }
 
+    }
+*/
+    //DONE
     public int getServiceCategoryCode(PictogramCodeType pictogramCodeType) {
         return this.signalConverter.getServiceCategoryCode(pictogramCodeType);
     }
-
+    //DONE
     public int getPictogramCategoryCode(PictogramCodeType pictogramCode) {
         int nature;
         int serialNumber;
@@ -201,12 +237,12 @@ public class DataTransformer {
 
         return ((nature * 100) + serialNumber);
     }
-
+/*
     public int getPictogramCountryCode(PictogramCodeType pictogramCode) {
         ByteBuffer buffer = ByteBuffer.wrap(pictogramCode.getCountryCode());
         return buffer.getInt();
     }
-
+    /*
     // ???????????? Substituí o return type de int para A5 ????????????
     public A5 getExtraTextLanguage(IviContainer iviContainer) {
         return iviContainer.getGiv().get(0).getExtraText().get(0).getLanguage();
@@ -222,37 +258,36 @@ public class DataTransformer {
         //}
         return content;
     }
-
-    public long[] getDetectionZoneIds(IviContainer iviContainer) {
+    */
+    public ArrayList<ZoneIds> getDetectionZoneIds(IviContainer iviContainer) {
         int i = 0;
 
-        long[] zoneIds = new long[iviContainer.getGiv().get(0).getDetectionZoneIds().size()];
-        for (Long zoneID : iviContainer.getGiv().get(0).getDetectionZoneIds()) {
-            zoneIds[i] = zoneID;
+        ArrayList<ZoneIds> zoneIds = new ArrayList<>();
+        for (ZoneIds zoneID : iviContainer.getGiv().get(0).getGicPart().getDetectionZoneIds()) {
+            zoneIds.add(zoneID);
             i++;
         }
         return zoneIds;
     }
 
-    public long[] getRelevantZoneIds(IviContainer iviContainer) {
+    public ArrayList<ZoneIds> getRelevanceZoneIds(IviContainer iviContainer) {
         int i = 0;
 
-        long[] zoneIds = new long[iviContainer.getGiv().get(0).getRelevanceZoneIds().size()];
-        for (Long zoneID : iviContainer.getGiv().get(0).getRelevanceZoneIds()) {
-            zoneIds[i] = zoneID;
+        ArrayList<ZoneIds> zoneIds = new ArrayList<>();
+        for (ZoneIds zoneID : iviContainer.getGiv().get(0).getGicPart().getRelevanceZoneIds()) {
+            zoneIds.add(zoneID);
             i++;
         }
         return zoneIds;
     }
 
-    public long[] getAwarenessZoneIds(IviContainer iviContainer) {
+    public ArrayList<ZoneIds> getAwarenessZoneIds(IviContainer iviContainer) {
         int i = 0;
 
-        if (iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null) {
-
-            long[] zoneIds = new long[iviContainer.getGiv().get(0).getDriverAwarenessZoneIds().size()];
-            for (Long zoneID : iviContainer.getGiv().get(0).getDriverAwarenessZoneIds()) {
-                zoneIds[i] = zoneID;
+        if (hasAwarenessZone(iviContainer)) {
+            ArrayList<ZoneIds> zoneIds = new ArrayList<>();
+            for (ZoneIds zoneID : iviContainer.getGiv().get(0).getGicPart().getDriverAwarenessZoneIds()) {
+                zoneIds.add(zoneID);
                 i++;
             }
             return zoneIds;
@@ -262,7 +297,13 @@ public class DataTransformer {
     }
 
     public boolean hasAwarenessZone(IviContainer iviContainer) {
+<<<<<<< Updated upstream
         return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
     }
     */
+=======
+        return iviContainer.getGiv().get(0).getGicPart().getDriverAwarenessZoneIds() != null;
+    }
+
+>>>>>>> Stashed changes
 }

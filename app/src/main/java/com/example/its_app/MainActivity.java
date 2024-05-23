@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 System.out.println("Failed to get RSU date: " + t.getMessage());

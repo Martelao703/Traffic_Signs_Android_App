@@ -29,27 +29,28 @@ public class DataExtracter {
     public List<IviContainer> getAllGivContainers() {
         List<IviContainer> givContainers = new ArrayList<>();
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
-            /*if (optional.getIviContainer().getSelected() == IviContainer.Id.GivChosen) {
-                givContainers.add(container);
-            }*/
+            if (optional.getIviContainer().getGiv() != null) {
+                givContainers.add(optional.getIviContainer());
+            }
         }
         return givContainers;
     }
 
+    //TODO - perguntar sobre como é que sabemos qual é que é o GivContainer a escolher
     public IviContainer GetGivContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
-            /*if (container.getSelected() == IviContainer.Id.GivChosen) {
-                return container;
-            }*/
+            if (optional.getIviContainer().getGiv() != null) {
+                return optional.getIviContainer();
+            }
         }
         return null;
     }
-
+    //TODO - perguntar sobre como é que sabemos qual é que é o GlcContainer a escolher
     public IviContainer GetGlcContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
-            /*if (optional.getIviContainer().getSelected() == IviContainer.Id.GlcChosen) {
-                return container;
-            }*/
+            if (optional.getIviContainer().getGlc() != null) {
+                return optional.getIviContainer();
+            }
         }
         return null;
     }
@@ -101,9 +102,9 @@ public class DataExtracter {
 
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
-                /*if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
+                if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
                     return true;
-                }*/
+                }
             }
         }
         return false;
