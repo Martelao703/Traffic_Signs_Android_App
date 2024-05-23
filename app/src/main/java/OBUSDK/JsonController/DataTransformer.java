@@ -1,10 +1,7 @@
 package OBUSDK.JsonController;
 
-<<<<<<< Updated upstream
 import java.nio.ByteBuffer;
-=======
 import java.util.ArrayList;
->>>>>>> Stashed changes
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
@@ -14,7 +11,6 @@ import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneType;
 import OBUSDK.IsoSignalConverter;
-<<<<<<< Updated upstream
 import OBUSDK.PerEncDec.A5;
 import OBUSDK.PerEncDec.DeltaPosition;
 import OBUSDK.PerEncDec.GlcPart;
@@ -22,19 +18,11 @@ import OBUSDK.PerEncDec.IviContainer;
 import OBUSDK.PerEncDec.PictogramCodeType;
 import OBUSDK.PerEncDec.Segment;
 import OBUSDK.PerEncDec.Zone;
-=======
-import OBUSDK.JsonData.GlcPart;
-import OBUSDK.JsonData.ISO14823Code;
-import OBUSDK.JsonData.IviContainer;
-import OBUSDK.JsonData.PictogramCodeType;
-import OBUSDK.JsonData.Segment;
-import OBUSDK.JsonData.ServiceCategoryCodeType;
-import OBUSDK.JsonData.Zone;
-import OBUSDK.JsonData.ZoneIds;
->>>>>>> Stashed changes
+import OBUSDK.PerEncDec.ZoneIds;
+
 
 public class DataTransformer {
-    /*
+
 
     private DataExtracter extracter;
     private CoordinateConverter converter;
@@ -128,7 +116,7 @@ public class DataTransformer {
         }
         return null;
     }
-
+/*
     private IVIZone processSegmentPart(Segment segment) {
         switch (segment.getPolygonalLine().Selected()) {
             case DeltaPositionsChosen:

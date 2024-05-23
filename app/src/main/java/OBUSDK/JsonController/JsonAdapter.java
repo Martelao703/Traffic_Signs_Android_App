@@ -1,11 +1,8 @@
 package OBUSDK.JsonController;
 
-<<<<<<< Updated upstream
-=======
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
->>>>>>> Stashed changes
 import java.util.Date;
 
 import OBUSDK.CoordinateConverter;
@@ -15,22 +12,16 @@ import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneEnum;
 import OBUSDK.InternalIVIMMessage;
 import OBUSDK.InternalIVIMMessageBuilder;
-import OBUSDK.PerEncDec.IVIM;
+import OBUSDK.JsonData.IVIM;
 import OBUSDK.IVIMMemoryStructures;
-<<<<<<< Updated upstream
-import OBUSDK.PerEncDec.Header;
-import OBUSDK.PerEncDec.IviContainer;
-import OBUSDK.PerEncDec.IviManagementContainer;
-=======
 import OBUSDK.JsonData.Header;
 import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.IviManagementContainer;
 import OBUSDK.JsonData.ZoneIds;
->>>>>>> Stashed changes
 import OBUSDK.SafeByteConverter;
 
-//public class JsonAdapter implements IControllerAdapter {
-    /*private IVIM rootIVI;
+public class JsonAdapter implements IControllerAdapter {
+    private IVIM rootIVI;
 
     public JsonAdapter(IVIM rootIVI) {
         this.rootIVI = rootIVI;
@@ -73,17 +64,13 @@ import OBUSDK.SafeByteConverter;
         IviManagementContainer mandatory = extracter.getMandatoryContainer();
         //TODO - mandatory.ConnectedIviStructures is an array of longs
 
-<<<<<<< Updated upstream
-        int countryCode = byteConverter.countryCodeToInt32(mandatory.getServiceProviderId().getCountryCode().getA501());
-=======
         int countryCode = mandatory.getServiceProvider().getCountryCode();
->>>>>>> Stashed changes
 
-        Date timeStamp = byteConverter.toIVIDateTime((long) mandatory.getTimeStamp());
-        Date validFrom = byteConverter.toIVIDateTime((long) mandatory.getValidFrom());
-        Date validTo = byteConverter.toIVIDateTime((long) mandatory.getValidTo());
+        String timeStamp = mandatory.getTimeStamp();
+        String validFrom = mandatory.getValidFrom();
+        String validTo = mandatory.getValidTo();
 
-        builder.createMandatory(countryCode, mandatory.getServiceProviderId().getProviderIdentifier(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, 0, mandatory.getIviStatus());
+        builder.createMandatory(countryCode, mandatory.getServiceProvider().getProviderIdentifier(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, mandatory.getIviStatus());
 
         //TODO verificar se é assim
         IviContainer givContainer = extracter.GetGivContainer();
@@ -145,5 +132,4 @@ import OBUSDK.SafeByteConverter;
 
         return builder.buildMessage();
     }
-    */
-//}
+}
