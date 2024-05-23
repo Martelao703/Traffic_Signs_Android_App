@@ -4,6 +4,9 @@ public class ServiceProvider {
     private int countryCode;
     private int providerIdentifier;
 
+    public ServiceProvider() {
+    }
+
     public int getCountryCode() {
         return countryCode;
     }

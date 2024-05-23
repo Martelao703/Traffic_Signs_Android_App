@@ -1,9 +1,7 @@
 package OBUSDK.JsonController;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import OBUSDK.CoordinateConverter;
 import OBUSDK.GPSCoordinate;
@@ -45,14 +43,14 @@ public class JsonAdapter implements IControllerAdapter {
         int textLanguage;
         String textContent;
         IVIZone zone;
-        ArrayList<ZoneIds> detectionZoneIDs;
-        ArrayList<ZoneIds> awarenessZoneIDs;
-        ArrayList<ZoneIds> relevanceZoneIDs;
+        List<ZoneIds> detectionZoneIDs;
+        List<ZoneIds> awarenessZoneIDs;
+        List<ZoneIds> relevanceZoneIDs;
         Integer laneWidth;
         SafeByteConverter byteConverter = new SafeByteConverter();
 
         InternalIVIMMessageBuilder builder = new InternalIVIMMessageBuilder();
-        Header header = extracter.getItsPduHeader();
+        Header header = extracter.getHeader();
 
         if (header == null) {
             return null;
@@ -62,7 +60,6 @@ public class JsonAdapter implements IControllerAdapter {
 
 
         IviManagementContainer mandatory = extracter.getMandatoryContainer();
-        //TODO - mandatory.ConnectedIviStructures is an array of longs
 
         int countryCode = mandatory.getServiceProvider().getCountryCode();
 
@@ -72,9 +69,8 @@ public class JsonAdapter implements IControllerAdapter {
 
         builder.createMandatory(countryCode, mandatory.getServiceProvider().getProviderIdentifier(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, mandatory.getIviStatus());
 
-        //TODO verificar se é assim
-        IviContainer givContainer = extracter.GetGivContainer();
-        IviContainer glcContainer = extracter.GetGlcContainer();
+        IviContainer givContainer = extracter.getGivContainer();
+        IviContainer glcContainer = extracter.getGlcContainer();
         GPSCoordinate refPosition = new GPSCoordinate(glcContainer.getGlc().getReferencePosition().getLatitude(), glcContainer.getGlc().getReferencePosition().getLongitude());
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
@@ -83,6 +79,7 @@ public class JsonAdapter implements IControllerAdapter {
         pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());
         countryCategoryCode = givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode().getCountryCode();
 
+        // TODO - layoutIds sao hardcoded
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
         textLanguage = givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getText().getLanguage();
@@ -92,6 +89,7 @@ public class JsonAdapter implements IControllerAdapter {
         builder.createSignalText(0, textLanguage, textContent);
 
         detectionZoneIDs = transformer.getDetectionZoneIds(givContainer);
+        /*
         for (ZoneIds zoneID : detectionZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);
@@ -129,7 +127,7 @@ public class JsonAdapter implements IControllerAdapter {
                 }
             }
         }
-
+        */
         return builder.buildMessage();
     }
 }

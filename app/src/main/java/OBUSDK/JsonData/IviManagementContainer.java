@@ -15,6 +15,7 @@ public class IviManagementContainer {
     private int iviStatus;
 
     public IviManagementContainer() {
+        this.serviceProvider = new ServiceProvider();
     }
 
     public IviManagementContainer(ServiceProvider serviceProvider, long iviIdentificationNumber, String timeStamp, String validFrom, String validTo, Integer connectedIviStructures, int iviStatus) {

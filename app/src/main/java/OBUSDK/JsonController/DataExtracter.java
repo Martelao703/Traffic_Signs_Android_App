@@ -17,7 +17,7 @@ public class DataExtracter {
         this.rootIVI = rootIVI;
     }
 
-    public Header getItsPduHeader() {
+    public Header getHeader() {
         return this.rootIVI.getHeader();
     }
 
@@ -36,7 +36,7 @@ public class DataExtracter {
     }
 
     //TODO - perguntar sobre como é que sabemos qual é que é o GivContainer a escolher
-    public IviContainer GetGivContainer() {
+    public IviContainer getGivContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
             if (optional.getIviContainer().getGiv() != null) {
                 return optional.getIviContainer();
@@ -44,8 +44,9 @@ public class DataExtracter {
         }
         return null;
     }
+
     //TODO - perguntar sobre como é que sabemos qual é que é o GlcContainer a escolher
-    public IviContainer GetGlcContainer() {
+    public IviContainer getGlcContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
             if (optional.getIviContainer().getGlc() != null) {
                 return optional.getIviContainer();
@@ -54,9 +55,9 @@ public class DataExtracter {
         return null;
     }
 
-    public List<GlcPart> GetZonesById(int zoneId) {
+    public List<GlcPart> getZonesById(int zoneId) {
         List<GlcPart> glcPartes = new ArrayList<GlcPart>();
-        IviContainer glcContainer = this.GetGlcContainer();
+        IviContainer glcContainer = this.getGlcContainer();
 
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
@@ -68,7 +69,7 @@ public class DataExtracter {
         return glcPartes;
     }
 
-    //public long GetZoneLaneWidthById(long zoneId)
+    //public long getZoneLaneWidthById(long zoneId)
     //{
     //    IVI.IVIModule.IviContainer glcContainer = this.GetGlcContainer();
     //    if (glcContainer != null)
@@ -83,8 +84,8 @@ public class DataExtracter {
     //    }
     //}
 
-    public GlcPart GetZoneById(long zoneId) {
-        IviContainer glcContainer = this.GetGlcContainer();
+    public GlcPart getGlcPartByZoneId(long zoneId) {
+        IviContainer glcContainer = this.getGlcContainer();
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
                 if (glcPart.getZoneId() == zoneId) {
@@ -95,9 +96,10 @@ public class DataExtracter {
         return null;
     }
 
-    public boolean GlcPartsHaveSegment() {
+    //TODO - perguntar sobre e se ouver mais q um parts
+    public boolean glcPartsHaveSegment() {
         List<GlcPart> glcParts = new ArrayList<GlcPart>();
-        IviContainer glcContainer = this.GetGlcContainer();
+        IviContainer glcContainer = this.getGlcContainer();
 
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
