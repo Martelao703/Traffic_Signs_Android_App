@@ -5,8 +5,6 @@ public class Glc {
     private Long referencePositionTime;
     private Parts parts;
 
-    //atributos heading e speed n vem no json, é preciso??
-
     public ReferencePosition getReferencePosition() {
         return referencePosition;
     }

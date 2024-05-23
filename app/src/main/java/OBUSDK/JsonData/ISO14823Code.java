@@ -5,6 +5,15 @@ public class ISO14823Code {
     private String attributes;
     private String itisCodes;
 
+    public ISO14823Code() {
+    }
+
+    public ISO14823Code(PictogramCodeType pictogramCode, String attributes, String itisCodes) {
+        this.pictogramCode = pictogramCode;
+        this.attributes = attributes;
+        this.itisCodes = itisCodes;
+    }
+
     public PictogramCodeType getPictogramCode() {
         return pictogramCode;
     }

@@ -2,7 +2,7 @@ package OBUSDK.JsonData;
 
 import java.io.Serializable;
 
-public class VirtualRSU implements Serializable {
+public class VirtualRSU {
     private int virtualStationID;
     private String reference;
     private String description;

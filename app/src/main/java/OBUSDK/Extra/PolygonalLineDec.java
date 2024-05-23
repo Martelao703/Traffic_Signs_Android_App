@@ -12,9 +12,9 @@ public class PolygonalLineDec {
 
     private Id _id;
     private Object _contained;
-    public Id Selected() {
+    /*public Id Selected() {
         return _id;
-    }
+    }*/
 
     public DeltaPositions getDeltaPositions() {
         return (_id == Id.DeltaPositionsChosen) ? (DeltaPositions) _contained : null;

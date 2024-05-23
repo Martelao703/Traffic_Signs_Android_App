@@ -1,7 +1,5 @@
 package OBUSDK.Extra;
 
-import OBUSDK.Extra.DeltaReferencePosition;
-
 public class ComputedSegment {
     private long zoneId;
     private long laneNumber;

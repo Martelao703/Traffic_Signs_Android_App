@@ -1,4 +1,4 @@
-package OBUSDK;
+package OBUSDK.Extra;
 
 public class AngleConverter {
     public static double deg2Rad(double angleDegree) {
