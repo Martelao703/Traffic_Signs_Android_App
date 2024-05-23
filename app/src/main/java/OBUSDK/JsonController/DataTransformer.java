@@ -1,25 +1,17 @@
 package OBUSDK.JsonController;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
 import OBUSDK.GPSCoordinate;
-import OBUSDK.PerEncDec.ISO14823Code;
 import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneType;
 import OBUSDK.IsoSignalConverter;
-import OBUSDK.PerEncDec.A5;
-import OBUSDK.PerEncDec.DeltaPosition;
-import OBUSDK.PerEncDec.GlcPart;
-import OBUSDK.PerEncDec.IviContainer;
-import OBUSDK.PerEncDec.PictogramCodeType;
-import OBUSDK.PerEncDec.Segment;
-import OBUSDK.PerEncDec.Zone;
-import OBUSDK.PerEncDec.ZoneIds;
-
+import OBUSDK.JsonData.GlcPart;
+import OBUSDK.JsonData.IviContainer;
+import OBUSDK.JsonData.Segment;
+import OBUSDK.JsonData.Zone;
 
 public class DataTransformer {
 
@@ -136,7 +128,6 @@ public class DataTransformer {
             GPSCoordinate endPoint = null;
             GPSCoordinate lastEndPoint = new GPSCoordin(0, 0);
 
-<<<<<<< Updated upstream
     private IVIZone processAbsolutePositions(Segment segment) {
         IVIZone iviZone = new IVIZone();
         IVIMSegment internalSegment;
@@ -145,12 +136,10 @@ public class DataTransformer {
         GPSCoordinate endPoint = null;
         GPSCoordinate lastEndPoint = new GPSCoordinate(0, 0);
         
-        /*    foreach (AbsolutePosition absolutePosition in segment.Line.AbsolutePositions) 
+        /*    foreach (AbsolutePosition absolutePosition in segment.Line.AbsolutePositions)
     { 
         if (isFirstDelta)
-=======
             /*    foreach (AbsolutePosition absolutePosition in segment.Line.AbsolutePositions)
->>>>>>> Stashed changes
         {
             if (isFirstDelta)
             {
@@ -285,13 +274,7 @@ public class DataTransformer {
     }
 
     public boolean hasAwarenessZone(IviContainer iviContainer) {
-<<<<<<< Updated upstream
-        return iviContainer.getGiv().get(0).getDriverAwarenessZoneIds() != null;
-    }
-    */
-=======
         return iviContainer.getGiv().get(0).getGicPart().getDriverAwarenessZoneIds() != null;
     }
 
->>>>>>> Stashed changes
 }

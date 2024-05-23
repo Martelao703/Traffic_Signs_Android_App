@@ -6,11 +6,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import OBUSDK.JsonController.*;
-import OBUSDK.PerEncDec.*;
+import OBUSDK.JsonData.*;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
+
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,39 +23,32 @@ public class MainActivity extends AppCompatActivity {
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
-        Call<String> call = apiService.doGetRsu(1);
-        call.enqueue(new Callback<String>() {
+        Call<Rsu> call = apiService.doGetRsu(3);
+        call.enqueue(new Callback<Rsu>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String responseTest = response.body();
-                if (responseTest == null) {
-                    System.out.println("RSU response is null");
-                    Log.d("RSU", "RSU response is null");
-                }
-                else {
-                    System.out.println("RSU response: " + responseTest);
-                    Log.d("RSU", "RSU response: " + responseTest);
+            public void onResponse(Call<Rsu> call, Response<Rsu> response) {
+                if (response.isSuccessful()) {
+                    Rsu rsu = response.body();
 
-                    textView.setText("RSU data: " + responseTest);
-
-                    /*System.out.println("RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    System.out.println("RSU toString(): " + rsu.toString());
-                    Log.d("RSU", "RSU ITSApp: " + rsu.getITSApp().isEnabled());
-                    textView.setText("RSU data: " + rsu.toString());*/
+                    if (rsu == null) {
+                        Log.d("RSU", "Rsu is null: " + rsu.toString());
+                    } else {
+                        Log.d("RSU", "RSU: " + rsu.toString());
+                        textView.setText("RSU data: " + rsu.toString());
+                    }
+                } else {
+                    Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
                 }
             }
 
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                System.out.println("Failed to get RSU date: " + t.getMessage());
-                Log.d("RSU", "Failed to get RSU date: " + t.getMessage());
-                textView.setText("Failed to get RSU date: ");
+            public void onFailure(Call<Rsu> call, Throwable t) {
+                Log.d("RSU", "Failed to get RSU: " + t.getMessage());
+                textView.setText("Failed to get RSU data");
                 call.cancel();
             }
         });
-
-        System.out.println("RSU data: " + call.toString());
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
