@@ -26,15 +26,13 @@ public class InternalIVIMMessageBuilder {
     }
 
     public void createMandatory(int countryCode, int providerIdentifier, long iviIdentificationNumber,
-                                Date timeStamp, Date validFrom, Date validTo, int connectedIviStructures,
-                                int iviStatus) {
+                                String timeStamp, String validFrom, String validTo, int iviStatus) {
         this.ivimMessage.getMandatory().getServiceProvider().setCountryCode(countryCode);
         this.ivimMessage.getMandatory().getServiceProvider().setProviderIdentifier(providerIdentifier);
         this.ivimMessage.getMandatory().setIviIdentificationNumber(iviIdentificationNumber);
         this.ivimMessage.getMandatory().setTimeStamp(timeStamp);
         this.ivimMessage.getMandatory().setValidFrom(validFrom);
         this.ivimMessage.getMandatory().setValidTo(validTo);
-        this.ivimMessage.getMandatory().setConnectedIviStructures(connectedIviStructures);
         this.ivimMessage.getMandatory().setIviStatus(iviStatus);
     }
 
