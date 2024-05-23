@@ -2,6 +2,7 @@ package OBUSDK.JsonController;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import OBUSDK.CoordinateConverter;
@@ -16,6 +17,7 @@ import OBUSDK.IVIMMemoryStructures;
 import OBUSDK.JsonData.Header;
 import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.IviManagementContainer;
+import OBUSDK.JsonData.ZoneIds;
 import OBUSDK.SafeByteConverter;
 
 public class JsonAdapter implements IControllerAdapter {
@@ -43,9 +45,9 @@ public class JsonAdapter implements IControllerAdapter {
         int textLanguage;
         String textContent;
         IVIZone zone;
-        long[] detectionZoneIDs;
-        long[] awarenessZoneIDs;
-        long[] relevanceZoneIDs;
+        ArrayList<ZoneIds> detectionZoneIDs;
+        ArrayList<ZoneIds> awarenessZoneIDs;
+        ArrayList<ZoneIds> relevanceZoneIDs;
         Integer laneWidth;
         SafeByteConverter byteConverter = new SafeByteConverter();
 
@@ -62,7 +64,7 @@ public class JsonAdapter implements IControllerAdapter {
         IviManagementContainer mandatory = extracter.getMandatoryContainer();
         //TODO - mandatory.ConnectedIviStructures is an array of longs
 
-        int countryCode = byteConverter.countryCodeToInt32(mandatory.getServiceProvider().getCountryCode().getA501());
+        int countryCode = mandatory.getServiceProvider().getCountryCode();
 
         String timeStamp = mandatory.getTimeStamp();
         String validFrom = mandatory.getValidFrom();
@@ -70,29 +72,30 @@ public class JsonAdapter implements IControllerAdapter {
 
         builder.createMandatory(countryCode, mandatory.getServiceProvider().getProviderIdentifier(), mandatory.getIviIdentificationNumber(), timeStamp, validFrom, validTo, mandatory.getIviStatus());
 
+        //TODO verificar se é assim
         IviContainer givContainer = extracter.GetGivContainer();
         IviContainer glcContainer = extracter.GetGlcContainer();
         GPSCoordinate refPosition = new GPSCoordinate(glcContainer.getGlc().getReferencePosition().getLatitude(), glcContainer.getGlc().getReferencePosition().getLongitude());
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
 
-        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
-        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
-        countryCategoryCode = transformer.getPictogramCountryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getCode().getIso14823().getPictogramCode());
+        serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());
+        pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());
+        countryCategoryCode = givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode().getCountryCode();
 
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
-        //textLanguage = transformer.GetExtraTextLanguage(givContainer);
-        textLanguage = byteConverter.languageToInt32(givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getLanguage().getA501());
-        textContent = transformer.getExtraTextContent(givContainer);
+        textLanguage = givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getText().getLanguage();
+        //A principio n faz falta textLanguage = byteConverter.languageToInt32(givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getLanguage().getA501());
+        textContent = givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getText().getTextContent();
 
         builder.createSignalText(0, textLanguage, textContent);
 
         detectionZoneIDs = transformer.getDetectionZoneIds(givContainer);
-        for (long zoneID : detectionZoneIDs) {
+        for (ZoneIds zoneID : detectionZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);
-                laneWidth = transformer.getZoneLaneWidthById(zoneID);
+                laneWidth = transformer.getZoneLaneWidthById(zoneID.getZid());
                 builder.addZone(zone, IVIZoneEnum.IVI_ZONE_DETECTION, laneWidth);
             } catch (Exception e) {
                 //TODO confirmar se é assim que se trata do erro
@@ -100,12 +103,12 @@ public class JsonAdapter implements IControllerAdapter {
             }
         }
 
-        relevanceZoneIDs = transformer.getRelevantZoneIds(givContainer);
+        relevanceZoneIDs = transformer.getRelevanceZoneIds(givContainer);
 
-        for (long zoneID : relevanceZoneIDs) {
+        for (ZoneIds zoneID : relevanceZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);
-                laneWidth = transformer.getZoneLaneWidthById(zoneID);
+                laneWidth = transformer.getZoneLaneWidthById(zoneID.getZid());
                 builder.addZone(zone, IVIZoneEnum.IVI_ZONE_RELEVANCE, laneWidth);
             } catch (Exception e) {
                 //TODO confirmar se é assim que se trata do erro
@@ -115,10 +118,10 @@ public class JsonAdapter implements IControllerAdapter {
 
         if (transformer.hasAwarenessZone(givContainer)) {
             awarenessZoneIDs = transformer.getAwarenessZoneIds(givContainer);
-            for (long zoneID : awarenessZoneIDs) {
+            for (ZoneIds zoneID : awarenessZoneIDs) {
                 try {
                     zone = transformer.getZoneById(zoneID);
-                    laneWidth = transformer.getZoneLaneWidthById(zoneID);
+                    laneWidth = transformer.getZoneLaneWidthById(zoneID.getZid());
                     builder.addZone(zone, IVIZoneEnum.IVI_ZONE_AWARENESS, laneWidth);
                 } catch (Exception e) {
                     //TODO confirmar se é assim que se trata do erro

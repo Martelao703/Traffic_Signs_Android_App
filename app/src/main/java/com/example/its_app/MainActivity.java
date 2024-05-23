@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
                 Log.d("RSU", "Failed to get RSU: " + t.getMessage());
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
+
         /*
         EdgeToEdge.enable(this);
 
@@ -62,5 +64,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         */
+        System.out.println("RSU data: " + call.toString());
     }
 }
