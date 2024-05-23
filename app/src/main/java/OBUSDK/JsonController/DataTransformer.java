@@ -1,5 +1,6 @@
 package OBUSDK.JsonController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
@@ -10,8 +11,10 @@ import OBUSDK.IVIZoneType;
 import OBUSDK.IsoSignalConverter;
 import OBUSDK.JsonData.GlcPart;
 import OBUSDK.JsonData.IviContainer;
+import OBUSDK.JsonData.PictogramCodeType;
 import OBUSDK.JsonData.Segment;
 import OBUSDK.JsonData.Zone;
+import OBUSDK.JsonData.ZoneIds;
 
 public class DataTransformer {
 
@@ -26,7 +29,7 @@ public class DataTransformer {
         this.converter = new CoordinateConverter();
         this.signalConverter = new IsoSignalConverter();
     }
-
+    /*
     private GPSCoordinate getAndConvertReferencePosition() {
         IviContainer glcContainer = this.extracter.GetGlcContainer();
         GPSCoordinate gpsCoordinate = new GPSCoordinate(glcContainer.getGlc().getReferencePosition().getLatitude(), glcContainer.getGlc().getReferencePosition().getLongitude());
@@ -64,7 +67,7 @@ public class DataTransformer {
         }
         return null;
     }
-
+    */
     //TODO - perguntar qual é o objetivo desta função
     public Integer getZoneLaneWidthById(long zoneId) {
         /*
@@ -83,7 +86,7 @@ public class DataTransformer {
         */
         return DEFAULT_LANE_WIDTH;
     }
-
+    //TODO - process segment part
     public IVIZone getZoneById(ZoneIds zId) throws Exception {
         GlcPart glcPart;
         IVIZone zone;

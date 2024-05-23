@@ -2,6 +2,7 @@ package OBUSDK.JsonController;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import OBUSDK.CoordinateConverter;
@@ -16,6 +17,7 @@ import OBUSDK.IVIMMemoryStructures;
 import OBUSDK.JsonData.Header;
 import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.IviManagementContainer;
+import OBUSDK.JsonData.ZoneIds;
 import OBUSDK.SafeByteConverter;
 
 public class JsonAdapter implements IControllerAdapter {

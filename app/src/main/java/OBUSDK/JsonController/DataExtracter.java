@@ -101,7 +101,7 @@ public class DataExtracter {
 
         if (glcContainer != null) {
             for (GlcPart glcPart : glcContainer.getGlc().getParts().getGlcPart()) {
-                if (glcPart.getZone().getSelected() == Zone.Id.SegmentChosen) {
+                if (glcPart.getZone().getSegment() != null) {
                     return true;
                 }
             }
