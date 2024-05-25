@@ -8,6 +8,8 @@ import OBUSDK.GPSCoordinate;
 import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IsoSignalConverter;
+import OBUSDK.JsonData.DeltaPosition;
+import OBUSDK.JsonData.DeltaPositions;
 import OBUSDK.JsonData.GlcPart;
 import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.PictogramCodeType;
@@ -88,7 +90,7 @@ public class DataTransformer {
         return null;
     }
 
-    /*
+
     //TODO - double if & zone so tem 1 segment
     public IVIZone getZoneById(ZoneIds zoneId) throws Exception {
         GlcPart glcPart;
@@ -98,36 +100,24 @@ public class DataTransformer {
 
         if (glcPart != null) {
             if (this.extracter.glcPartsHaveSegment()) {
-                if (glcPart.getZone().getSegment() != null) {
-                    zone = glcPart.getZone();
+                    zone = this.processSegmentPart(glcPart.getZone().getSegment());
 
                     if (zone != null) {
                         return zone;
                     }
-                } else {
-                    throw new Exception("IVI Message does not contain segments. Only segments are supported");
-                }
             } else {
                 throw new Exception("IVI Message does not contain segments. Only segments are supported");
             }
         }
         return null;
     }
-    /*
 
-     */
-    /* TODO - zone so tem 1 tipo de segment
+    // TODO - zone so tem 1 tipo de segment
     private IVIZone processSegmentPart(Segment segment) {
-        switch (segment.getPolygonalLine().Selected()) {
-            case DeltaPositionsChosen:
-                return this.processDeltaPositions(segment);
-            case AbsolutePositionsChosen:
-                return this.processAbsolutePositions(segment);
-            default:
-                return null;
-        }
+
+        return this.processDeltaPositions(segment);
     }
-    */
+
 
     /*
     private IVIZone processAbsolutePositions(Segment segment) {
@@ -181,17 +171,16 @@ public class DataTransformer {
     }
     */
 
-    /*
+
     private IVIZone processDeltaPositions(Segment segment) {
         IVIZone iviZone = new IVIZone();
-        int index = 0;
         boolean isFirstDelta = true;
         GPSCoordinate endPoint = null;
         GPSCoordinate lastEndPoint = new GPSCoordinate(0, 0);
 
         GPSCoordinate refPosition = getReferencePosition();
 
-        for (DeltaPosition deltaPosition : segment.getPolygonalLine().getDeltaPositions()) {
+        for (DeltaPosition deltaPosition : segment.getLine().getDeltaPositions().getDeltaPosition()) {
             if (isFirstDelta) {
                 lastEndPoint = converter.convertToAbsolute((long) refPosition.getLatitude(), (long) refPosition.getLongitude(), deltaPosition.getDeltaLatitude(), deltaPosition.getDeltaLongitude());
                 lastEndPoint = converter.convertCoordinateInt2Double(lastEndPoint);
@@ -202,17 +191,15 @@ public class DataTransformer {
             }
 
             if (endPoint != null) {
-                IVIMSegment internalSegment = new IVIMSegment(lastEndPoint, endPoint, index, (int) segment.getLaneWidth());
+                IVIMSegment internalSegment = new IVIMSegment(lastEndPoint, endPoint, (int) segment.getLaneWidth());
                 lastEndPoint = endPoint;
-                index++;
-                iviZone.getSegments().add(internalSegment);
+                iviZone.setSegment(internalSegment);
             }
         }
 
         return iviZone;
 
     }
-    */
 
     public int getServiceCategoryCode(PictogramCodeType pictogramCodeType) {
         return this.signalConverter.getServiceCategoryCode(pictogramCodeType);

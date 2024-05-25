@@ -1,7 +1,5 @@
 package OBUSDK;
 
-import java.util.Date;
-
 public class InternalIVIMMessageBuilder {
     private InternalIVIMMessage ivimMessage;
     private ZonesAdapter awarenessZones;
@@ -82,13 +80,13 @@ public class InternalIVIMMessageBuilder {
             }
 
             if (originPoint != null) {
-                IVIMSegment segment = new IVIMSegment(originPoint, this.lastGPSCoordinate, idSegment++, 2);
+                IVIMSegment segment = new IVIMSegment(originPoint, this.lastGPSCoordinate, 2);
                 if (!isRelevanceZone) {
                     segment.setBearing(gc.getBearing(originPoint, this.lastGPSCoordinate));
                 } else {
                     segment.setBearing(gc.getBearing(this.lastGPSCoordinate, originPoint));
                 }
-                iviZone.getSegments().add(segment);
+                iviZone.setSegment(segment);
                 this.lastGPSCoordinate = originPoint;
             }
         }
@@ -115,18 +113,14 @@ public class InternalIVIMMessageBuilder {
 
     private void assignBearingsToZone(IVIZone zone, boolean isRelevanceZone) {
         GeoCalculator gc = new GeoCalculator();
-        for (IVIMSegment segment : zone.getSegments()) {
             if (isRelevanceZone) {
-                segment.setBearing(gc.getBearing(segment.getOrigin(), segment.getDestination()));
+                zone.getSegment().setBearing(gc.getBearing( zone.getSegment().getOrigin(),  zone.getSegment().getDestination()));
             } else {
-                segment.setBearing(gc.getBearing(segment.getDestination(), segment.getOrigin()));
+                zone.getSegment().setBearing(gc.getBearing( zone.getSegment().getDestination(),  zone.getSegment().getOrigin()));
             }
-        }
     }
 
     private void assignLaneWidthToZone(IVIZone zone, int laneWidth) {
-        for (IVIMSegment segment : zone.getSegments()) {
-            segment.setSegmentWidth(laneWidth);
-        }
+        zone.getSegment().setSegmentWidth(laneWidth);
     }
 }

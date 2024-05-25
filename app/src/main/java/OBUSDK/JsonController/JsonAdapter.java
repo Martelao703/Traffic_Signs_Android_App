@@ -89,7 +89,7 @@ public class JsonAdapter implements IControllerAdapter {
         builder.createSignalText(0, textLanguage, textContent);
 
         detectionZoneIDs = transformer.getDetectionZoneIds(givContainer);
-        /*
+
         for (ZoneIds zoneID : detectionZoneIDs) {
             try {
                 zone = transformer.getZoneById(zoneID);
@@ -127,7 +127,7 @@ public class JsonAdapter implements IControllerAdapter {
                 }
             }
         }
-        */
+
         return builder.buildMessage();
     }
 }
