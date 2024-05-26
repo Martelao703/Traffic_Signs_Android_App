@@ -35,7 +35,6 @@ public class DataExtracter {
         return givContainers;
     }
 
-    //TODO - perguntar sobre como é que sabemos qual é que é o GivContainer a escolher
     public IviContainer getGivContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
             if (optional.getIviContainer().getGiv() != null) {
@@ -45,7 +44,6 @@ public class DataExtracter {
         return null;
     }
 
-    //TODO - perguntar sobre como é que sabemos qual é que é o GlcContainer a escolher
     public IviContainer getGlcContainer() {
         for (Optional optional : this.rootIVI.getIvi().getOptional()) {
             if (optional.getIviContainer().getGlc() != null) {
@@ -96,9 +94,7 @@ public class DataExtracter {
         return null;
     }
 
-    //TODO - perguntar sobre e se ouver mais q um parts
     public boolean glcPartsHaveSegment() {
-        List<GlcPart> glcParts = new ArrayList<GlcPart>();
         IviContainer glcContainer = this.getGlcContainer();
 
         if (glcContainer != null) {

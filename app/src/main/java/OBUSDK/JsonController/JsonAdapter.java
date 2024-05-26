@@ -79,7 +79,6 @@ public class JsonAdapter implements IControllerAdapter {
         pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());
         countryCategoryCode = givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode().getCountryCode();
 
-        // TODO - layoutIds sao hardcoded
         builder.createSignal(refPosition.getLatitude(), refPosition.getLongitude(), 0, countryCategoryCode, serviceCategoryCode, pictogramCategoryCode, 0);
 
         textLanguage = givContainer.getGiv().get(0).getGicPart().getExtraText().get(0).getText().getLanguage();

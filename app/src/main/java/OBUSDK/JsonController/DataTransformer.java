@@ -70,7 +70,6 @@ public class DataTransformer {
     }
     */
 
-    //TODO - perguntar qual é o objetivo desta função
     public Integer getZoneLaneWidthById(long zoneId) {
         GlcPart glcPart;
         glcPart = this.extracter.getGlcPartByZoneId(zoneId);

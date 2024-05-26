@@ -10,7 +10,6 @@ public class IVIZone {
         this.segment = segments;
     }
 
-
     public IVIZone() {
     }
 
