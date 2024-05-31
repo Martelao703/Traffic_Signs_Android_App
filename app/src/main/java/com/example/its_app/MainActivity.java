@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-        TextView textView = findViewById(R.id.RSU_data);
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
@@ -34,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("RSU", "Rsu is null: " + rsu.toString());
                     } else {
                         Log.d("RSU", "RSU: " + rsu.toString());
-                        textView.setText("RSU data: " + rsu.toString());
 
                         JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
                         jsonAdapter.buildIVIMStructures();
+
+
                     }
                 } else {
                     Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
@@ -48,22 +48,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
                 Log.d("RSU", "Failed to get RSU: " + t.getMessage());
-                textView.setText("Failed to get RSU data");
                 call.cancel();
             }
         });
-
-        /*TextView textView = findViewById(R.id.RSU_data);
-        textView.setText("RSU data: " + rsu.toString());*/
-
-        /*
-        EdgeToEdge.enable(this);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        */
     }
 }
