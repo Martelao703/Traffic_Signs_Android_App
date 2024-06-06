@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import OBUSDK.Extra.VarLengthNumber;
-
 public class GicPart {
     private List<ZoneIds> detectionZoneIds;
     private List<ZoneIds> relevanceZoneIds;
@@ -22,7 +20,6 @@ public class GicPart {
     private Long preStoredLayoutId;
     private List<RoadSignCode> roadSignCodes;
     private List<ExtraText> extraText;
-    private VarLengthNumber itsRrid;
     private ArrayList<Long> applicableLanes;
 
     public List<ZoneIds> getDetectionZoneIds() {
@@ -127,14 +124,6 @@ public class GicPart {
 
     public void setExtraText(List<ExtraText> extraText) {
         this.extraText = extraText;
-    }
-
-    public VarLengthNumber getItsRrid() {
-        return itsRrid;
-    }
-
-    public void setItsRrid(VarLengthNumber itsRrid) {
-        this.itsRrid = itsRrid;
     }
 
     public ArrayList<Long> getApplicableLanes() {

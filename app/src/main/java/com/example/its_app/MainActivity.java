@@ -19,11 +19,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-        TextView textView = findViewById(R.id.RSU_data);
 
         APIService apiService = APIClient.getClient().create(APIService.class);
 
-        Call<Rsu> call = apiService.doGetRsu(3);
+        Call<Rsu> call = apiService.doGetRsu(8);
         call.enqueue(new Callback<Rsu>() {
             @Override
             public void onResponse(Call<Rsu> call, Response<Rsu> response) {
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("RSU", "Rsu is null: " + rsu.toString());
                     } else {
                         Log.d("RSU", "RSU: " + rsu.toString());
-                        textView.setText("RSU data: " + rsu.toString());
 
                         JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
                         jsonAdapter.buildIVIMStructures();
@@ -48,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
                 Log.d("RSU", "Failed to get RSU: " + t.getMessage());
-                textView.setText("Failed to get RSU data");
                 call.cancel();
             }
         });
