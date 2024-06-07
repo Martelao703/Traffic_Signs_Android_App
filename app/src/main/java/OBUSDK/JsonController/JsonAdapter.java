@@ -75,6 +75,7 @@ public class JsonAdapter implements IControllerAdapter {
 
         refPosition = coordConverter.convertCoordinateInt2Double(refPosition);
 
+        //TODO Confirmar o que fazemos quando no rsu vem vienaConvention ao invés de iso14823
         if (givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823() != null) {
             serviceCategoryCode = transformer.getServiceCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());
             pictogramCategoryCode = transformer.getPictogramCategoryCode(givContainer.getGiv().get(0).getGicPart().getRoadSignCodes().get(0).getRsCode().getCode().getIso14823().getPictogramCode());

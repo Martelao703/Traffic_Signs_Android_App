@@ -1,6 +1,11 @@
 package OBUSDK.JsonController;
 
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.Map;
+
 import OBUSDK.JsonData.Rsu;
+import OBUSDK.JsonData.VirtualRSU;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -16,10 +21,10 @@ public interface APIService {
 
     /*@POST("getivimsbydistance")
     Call<List<IVIM>> doGetIvimsByDistance(@Body Map<String, Object> requestBody);
-
+    */
+    @POST("api/getrsubydistance")
+    Call<List<VirtualRSU>> doGetRsuByDistance(@Body Map<String, Object> requestBody);
+    /*
     @POST("getnearestrsu")
-    Call<RSU> doGetNearestRsu(@Body Map<String, Object> requestBody);
-
-    @POST("getrsubydistance")
-    Call<List<IVIM>> doGetRsuByDistance(@Body Map<String, Object> requestBody);*/
+    Call<List<IVIM>> doGetNearestRsu(@Body Map<String, Object> requestBody);*/
 }
