@@ -45,6 +45,12 @@ public class InternalIVIMMessageBuilder {
         this.ivimMessage.getIviSignal().getIviDisplay().getIso14823().setLayoutComponentId(layoutComponentId);
     }
 
+    public void createSignalNoIso(double refPosLatitude, double refPosLongitude, long layoutId) {
+        this.ivimMessage.getIviSignal().setRefPosLatitude(refPosLatitude);
+        this.ivimMessage.getIviSignal().setRefPosLongitude(refPosLongitude);
+        this.ivimMessage.getIviSignal().getIviDisplay().setLayoutId(layoutId);
+    }
+
     public void createSignalText(int layoutComponentId, int language, String textContent) {
         this.ivimMessage.getIviSignal().getIviDisplay().getIviText().setLayoutComponentId(layoutComponentId);
         this.ivimMessage.getIviSignal().getIviDisplay().getIviText().setLanguage(language);

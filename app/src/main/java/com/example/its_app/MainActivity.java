@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.Toast;
 import android.Manifest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     //Variável para aceder à API
     APIService apiService = APIClient.getClient().create(APIService.class);
     //Lista dos RSUs dentro do raio definido
-    private List<VirtualRSU> virtualRSUs;
+    private List<VirtualRSU> virtualRSUs = null;
+    private List<Rsu> RSUsInArea = null;
+    private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
 
 
     @Override
@@ -58,35 +61,6 @@ public class MainActivity extends AppCompatActivity {
             getLocation();
         }
 
-
-        Call<Rsu> call = apiService.doGetRsu(8);
-        call.enqueue(new Callback<Rsu>() {
-            @Override
-            public void onResponse(Call<Rsu> call, Response<Rsu> response) {
-                if (response.isSuccessful()) {
-                    Rsu rsu = response.body();
-
-                    if (rsu == null) {
-                        Log.d("RSU", "Rsu is null: " + rsu.toString());
-                    } else {
-                        Log.d("RSU", "RSU: " + rsu.toString());
-
-                        JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
-                        jsonAdapter.buildIVIMStructures();
-                    }
-                } else {
-                    Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<Rsu> call, Throwable t) {
-                Log.d("RSU", "Failed to get RSU: " + t.getMessage());
-                call.cancel();
-            }
-        });
-
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
 
@@ -101,6 +75,87 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
+    //Vamos utilizar esta função para obter a lista de RSUs dentro do raio definido
+    public void getRSUDentroRaio(){
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("latitude", latitude);
+        requestBody.put("longitude", longitude);
+        requestBody.put("radius", RADIUS_IN_METERS);
+
+
+        Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
+
+        callNearestRSU.enqueue(new Callback<List<VirtualRSU>>() {
+            @Override
+            public void onResponse(Call<List<VirtualRSU>> call, Response<List<VirtualRSU>> response) {
+                if (response.isSuccessful()) {
+                    virtualRSUs = response.body();
+
+                    if (virtualRSUs == null) {
+                        Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
+                    } else {
+                        Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
+
+                        if (virtualRSUs.size() > 0){
+                            for (VirtualRSU rsu : virtualRSUs) {
+                                Log.d("RSU", "RSU: " + rsu.toString());
+                                getRSUdetailedData(rsu.getVirtualStationID());
+                            }
+                        }
+
+                    }
+                } else {
+                    Log.d("API", "Response not successful: " + response.raw().body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VirtualRSU>> call, Throwable t) {
+                Log.d("RSU", "Failed to get RSU: " + t.getMessage());
+                call.cancel();
+            }
+        });
+    }
+
+    //Vamos utilizar esta função para obter os detalhes de um RSU específico após obter a lista de RSUs dentro do raio definido
+    public void getRSUdetailedData(int id) {
+        Call<Rsu> call = apiService.doGetRsu(id);
+        call.enqueue(new Callback<Rsu>() {
+            @Override
+            public void onResponse(Call<Rsu> call, Response<Rsu> response) {
+                if (response.isSuccessful()) {
+                    Rsu rsu = response.body();
+
+                    if (rsu == null) {
+                        Log.d("RSU", "Rsu is null: " + rsu.toString());
+                    } else {
+                        Log.d("RSU", "RSU: " + rsu.toString());
+
+                        Log.d("IVIMap","IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
+
+                        if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0 ) {
+                            JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
+                            jsonAdapter.buildIVIMStructures();
+                            jsonAdaptersBuilt.add(jsonAdapter);
+                        }
+                        //TODO Ver o que fazer quando nã temos IVIMs no request
+                    }
+                } else {
+                    Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<Rsu> call, Throwable t) {
+                Log.d("RSU", "Failed to get RSU: " + t.getMessage());
+                call.cancel();
+            }
+        });
+    }
+
+
+    //Obter a resposta do utilizador relativamente à permissão de aceder à localização
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -113,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Obter a localização atual
     private void getLocation() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -121,36 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
 
-                Map<String, Object> requestBody = new HashMap<>();
-                requestBody.put("latitude", latitude);
-                requestBody.put("longitude", longitude);
-                requestBody.put("radius", RADIUS_IN_METERS);
-
-
-                Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
-
-                callNearestRSU.enqueue(new Callback<List<VirtualRSU>>() {
-                    @Override
-                    public void onResponse(Call<List<VirtualRSU>> call, Response<List<VirtualRSU>> response) {
-                        if (response.isSuccessful()) {
-                            virtualRSUs = response.body();
-
-                            if (virtualRSUs == null) {
-                                Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
-                            } else {
-                                Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
-                            }
-                        } else {
-                            Log.d("API", "Response not successful: " + response.raw().body().toString());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<VirtualRSU>> call, Throwable t) {
-                        Log.d("RSU", "Failed to get RSU: " + t.getMessage());
-                        call.cancel();
-                    }
-                });
+                getRSUDentroRaio();
 
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity.this, coordinates, Toast.LENGTH_LONG).show();
