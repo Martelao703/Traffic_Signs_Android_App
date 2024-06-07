@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
                 Log.d("RSU", "Failed to get RSU: " + t.getMessage());
