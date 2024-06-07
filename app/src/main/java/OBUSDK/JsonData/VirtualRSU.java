@@ -9,6 +9,15 @@ public class VirtualRSU {
     private ReferencePosition referencePosition;
     private int range;
     private String timeStamp;
+    private double distance;
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 
     public int getVirtualStationID() {
         return virtualStationID;

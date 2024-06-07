@@ -22,12 +22,23 @@ import android.util.Log;
 import android.widget.Toast;
 import android.Manifest;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    //Alterar o raio quando quisermos alterar a distância máxima para a qual queremos encontrar RSUs
+    private static final int RADIUS_IN_METERS = 10000000;
     private double latitude;
     private double longitude;
+    //Variável para aceder à API
+    APIService apiService = APIClient.getClient().create(APIService.class);
+    //Lista dos RSUs dentro do raio definido
+    private List<VirtualRSU> virtualRSUs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
             // Se tiver permissão, obter as coordenadas
             getLocation();
         }
-
-        APIService apiService = APIClient.getClient().create(APIService.class);
 
 
         Call<Rsu> call = apiService.doGetRsu(8);
@@ -112,6 +121,37 @@ public class MainActivity extends AppCompatActivity {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
 
+                Map<String, Object> requestBody = new HashMap<>();
+                requestBody.put("latitude", latitude);
+                requestBody.put("longitude", longitude);
+                requestBody.put("radius", RADIUS_IN_METERS);
+
+
+                Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
+
+                callNearestRSU.enqueue(new Callback<List<VirtualRSU>>() {
+                    @Override
+                    public void onResponse(Call<List<VirtualRSU>> call, Response<List<VirtualRSU>> response) {
+                        if (response.isSuccessful()) {
+                            virtualRSUs = response.body();
+
+                            if (virtualRSUs == null) {
+                                Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
+                            } else {
+                                Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
+                            }
+                        } else {
+                            Log.d("API", "Response not successful: " + response.raw().body().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<VirtualRSU>> call, Throwable t) {
+                        Log.d("RSU", "Failed to get RSU: " + t.getMessage());
+                        call.cancel();
+                    }
+                });
+
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity.this, coordinates, Toast.LENGTH_LONG).show();
             }
@@ -120,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Obter a localização atual a cada 10 metros
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
         }
     }
 }

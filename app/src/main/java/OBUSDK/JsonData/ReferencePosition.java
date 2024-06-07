@@ -4,14 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class ReferencePosition {
     @SerializedName("lat")
-    private long latitude;
+    private double latitude;
     @SerializedName("lng")
-    private long longitude;
+    private double longitude;
     @SerializedName("positionConfidenceElipse")
     private PosConfidenceEllipse positionConfidenceEllipse;
     private Altitude altitude;
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -19,7 +19,7 @@ public class ReferencePosition {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
