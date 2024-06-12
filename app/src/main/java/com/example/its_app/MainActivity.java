@@ -69,14 +69,20 @@ public class MainActivity extends AppCompatActivity {
             getLocation();
         }
 
-        imageContainer = findViewById(R.id.imageContainer);
 
-        addImage(R.drawable.ic_launcher_background);
-        addImage(R.drawable.ic_launcher_background);
-        addImage(android.R.drawable.alert_dark_frame);
-        addImage(R.drawable.ic_launcher_background);
-        addImage(R.drawable.ic_launcher_background);
-        addImage(R.drawable.ic_launcher_background);
+        imageContainer = findViewById(R.id.imageContainer);
+        int imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_b1_v1", "drawable", getPackageName());
+        addImage(imageResource);
+        imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_c14_v1_30", "drawable", getPackageName());
+        addImage(imageResource);
+        imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_c14_v1_40", "drawable", getPackageName());
+        addImage(imageResource);
+        imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_c14_v1_50", "drawable", getPackageName());
+        addImage(imageResource);
+        imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_e12aa_v1", "drawable", getPackageName());
+        addImage(imageResource);
+        imageResource = getResources().getIdentifier("image_not_found", "drawable", getPackageName());
+        addImage(imageResource);
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
@@ -229,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         params.height = GridLayout.LayoutParams.WRAP_CONTENT;
 
         // Adiciona margens para espaçamento
-        params.setMargins(16, 10, 50, 40);
+        params.setMargins(0, 10, 0,0);
 
         // Adiciona a imagem ao GridLayout
         imageContainer.addView(imageView, params);
