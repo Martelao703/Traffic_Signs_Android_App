@@ -31,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
+
     //Alterar o raio quando quisermos alterar a distância máxima para a qual queremos encontrar RSUs
     private static final int RADIUS_IN_METERS = 10000000;
     private double latitude;
     private double longitude;
+
     //Variável para aceder à API
     APIService apiService = APIClient.getClient().create(APIService.class);
+
     //Lista dos RSUs dentro do raio definido
     private List<VirtualRSU> virtualRSUs = null;
     private List<Rsu> RSUsInArea = null;
@@ -50,12 +53,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_page_detection);
 
         // Confirmar se tem permissão para aceder à localização
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Se não tiver permissão, pedir permissão
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
             // Se tiver permissão, obter as coordenadas
             getLocation();
@@ -75,13 +75,12 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
-    //Vamos utilizar esta função para obter a lista de RSUs dentro do raio definido
-    public void getRSUDentroRaio(){
+    //Obter a lista de RSUs dentro do raio definido
+    public void getRSUDentroRaio() {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("latitude", latitude);
         requestBody.put("longitude", longitude);
         requestBody.put("radius", RADIUS_IN_METERS);
-
 
         Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
 
@@ -96,13 +95,12 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
 
-                        if (virtualRSUs.size() > 0){
+                        if (virtualRSUs.size() > 0) {
                             for (VirtualRSU rsu : virtualRSUs) {
                                 Log.d("RSU", "RSU: " + rsu.toString());
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }
-
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Vamos utilizar esta função para obter os detalhes de um RSU específico após obter a lista de RSUs dentro do raio definido
+    //Obter os detalhes de um RSU específico após obter a lista de RSUs dentro do raio definido
     public void getRSUdetailedData(int id) {
         Call<Rsu> call = apiService.doGetRsu(id);
         call.enqueue(new Callback<Rsu>() {
@@ -130,10 +128,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("RSU", "Rsu is null: " + rsu.toString());
                     } else {
                         Log.d("RSU", "RSU: " + rsu.toString());
+                        Log.d("IVIMap", "IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
 
-                        Log.d("IVIMap","IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
-
-                        if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0 ) {
+                        if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0) {
                             JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
                             jsonAdapter.buildIVIMStructures();
                             jsonAdaptersBuilt.add(jsonAdapter);
@@ -144,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
                 }
             }
-
 
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
