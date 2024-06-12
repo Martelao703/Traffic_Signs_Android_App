@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.util.Log;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Rsu> RSUsInArea = null;
     private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
 
+    //Lidar com as imagens
+    //private LinearLayout imageContainer;
+    private GridLayout imageContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,15 @@ public class MainActivity extends AppCompatActivity {
             // Se tiver permissão, obter as coordenadas
             getLocation();
         }
+
+        imageContainer = findViewById(R.id.imageContainer);
+
+        addImage(R.drawable.ic_launcher_background);
+        addImage(R.drawable.ic_launcher_background);
+        addImage(android.R.drawable.alert_dark_frame);
+        addImage(R.drawable.ic_launcher_background);
+        addImage(R.drawable.ic_launcher_background);
+        addImage(R.drawable.ic_launcher_background);
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
@@ -189,5 +206,36 @@ public class MainActivity extends AppCompatActivity {
             // Obter a localização atual a cada 10 metros
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
         }
+    }
+
+    private void addImage1(int resId) {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(resId);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // Centraliza a imagem horizontalmente
+        params.gravity = android.view.Gravity.CENTER_HORIZONTAL;
+        // Adiciona margens superior e inferior
+        params.setMargins(0, 16, 0, 16);
+
+        imageContainer.addView(imageView, params);
+    }
+    private void addImage(int resId) {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(resId);
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+
+        // Adiciona margens para espaçamento
+        params.setMargins(16, 10, 50, 40);
+
+        // Adiciona a imagem ao GridLayout
+        imageContainer.addView(imageView, params);
     }
 }
