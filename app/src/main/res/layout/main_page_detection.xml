@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    tools:context=".MainActivity">
+    android:gravity="center_horizontal">
+    <!--tools:context=".MainActivity"-->
 
     <TextView
         android:id="@+id/view3"
@@ -15,17 +15,6 @@
         android:text="Detection Zone"
         android:textSize="18sp"
         android:textStyle="bold" />
-
-    <!--<LinearLayout
-        android:id="@+id/imageContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/view3"
-        android:layout_marginTop="16dp"
-        android:padding="16dp">
-    </LinearLayout>
-    -->
 
     <GridLayout
         android:id="@+id/imageContainer"

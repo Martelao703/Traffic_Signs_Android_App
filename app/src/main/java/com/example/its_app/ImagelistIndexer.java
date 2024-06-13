@@ -2,14 +2,14 @@ package com.example.its_app;
 
 
 import android.graphics.drawable.Drawable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ImagelistIndexer {
 
-    private ArrayList<Drawable> signalImageList;
-    private ArrayList<SignalCode> signalCodes;
+    private List<Drawable> signalImageList;
+    private List<SignalCode> signalCodes;
 
-    public ImagelistIndexer(ArrayList<Drawable> signalImageList, ArrayList<SignalCode> signalCodes) {
+    public ImagelistIndexer(List<Drawable> signalImageList, List<SignalCode> signalCodes) {
         this.signalImageList = signalImageList;
         this.signalCodes = signalCodes;
     }

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +27,16 @@
                 android:text="Relevance Zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <GridLayout
+                android:id="@+id/relevanceImageContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:columnCount="2"
+                android:orientation="horizontal"
+                android:padding="16dp"></GridLayout>
         </LinearLayout>
 
         <View
@@ -48,6 +59,16 @@
                 android:text="Detection Zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <GridLayout
+                android:id="@+id/detectionImageContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:columnCount="2"
+                android:orientation="horizontal"
+                android:padding="16dp"></GridLayout>
         </LinearLayout>
 
         <View
@@ -70,6 +91,16 @@
                 android:text="Awareness Zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <GridLayout
+                android:id="@+id/awarenessImageContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:columnCount="2"
+                android:orientation="horizontal"
+                android:padding="16dp"></GridLayout>
         </LinearLayout>
 
     </LinearLayout>
