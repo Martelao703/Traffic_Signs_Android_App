@@ -1,3 +1,4 @@
+/*
 package com.example.its_app;
 
 
@@ -67,11 +68,10 @@ public class MainActivity extends AppCompatActivity {
 
         initializeComponents();
         initializeIVIEngine();
-        initializeWaypointIterator();
+        //initializeWaypointIterator();
         loadSignalCodes();
         setupImageListIndexer();
         setupDisplayController();
-        loadTCPConfig();
         disableToolStripButton();
     }
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         wayPointIterator.loadFromCSV(getFilesDir() + "/WayPoints.csv");
     }
     */
-
+/*
     private void loadSignalCodes() {
         signalCodes = new ArrayList<>();
 
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         toolStripLabel4.setText("WayPoint: " + wayPointIterator.getCurrentWayPointPosition() + "/" + wayPointIterator.getWayPointCount());
     }
     */
-
+/*
     public void awarenessZoneEntered(Object sender, IVIMDataEventArgs e) {
         displayController.showAwarenessZoneSignal(e.getStationID(), e.getIviIdentificationNumber(),
                 e.getSignal().getIviDisplay().getIso14823().getCountryCode(),
@@ -214,3 +214,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+*/
