@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import OBUSDK.IVIMDataEventArgs;
+import OBUSDK.IVIMEngine;
+import OBUSDK.IVIMMemoryStructures;
+import OBUSDK.InternalIVIMMessage;
 import OBUSDK.JsonController.*;
 import OBUSDK.JsonData.*;
 import retrofit2.Call;
@@ -48,17 +52,37 @@ public class MainActivity extends AppCompatActivity {
     //Lista dos RSUs dentro do raio definido
     private List<VirtualRSU> virtualRSUs = null;
     private List<Rsu> RSUsInArea = null;
-    private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
+    private List<IVIMMemoryStructures> jsonAdaptersBuilt = new ArrayList<>();
 
     //Lidar com as imagens
-    //private LinearLayout imageContainer;
+    private IVIMEngine ivimEngine = new IVIMEngine();
+    //private WayPointIterator wayPointIterator;
+
+    private List<SignalCode> signalCodes;
+    private ImagelistIndexer imagelistIndexer;
+    private DisplayController displayController;
+
     private GridLayout imageContainer;
+
+    private List<StoredSignals> storedSignals = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //Cria o layout da página principal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_detection);
+
+        storedSignals.add(new StoredSignals("image_not_found",0,0,0));
+        storedSignals.add(new StoredSignals("image_180px_vienna_convention_road_sign_b1_v1",620,12,116));
+        storedSignals.add(new StoredSignals("image_180px_vienna_convention_road_sign_e12aa_v1",620,13,815));
+        storedSignals.add(new StoredSignals("image_180px_vienna_convention_road_sign_c14_v1_30",620,12,557));
+        storedSignals.add(new StoredSignals("image_180px_vienna_convention_road_sign_c14_v1_40",620,12,558));
+        storedSignals.add(new StoredSignals("image_180px_vienna_convention_road_sign_c14_v1_50",620,12,559));
+
+        imageContainer = findViewById(R.id.imageContainer);
 
         // Confirmar se tem permissão para aceder à localização
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -69,8 +93,7 @@ public class MainActivity extends AppCompatActivity {
             getLocation();
         }
 
-
-        imageContainer = findViewById(R.id.imageContainer);
+        /*Trabalhar com as imagens e mostrá-las no ecrã
         int imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_b1_v1", "drawable", getPackageName());
         addImage(imageResource);
         imageResource = getResources().getIdentifier("image_180px_vienna_convention_road_sign_c14_v1_30", "drawable", getPackageName());
@@ -83,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
         addImage(imageResource);
         imageResource = getResources().getIdentifier("image_not_found", "drawable", getPackageName());
         addImage(imageResource);
+        */
+
+
 
         /*TextView textView = findViewById(R.id.RSU_data);
         textView.setText("RSU data: " + rsu.toString());*/
@@ -118,12 +144,15 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
 
+                        /*
                         if (virtualRSUs.size() > 0) {
                             for (VirtualRSU rsu : virtualRSUs) {
                                 Log.d("RSU", "RSU: " + rsu.toString());
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }
+                         */
+                        getRSUdetailedData(3);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -146,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Rsu> call, Response<Rsu> response) {
                 if (response.isSuccessful()) {
                     Rsu rsu = response.body();
+                    jsonAdaptersBuilt.clear();
 
                     if (rsu == null) {
                         Log.d("RSU", "Rsu is null: " + rsu.toString());
@@ -155,9 +185,29 @@ public class MainActivity extends AppCompatActivity {
 
                         if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0) {
                             JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
-                            jsonAdapter.buildIVIMStructures();
-                            jsonAdaptersBuilt.add(jsonAdapter);
+                            jsonAdaptersBuilt.add(jsonAdapter.buildIVIMStructures());
                         }
+
+                        int serviceCategoryCode = 0;
+                        int pictogramCategoryCode = 0;
+                        imageContainer.removeAllViews();
+                        if (jsonAdaptersBuilt.size() > 0) {
+                            for (IVIMMemoryStructures ivimMemoryStructures : jsonAdaptersBuilt) {
+                                for (InternalIVIMMessage internalIVIMMessage : ivimMemoryStructures.getInternalIVIMessages()) {
+                                    serviceCategoryCode = internalIVIMMessage.getIviSignal().getIviDisplay().getIso14823().getServiceCategoryCode();
+                                    pictogramCategoryCode = internalIVIMMessage.getIviSignal().getIviDisplay().getIso14823().getPictogramCategoryCode();
+
+                                    for(StoredSignals storedSignal : storedSignals) {
+                                        if(storedSignal.doCodesEqual(serviceCategoryCode, pictogramCategoryCode)) {
+                                            int imageResource = getResources().getIdentifier(storedSignal.getName(), "drawable", getPackageName());
+                                            addImage(imageResource);
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
                         //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
                 } else {
@@ -206,10 +256,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Obter a localização atual a cada 10 metros
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
         }
     }
 
+    /*
     private void addImage1(int resId) {
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(resId);
@@ -226,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageContainer.addView(imageView, params);
     }
+    */
     private void addImage(int resId) {
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(resId);
@@ -240,4 +292,18 @@ public class MainActivity extends AppCompatActivity {
         // Adiciona a imagem ao GridLayout
         imageContainer.addView(imageView, params);
     }
+
+    public void detectionZoneEntered(IVIMDataEventArgs e) {
+        displayController.showDetectionZoneSignal(e.getStationID(), e.getIviIdentificationNumber(),
+                e.getSignal().getIviDisplay().getIso14823().getCountryCode(),
+                e.getSignal().getIviDisplay().getIso14823().getServiceCategoryCode(),
+                e.getSignal().getIviDisplay().getIso14823().getPictogramCategoryCode(),
+                e.getSignal().getIviDisplay().getIviText().getLanguage(),
+                e.getSignal().getIviDisplay().getIviText().getTextContent());
+    }
+
+    public void detectionZoneLeaved(IVIMDataEventArgs e) {
+        displayController.removeDetectionZoneSignal(e.getStationID(), e.getIviIdentificationNumber());
+    }
+
 }

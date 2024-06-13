@@ -6,6 +6,12 @@ public class SignalCode {
     private int serviceCategoryCode;
     private int pictogramCategoryCode;
 
+    public SignalCode(int signalCountryCode, int serviceCategoryCode, int pictogramCategoryCode) {
+        this.signalCountryCode = signalCountryCode;
+        this.serviceCategoryCode = serviceCategoryCode;
+        this.pictogramCategoryCode = pictogramCategoryCode;
+    }
+
     public int getSignalCountryCode() {
         return signalCountryCode;
     }
@@ -18,9 +24,4 @@ public class SignalCode {
         return pictogramCategoryCode;
     }
 
-    public void setData(int signalCountryCode, int serviceCategoryCode, int pictogramCategoryCode) {
-        this.signalCountryCode = signalCountryCode;
-        this.serviceCategoryCode = serviceCategoryCode;
-        this.pictogramCategoryCode = pictogramCategoryCode;
-    }
 }
