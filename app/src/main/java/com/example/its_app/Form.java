@@ -1,4 +1,3 @@
-/*
 package com.example.its_app;
 
 
@@ -21,10 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
     private IVIMEngine ivimEngine;
     private GPSController gpsController;
-    private WayPointIterator wayPointIterator;
     private List<SignalCode> signalCodes;
     private ImagelistIndexer imagelistIndexer;
     private DisplayController displayController;
+
+    //private WayPointIterator wayPointIterator;
 
     private long currentHammerId;
 
@@ -87,18 +87,20 @@ public class MainActivity extends AppCompatActivity {
         ivimEngine = new IVIMEngine();
         gpsController = new GPSController(ivimEngine);
 
-        ivimEngine.setAwarenessZoneEnteredListener(this::awarenessZoneEntered);
-        ivimEngine.setAwarenessZoneLeavedListener(this::awarenessZoneLeaved);
-        ivimEngine.setDetectionZoneEnteredListener(this::detectionZoneEntered);
-        ivimEngine.setDetectionZoneLeavedListener(this::detectionZoneLeaved);
-        ivimEngine.setRelevanceZoneEnteredListener(this::relevanceZoneEntered);
-        ivimEngine.setRelevanceZoneLeavedListener(this::relevanceZoneLeaved);
+        ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
+        ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
+        ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
+        ivimEngine.setDetectionZoneLeaved(this::detectionZoneLeaved);
+        ivimEngine.setRelevanceZoneEntered(this::relevanceZoneEntered);
+        ivimEngine.setRelevanceZoneLeaved(this::relevanceZoneLeaved);
     }
 
+    /*
     private void initializeWaypointIterator() {
         wayPointIterator = new WayPointIterator();
         wayPointIterator.loadFromCSV(getFilesDir() + "/WayPoints.csv");
     }
+    */
 
     private void loadSignalCodes() {
         signalCodes = new ArrayList<>();
@@ -141,18 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.relevanceZoneGroupBox), imagelistIndexer);
     }
 
-    private void loadTCPConfig() {
-        tcpConfigFile = getFilesDir() + "/TCPConfig.txt";
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(tcpConfigFile));
-            ip = reader.readLine();
-            port = Integer.parseInt(reader.readLine());
-            reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void disableToolStripButton() {
         toolStripButton9.setEnabled(false);
     }
@@ -163,9 +153,11 @@ public class MainActivity extends AppCompatActivity {
         toolStripTextBox3.setText(String.valueOf(ivimEngine.getCurrentGPSLocation().getBearing()));
     }
 
+    /*
     private void updateWayPointDisplay() {
         toolStripLabel4.setText("WayPoint: " + wayPointIterator.getCurrentWayPointPosition() + "/" + wayPointIterator.getWayPointCount());
     }
+    */
 
     public void awarenessZoneEntered(Object sender, IVIMDataEventArgs e) {
         displayController.showAwarenessZoneSignal(e.getStationID(), e.getIviIdentificationNumber(),
@@ -218,9 +210,7 @@ public class MainActivity extends AppCompatActivity {
     private void invalidate() {
         runOnUiThread(() -> {
             updateCoordinatesDisplay();
-            updateWayPointDisplay();
+            //updateWayPointDisplay();
         });
     }
 }
-
-*/
