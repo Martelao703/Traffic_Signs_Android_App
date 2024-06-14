@@ -1,87 +1,93 @@
 package com.example.its_app;
 
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.its_app.DisplayManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayController {
+
     private DisplayManager awarenessZoneDisplays;
     private DisplayManager detectionZoneDisplays;
     private DisplayManager relevanceZoneDisplays;
 
-    private ViewGroup awarenessZoneGroupBox;
-    private ViewGroup detectionZoneGroupBox;
-    private ViewGroup relevanceZoneGroupBox;
-
-    public void clear() {
-        this.awarenessZoneDisplays.clear();
-        this.detectionZoneDisplays.clear();
-        this.relevanceZoneDisplays.clear();
-    }
+    private GridLayout awarenessZoneGrid;
+    private GridLayout detectionZoneGrid;
+    private GridLayout relevanceZoneGrid;
 
     public DisplayController() {
+        // Default constructor
     }
 
-    public void initDisplay(ViewGroup awarenessZone, ViewGroup detectionZone, ViewGroup relevanceZone, ImagelistIndexer imagelistIndexer) {
-        this.awarenessZoneDisplays = new DisplayManager(imagelistIndexer);
-        this.detectionZoneDisplays = new DisplayManager(imagelistIndexer);
-        this.relevanceZoneDisplays = new DisplayManager(imagelistIndexer);
+    public void clear() {
+        if (awarenessZoneDisplays != null) awarenessZoneDisplays.clear();
+        if (detectionZoneDisplays != null) detectionZoneDisplays.clear();
+        if (relevanceZoneDisplays != null) relevanceZoneDisplays.clear();
+    }
 
-        this.awarenessZoneGroupBox = awarenessZone;
-        this.detectionZoneGroupBox = detectionZone;
-        this.relevanceZoneGroupBox = relevanceZone;
+    public void initDisplay(GridLayout awarenessZone, GridLayout detectionZone, GridLayout relevanceZone, ImagelistIndexer imageListIndexer) {
+        this.awarenessZoneDisplays = new DisplayManager(imageListIndexer);
+        this.detectionZoneDisplays = new DisplayManager(imageListIndexer);
+        this.relevanceZoneDisplays = new DisplayManager(imageListIndexer);
 
-        List<View> displayControls = new ArrayList<>();
-        List<View> textDisplayControls = new ArrayList<>();
+        this.awarenessZoneGrid = awarenessZone;
+        this.detectionZoneGrid = detectionZone;
+        this.relevanceZoneGrid = relevanceZone;
 
-        // Bind awarenessZones Displays
+        List<ImageView> displayControls = new ArrayList<>();
+        List<TextView> textDisplayControls = new ArrayList<>();
+
+        // Bind awarenessZone Displays
         for (int i = 0; i < awarenessZone.getChildCount(); i++) {
-            View view = awarenessZone.getChildAt(i);
-            if (view instanceof ImageView) {
-                awarenessZoneDisplays.addDisplay((ImageView) view, null);
+            if (awarenessZone.getChildAt(i) instanceof ImageView) {
+                ImageView display = (ImageView) awarenessZone.getChildAt(i);
+                awarenessZoneDisplays.addDisplay(display, null);
             }
         }
 
-        // Bind detectionZones Displays
+        // Bind detectionZone Displays
         for (int i = 0; i < detectionZone.getChildCount(); i++) {
-            View view = detectionZone.getChildAt(i);
-            if (view instanceof ImageView) {
-                displayControls.add(view);
-            } else if (view instanceof TextView) {
-                textDisplayControls.add(view);
+            if (detectionZone.getChildAt(i) instanceof ImageView) {
+                displayControls.add((ImageView) detectionZone.getChildAt(i));
+            } else if (detectionZone.getChildAt(i) instanceof TextView) {
+                textDisplayControls.add((TextView) detectionZone.getChildAt(i));
             }
         }
 
         if (displayControls.size() != textDisplayControls.size()) {
-            throw new RuntimeException("Detection zone displays: The amount of displays is different from the amount of text displays.");
+            throw new IllegalArgumentException("Detection zone displays: The amount of displays is different from the amount of text displays.");
         }
 
         for (int i = 0; i < displayControls.size(); i++) {
-            detectionZoneDisplays.addDisplay((ImageView) displayControls.get(i), (TextView) textDisplayControls.get(i));
+            ImageView control = displayControls.get(i);
+            TextView textDisplay = textDisplayControls.get(i);
+            detectionZoneDisplays.addDisplay(control, textDisplay);
         }
 
         displayControls.clear();
         textDisplayControls.clear();
 
-        // Bind relevanceZones Displays
+        // Bind relevanceZone Displays
         for (int i = 0; i < relevanceZone.getChildCount(); i++) {
-            View view = relevanceZone.getChildAt(i);
-            if (view instanceof ImageView) {
-                displayControls.add(view);
-            } else if (view instanceof TextView) {
-                textDisplayControls.add(view);
+            if (relevanceZone.getChildAt(i) instanceof ImageView) {
+                displayControls.add((ImageView) relevanceZone.getChildAt(i));
+            } else if (relevanceZone.getChildAt(i) instanceof TextView) {
+                textDisplayControls.add((TextView) relevanceZone.getChildAt(i));
             }
         }
 
         if (displayControls.size() != textDisplayControls.size()) {
-            throw new RuntimeException("Relevance zone displays: The amount of displays is different from the amount of text displays.");
+            throw new IllegalArgumentException("Relevance zone displays: The amount of displays is different from the amount of text displays.");
         }
 
         for (int i = 0; i < displayControls.size(); i++) {
-            relevanceZoneDisplays.addDisplay((ImageView) displayControls.get(i), (TextView) textDisplayControls.get(i));
+            ImageView control = displayControls.get(i);
+            TextView textDisplay = textDisplayControls.get(i);
+            relevanceZoneDisplays.addDisplay(control, textDisplay);
         }
 
         displayControls.clear();
@@ -97,7 +103,7 @@ public class DisplayController {
     }
 
     public boolean showDetectionZoneSignal(long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
-        return this.detectionZoneDisplays.showSignal(stationID, iviIdentificationNumber, signalCountryCode, serviceCategoryCode, pictogramCategoryCode, language, textContent);
+        return this.detectionZoneDisplays.showSignal(stationID,  iviIdentificationNumber, signalCountryCode, serviceCategoryCode, pictogramCategoryCode, language, textContent);
     }
 
     public boolean removeDetectionZoneSignal(long stationID, long iviIdentificationNumber) {

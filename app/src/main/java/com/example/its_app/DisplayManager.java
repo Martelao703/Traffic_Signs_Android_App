@@ -2,76 +2,83 @@ package com.example.its_app;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayManager {
-    private List<DataDisplay> displays;
-    private int currentDisplayIndex;
-    private ImagelistIndexer imagelistIndexer;
+    private ImagelistIndexer imageListIndexer;
+    private Map<String, ImageView> imageDisplays;
+    private Map<String, TextView> textDisplays;
 
-    public DisplayManager(ImagelistIndexer imagelistIndexer) {
-        this.displays = new ArrayList<>();
-        this.currentDisplayIndex = 0;
-        this.imagelistIndexer = imagelistIndexer;
+    public DisplayManager(ImagelistIndexer imageListIndexer) {
+        this.imageListIndexer = imageListIndexer;
+        this.imageDisplays = new HashMap<>();
+        this.textDisplays = new HashMap<>();
     }
 
-    public void addDisplay(ImageView display, TextView textDisplay) {
-        DataDisplay dataDisplay = new DataDisplay(display);
-        if (textDisplay != null) {
-            dataDisplay.attachTextDisplay(textDisplay);
+    public void addDisplay(ImageView imageView, TextView textView) {
+        String key = generateKey(imageView);
+        imageDisplays.put(key, imageView);
+        if (textView != null) {
+            textDisplays.put(key, textView);
         }
-        this.displays.add(dataDisplay);
     }
 
     public boolean showSignal(long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
-        if (currentDisplayIndex >= this.displays.size()) {
-            return false;
-        } else {
-            DataDisplay dataDisplay = this.displays.get(this.currentDisplayIndex);
-            this.currentDisplayIndex++;
-            int imageIndex = this.imagelistIndexer.getIndexByCode(signalCountryCode, serviceCategoryCode, pictogramCategoryCode);
+        String key = generateKey(stationID, iviIdentificationNumber);
+        ImageView imageView = imageDisplays.get(key);
+        TextView textView = textDisplays.get(key);
 
-            android.graphics.drawable.Drawable sourceImage = this.imagelistIndexer.getImageByIndex(imageIndex);
-            dataDisplay.setData(sourceImage, stationID, iviIdentificationNumber, signalCountryCode, serviceCategoryCode, pictogramCategoryCode, language, textContent);
-
-            return true;
+        if (imageView != null) {
+            // Use ImageListIndexer to get drawable ID
+            int drawableId = imageListIndexer.getDrawableId(pictogramCategoryCode);
+            imageView.setImageResource(drawableId);
         }
-    }
 
-    public void clear() {
-        for (DataDisplay display : this.displays) {
-            display.clearData();
+        if (textView != null) {
+            textView.setText(textContent);
         }
-        this.currentDisplayIndex = 0;
+
+        return imageView != null;
     }
 
     public boolean removeSignal(long stationID, long iviIdentificationNumber) {
-        int dataDisplayIndex = -1;
-        boolean signalFound = false;
+        String key = generateKey(stationID, iviIdentificationNumber);
+        ImageView imageView = imageDisplays.remove(key);
+        TextView textView = textDisplays.remove(key);
 
-        for (DataDisplay dataDisplay : this.displays) {
-            if (dataDisplay.hasId(stationID, iviIdentificationNumber)) {
-                dataDisplayIndex = this.displays.indexOf(dataDisplay);
-                signalFound = true;
-                this.currentDisplayIndex--;
-                break;
-            }
+        if (imageView != null) {
+            imageView.setImageResource(0); // Clear the image
         }
 
-        if (dataDisplayIndex > -1) {
-            this.displays.get(dataDisplayIndex).clearData();
-
-            for (int i = dataDisplayIndex; i < this.displays.size() - 1; i++) {
-                if (i + 1 <= this.displays.size() - 1) {
-                    this.displays.get(i).copyDataFrom(this.displays.get(i + 1));
-                } else {
-                    this.displays.get(i).clearData();
-                }
-            }
+        if (textView != null) {
+            textView.setText(""); // Clear the text
         }
 
-        return signalFound;
+        return imageView != null;
+    }
+
+    public void clear() {
+        for (ImageView imageView : imageDisplays.values()) {
+            imageView.setImageResource(0); // Clear the image
+        }
+        for (TextView textView : textDisplays.values()) {
+            textView.setText(""); // Clear the text
+        }
+        imageDisplays.clear();
+        textDisplays.clear();
+    }
+
+    private String generateKey(long stationID, long iviIdentificationNumber) {
+        return stationID + "-" + iviIdentificationNumber;
+    }
+
+    private String generateKey(ImageView imageView) {
+        // Generate a unique key based on the view's position or identifier
+        return String.valueOf(imageView.hashCode());
     }
 }
 

@@ -1,33 +1,29 @@
 package com.example.its_app;
 
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImagelistIndexer {
-
-    private List<Drawable> signalImageList;
-    private List<SignalCode> signalCodes;
+    private Map<Long, Integer> pictogramMap;
 
     public ImagelistIndexer(List<Drawable> signalImageList, List<SignalCode> signalCodes) {
-        this.signalImageList = signalImageList;
-        this.signalCodes = signalCodes;
+        pictogramMap = new HashMap<>();
+        // Populate the map with pictogram category codes and corresponding drawable resources
+        pictogramMap.put(0L, R.drawable.image_not_found);
+        pictogramMap.put(116L, R.drawable.image_180px_vienna_convention_road_sign_b1_v1);
+        pictogramMap.put(815L, R.drawable.image_180px_vienna_convention_road_sign_e12aa_v1);
+        pictogramMap.put(557L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_30);
+        pictogramMap.put(558L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_40);
+        pictogramMap.put(559L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_50);
+        // Add more mappings as required
     }
 
-    public int getIndexByCode(long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode) {
-        for (int i = 0; i < signalCodes.size(); i++) {
-            SignalCode signalCode = signalCodes.get(i);
-            // if (signalCountryCode == signalCode.getSignalCountryCode() && serviceCategoryCode == signalCode.getServiceCategoryCode() && pictogramCategoryCode == signalCode.getPictogramCategoryCode())
-            if (serviceCategoryCode == signalCode.getServiceCategoryCode() && pictogramCategoryCode == signalCode.getPictogramCategoryCode()) {
-                return i;
-            }
-        }
-
-        // Returns index zero if signal image not found.
-        return 0;
-    }
-
-    public Drawable getImageByIndex(int index) {
-        return this.signalImageList.get(index);
+    public int getDrawableId(long pictogramCategoryCode) {
+        return pictogramMap.getOrDefault(pictogramCategoryCode, R.drawable.image_not_found); // Fallback image
     }
 }

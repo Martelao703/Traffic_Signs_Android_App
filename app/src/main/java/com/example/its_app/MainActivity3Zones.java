@@ -45,75 +45,85 @@ public class MainActivity3Zones extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private static final int RADIUS_IN_METERS = 10000000;
+    private static final int RADIUS_IN_METERS = 100000000;
+
     private double latitude;
     private double longitude;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
 
-    //Lista dos RSUs dentro do raio definido
-    private List<VirtualRSU> virtualRSUs = null;
-    private List<Rsu> RSUsInArea = null;
+    private List<VirtualRSU> virtualRSUs;
     private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
 
-    //Lidar com as imagens
-    //private LinearLayout imageContainer;
-    private List<Drawable> signalImageList;
     private GridLayout imageContainer;
+    //private List<Drawable> signalImageList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_3_zones);
+
         initializeIVIEngine();
         setupImageListIndexer();
         setupDisplayController();
 
-        // Confirmar se tem permissão para aceder à localização
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Se não tiver permissão, pedir permissão
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         } else {
-            // Se tiver permissão, obter as coordenadas
             getLocation();
         }
 
+        initializeImageContainer();
+    }
+
+    private void initializeIVIEngine() {
+        ivimEngine = new IVIMEngine();
+        gpsController = new GPSController(ivimEngine);
+
+        ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
+        ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
+        ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
+        ivimEngine.setDetectionZoneLeaved(this::detectionZoneLeaved);
+        ivimEngine.setRelevanceZoneEntered(this::relevanceZoneEntered);
+        ivimEngine.setRelevanceZoneLeaved(this::relevanceZoneLeaved);
+    }
+
+    private void setupImageListIndexer() {
         signalCodes = new ArrayList<>();
-        signalCodes.add(new SignalCode("image_not_found",0,0,0));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_b1_v1",620,12,116));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_e12aa_v1",620,13,815));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_30",620,12,557));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40",620,12,558));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50",620,12,559));
+        signalCodes.add(new SignalCode("image_not_found", 0, 0, 0));
+        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_b1_v1", 620, 12, 116));
+        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_e12aa_v1", 620, 13, 815));
+        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_30", 620, 12, 557));
+        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40", 620, 12, 558));
+        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50", 620, 12, 559));
 
-        List<Drawable> signalImageList = new ArrayList<>();
+        imagelistIndexer = new ImagelistIndexer(new ArrayList<>(), signalCodes);
+    }
+
+    private void setupDisplayController() {
+        displayController = new DisplayController();
+        displayController.initDisplay(
+                findViewById(R.id.awarenessImageContainer),
+                findViewById(R.id.detectionImageContainer),
+                findViewById(R.id.relevanceImageContainer),
+                imagelistIndexer);
+    }
+
+    private void initializeImageContainer() {
         imageContainer = findViewById(R.id.detectionImageContainer);
+    }
 
-        String[] imageResourceNames = {
-                "image_180px_vienna_convention_road_sign_b1_v1",
-                "image_180px_vienna_convention_road_sign_c14_v1_30",
-                "image_180px_vienna_convention_road_sign_c14_v1_40",
-                "image_180px_vienna_convention_road_sign_c14_v1_50",
-                "image_180px_vienna_convention_road_sign_e12aa_v1",
-                "image_not_found",
-        };
+    private void addImageToContainer(int resId) {
+        ImageView imageView = new ImageView(this);
+        imageView.setImageResource(resId);
 
-        // Iterate through the resource names and convert to drawables
-        for (String resourceName : imageResourceNames) {
-            int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
-            if (resourceId != 0) {
-                addImage(resourceId);
-                Drawable drawable = ContextCompat.getDrawable(this, resourceId);
-                if (drawable != null) {
-                    signalImageList.add(drawable);
-                } else {
-                    Log.e("DrawableError", "Drawable not found for resource ID: " + resourceId);
-                }
-            } else {
-                Log.e("ResourceError", "Resource not found for name: " + resourceName);
-            }
-        }
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+        params.setMargins(0, 10, 0, 0);
+
+        imageContainer.addView(imageView, params);
     }
 
     //Obter a lista de RSUs dentro do raio definido
@@ -176,6 +186,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                             JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
                             jsonAdapter.buildIVIMStructures();
                             jsonAdaptersBuilt.add(jsonAdapter);
+                            //updateSignalImages(jsonAdapter);
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
@@ -192,6 +203,19 @@ public class MainActivity3Zones extends AppCompatActivity {
         });
     }
 
+    private void updateSignalImages(JsonAdapter jsonAdapter) {
+        runOnUiThread(() -> {
+            imageContainer.removeAllViews();
+            List<SignalCode> signals = jsonAdapter.getSignalCodes();  // Adjust according to your actual data
+
+            for (SignalCode signal : signals) {
+                Drawable drawable = getDrawableFromSignalCode(signal);
+                if (drawable != null) {
+                    addImageToContainer(drawable);
+                }
+            }
+        });
+    }
 
     //Obter a resposta do utilizador relativamente à permissão de aceder à localização
     @Override
@@ -255,35 +279,13 @@ public class MainActivity3Zones extends AppCompatActivity {
         params.height = GridLayout.LayoutParams.WRAP_CONTENT;
 
         // Adiciona margens para espaçamento
-        params.setMargins(0, 10, 0,0);
+        params.setMargins(0, 10, 0, 0);
 
         // Adiciona a imagem ao GridLayout
         imageContainer.addView(imageView, params);
     }
 
-    private void initializeIVIEngine() {
-        ivimEngine = new IVIMEngine();
-        gpsController = new GPSController(ivimEngine);
-
-        ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
-        ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
-        ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
-        ivimEngine.setDetectionZoneLeaved(this::detectionZoneLeaved);
-        ivimEngine.setRelevanceZoneEntered(this::relevanceZoneEntered);
-        ivimEngine.setRelevanceZoneLeaved(this::relevanceZoneLeaved);
-    }
-
-    private void setupImageListIndexer() {
-        imagelistIndexer = new ImagelistIndexer(signalImageList, signalCodes);
-    }
-
-    private void setupDisplayController() {
-        displayController = new DisplayController();
-        displayController.initDisplay(findViewById(R.id.awarenessImageContainer),
-                findViewById(R.id.detectionImageContainer),
-                findViewById(R.id.relevanceImageContainer), imagelistIndexer);
-    }
-
+    // IVIM Event Handlers
     public void awarenessZoneEntered(Object sender, IVIMDataEventArgs e) {
         displayController.showAwarenessZoneSignal(e.getStationID(), e.getIviIdentificationNumber(),
                 e.getSignal().getIviDisplay().getIso14823().getCountryCode(),
