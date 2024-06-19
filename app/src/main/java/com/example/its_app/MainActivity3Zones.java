@@ -244,7 +244,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
             }
-
         };
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
