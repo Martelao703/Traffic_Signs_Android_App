@@ -11,7 +11,7 @@ import java.util.Map;
 public class ImagelistIndexer {
     private Map<Long, Integer> pictogramMap;
 
-    public ImagelistIndexer(List<Drawable> signalImageList, List<SignalCode> signalCodes) {
+    public ImagelistIndexer(List<SignalCode> signalCodes) {
         pictogramMap = new HashMap<>();
         // Populate the map with pictogram category codes and corresponding drawable resources
         pictogramMap.put(0L, R.drawable.image_not_found);

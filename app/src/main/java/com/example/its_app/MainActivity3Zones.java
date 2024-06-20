@@ -29,6 +29,8 @@ import OBUSDK.IVIMEngine;
 import OBUSDK.JsonController.APIClient;
 import OBUSDK.JsonController.APIService;
 import OBUSDK.JsonController.JsonAdapter;
+import OBUSDK.JsonController.JsonController;
+import OBUSDK.JsonData.IVIM;
 import OBUSDK.JsonData.Rsu;
 import OBUSDK.JsonData.VirtualRSU;
 import retrofit2.Call;
@@ -36,6 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity3Zones extends AppCompatActivity {
+    private JsonController ivimController = new JsonController();
     private IVIMEngine ivimEngine;
     private ImagelistIndexer imagelistIndexer;
     private DisplayController displayController;
@@ -49,6 +52,7 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     private double latitude;
     private double longitude;
+    private double bearing;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
 
@@ -98,7 +102,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40", 620, 12, 558));
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50", 620, 12, 559));
 
-        imagelistIndexer = new ImagelistIndexer(new ArrayList<>(), signalCodes);
+        imagelistIndexer = new ImagelistIndexer(signalCodes);
     }
 
     private void setupDisplayController() {
@@ -183,9 +187,14 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("IVIMap", "IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
 
                         if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0) {
-                            JsonAdapter jsonAdapter = new JsonAdapter(rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim());
-                            jsonAdapter.buildIVIMStructures();
-                            jsonAdaptersBuilt.add(jsonAdapter);
+                            IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim();
+                            ivimController = new JsonController();
+                            ivimEngine.setIVIController(ivimController);
+                            ivimEngine.run(ivim);
+                            //ivimController.readNewIVIMMessages(ivim);
+                            //jsonAdapter.buildIVIMStructures();
+                            jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
+                            gpsController.updateGPSLocation(latitude, longitude, 0);
                             //updateSignalImages(jsonAdapter);
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
@@ -203,7 +212,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         });
     }
 
-    private void updateSignalImages(JsonAdapter jsonAdapter) {
+    /*private void updateSignalImages(JsonAdapter jsonAdapter) {
         runOnUiThread(() -> {
             imageContainer.removeAllViews();
             List<SignalCode> signals = jsonAdapter.getSignalCodes();  // Adjust according to your actual data
@@ -215,7 +224,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                 }
             }
         });
-    }
+    }*/
 
     //Obter a resposta do utilizador relativamente à permissão de aceder à localização
     @Override
@@ -238,6 +247,10 @@ public class MainActivity3Zones extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+
+                latitude = 39.734072584334;
+                longitude =  -8.8218917312143;
+                //bearing = location.getBearing();
 
                 getRSUDentroRaio();
 
