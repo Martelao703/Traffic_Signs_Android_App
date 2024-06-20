@@ -32,17 +32,18 @@ public class DisplayManager {
         ImageView imageView = imageDisplays.get(key);
         TextView textView = textDisplays.get(key);
 
-        if (imageView != null) {
+        //if (imageView != null) {
             // Use ImageListIndexer to get drawable ID
             int drawableId = imageListIndexer.getDrawableId(pictogramCategoryCode);
             imageView.setImageResource(drawableId);
-        }
+        //}
 
-        if (textView != null) {
+        //if (textView != null) {
             textView.setText(textContent);
-        }
+        //}
 
-        return imageView != null;
+        //return imageView != null;
+        return true;
     }
 
     public boolean removeSignal(long stationID, long iviIdentificationNumber) {
