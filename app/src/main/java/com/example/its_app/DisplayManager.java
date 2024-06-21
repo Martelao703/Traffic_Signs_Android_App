@@ -1,71 +1,91 @@
 package com.example.its_app;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import OBUSDK.JsonData.Data;
+
 public class DisplayManager {
     private List<DataDisplay>  dataDisplays;
-    private GridLayout displayGrid;
-    private List<ImageView> imageList;
+    private int currentDisplayIndex;
+    private Context context;
 
-    public DisplayManager(GridLayout displayGrid, List<ImageView> imageList) {
-        this.displayGrid = displayGrid;
-        this.imageList = imageList;
+    public DisplayManager(Context context) {
+        this.dataDisplays = new ArrayList<>();
+        this.currentDisplayIndex = 0;
+        this.context = context;
     }
 
-    public void addDisplay(ImageView imageView, TextView textView) {
-        String key = generateKey(imageView);
-        imageDisplays.put(key, imageView);
-        if (textView != null) {
-            textDisplays.put(key, textView);
+    public List<DataDisplay> getDataDisplays() {
+        return dataDisplays;
+    }
+
+    public void addDisplay(ImageView display, TextView textDisplay) {
+        DataDisplay dataDisplay = new DataDisplay(display);
+        if (textDisplay != null) {
+            dataDisplay.attachTextDisplay(textDisplay);
         }
     }
 
     public boolean showSignal(long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
-        DataDisplay dataDisplay = new DataDisplay(imageList);
+        if (currentDisplayIndex >= dataDisplays.size()) {
+            return false;
+        }
+        DataDisplay dataDisplay = dataDisplays.get(currentDisplayIndex);
+        currentDisplayIndex++;
+        ImageListManager imageListManager = ImageListManager.getInstance();
+
+        int drawableId = imageListManager.getDrawableId(pictogramCategoryCode);
+        Drawable sourceImage = ContextCompat.getDrawable(context, drawableId);
+        dataDisplay.setData(sourceImage, stationID, iviIdentificationNumber, signalCountryCode, serviceCategoryCode, pictogramCategoryCode, language, textContent);
+
+        return true;
     }
 
     public boolean removeSignal(long stationID, long iviIdentificationNumber) {
-        String key = generateKey(stationID, iviIdentificationNumber);
-        ImageView imageView = imageDisplays.remove(key);
-        TextView textView = textDisplays.remove(key);
+        int dataDisplayIndex = -1;
+        boolean signalFound = false;
 
-        if (imageView != null) {
-            imageView.setImageResource(0); // Clear the image
+        for (DataDisplay dataDisplay : dataDisplays) {
+            if (dataDisplay.hasId(stationID, iviIdentificationNumber)) {
+                dataDisplayIndex = dataDisplays.indexOf(dataDisplay);
+                signalFound = true;
+                currentDisplayIndex--;
+                break;
+            }
         }
 
-        if (textView != null) {
-            textView.setText(""); // Clear the text
+        if (signalFound) {
+            dataDisplays.get(dataDisplayIndex).clearData();
+
+            for (int i = dataDisplayIndex; i < dataDisplays.size() - 1; i++) {
+                if (i + 1 <= dataDisplays.size() - 1) {
+                    dataDisplays.get(i).copyDataFrom(dataDisplays.get(i + 1));
+                }
+                else {
+                    dataDisplays.get(i).clearData();
+                }
+            }
         }
 
-        return imageView != null;
+        return signalFound;
     }
 
     public void clear() {
-        for (ImageView imageView : imageDisplays.values()) {
-            imageView.setImageResource(0); // Clear the image
+        for (DataDisplay dataDisplay : dataDisplays) {
+            dataDisplay.clearData();
         }
-        for (TextView textView : textDisplays.values()) {
-            textView.setText(""); // Clear the text
-        }
-        imageDisplays.clear();
-        textDisplays.clear();
-    }
-
-    private String generateKey(long stationID, long iviIdentificationNumber) {
-        return stationID + "-" + iviIdentificationNumber;
-    }
-
-    private String generateKey(ImageView imageView) {
-        // Generate a unique key based on the view's position or identifier
-        return String.valueOf(imageView.hashCode());
+        currentDisplayIndex = 0;
     }
 }
 

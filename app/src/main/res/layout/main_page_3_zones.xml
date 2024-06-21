@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:id="@+id/linearLayout">
 
+        <!-- Relevance Zone -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -28,22 +29,50 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Relevance Image Container -->
             <GridLayout
                 android:id="@+id/relevanceImageContainer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:columnCount="2"
                 android:orientation="horizontal"
-                android:padding="16dp"></GridLayout>
+                android:padding="16dp"
+                android:rowCount="1">
+
+                <!-- ImageView 1 -->
+                <ImageView
+                    android:id="@+id/relevanceImageView1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Relevance Zone Image 1"
+                    android:scaleType="centerCrop" />
+
+                <!-- ImageView 2 -->
+                <ImageView
+                    android:id="@+id/relevanceImageView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Relevance Zone Image 2"
+                    android:scaleType="centerCrop" />
+
+            </GridLayout>
         </LinearLayout>
 
+        <!-- Separator Line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="#000000" /> <!-- Black line divider -->
 
+        <!-- Detection Zone -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -60,22 +89,49 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Detection Image Container -->
             <GridLayout
                 android:id="@+id/detectionImageContainer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:columnCount="2"
                 android:orientation="horizontal"
-                android:padding="16dp"></GridLayout>
+                android:padding="16dp">
+
+                <!-- ImageView 1 -->
+                <ImageView
+                    android:id="@+id/detectionImageView1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Detection Zone Image 1"
+                    android:scaleType="centerCrop" />
+
+                <!-- ImageView 2 -->
+                <ImageView
+                    android:id="@+id/detectionImageView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Detection Zone Image 2"
+                    android:scaleType="centerCrop" />
+
+            </GridLayout>
         </LinearLayout>
 
+        <!-- Separator Line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="#000000" /> <!-- Black line divider -->
 
+        <!-- Awareness Zone -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -92,15 +148,40 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- Awareness Image Container -->
             <GridLayout
                 android:id="@+id/awarenessImageContainer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:columnCount="2"
                 android:orientation="horizontal"
-                android:padding="16dp"></GridLayout>
+                android:padding="16dp">
+
+                <!-- ImageView 1 -->
+                <ImageView
+                    android:id="@+id/awarenessImageView1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Awareness Zone Image 1"
+                    android:scaleType="centerCrop" />
+
+                <!-- ImageView 2 -->
+                <ImageView
+                    android:id="@+id/awarenessImageView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:contentDescription="Awareness Zone Image 2"
+                    android:scaleType="centerCrop" />
+
+            </GridLayout>
         </LinearLayout>
 
     </LinearLayout>

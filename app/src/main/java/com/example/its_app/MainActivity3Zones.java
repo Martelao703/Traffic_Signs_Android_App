@@ -37,12 +37,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity3Zones extends AppCompatActivity {
-    private JsonController ivimController = new JsonController();
     private IVIMEngine ivimEngine;
+    private GPSController gpsController;
+    private JsonController ivimController = new JsonController();
+    private List<SignalCode> signalCodes;
     private ImageListManager imageListManager;
     private DisplayController displayController;
-    private GPSController gpsController;
-    private List<SignalCode> signalCodes;
+
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
@@ -54,12 +55,10 @@ public class MainActivity3Zones extends AppCompatActivity {
     private double bearing;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
-
     private List<VirtualRSU> virtualRSUs;
     private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
 
     private GridLayout imageContainer;
-    //private List<Drawable> signalImageList;
 
 
     @Override
@@ -100,12 +99,10 @@ public class MainActivity3Zones extends AppCompatActivity {
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_30", 620, 12, 557));
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40", 620, 12, 558));
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50", 620, 12, 559));
-
-        imageListManager = new ImageListManager();
     }
 
     private void setupDisplayController() {
-        displayController = new DisplayController();
+        displayController = new DisplayController(this);
         displayController.initDisplay(
                 findViewById(R.id.awarenessImageContainer),
                 findViewById(R.id.detectionImageContainer),
