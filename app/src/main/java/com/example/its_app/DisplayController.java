@@ -4,8 +4,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.its_app.DisplayManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +22,12 @@ public class DisplayController {
     }
 
     public void clear() {
-        if (awarenessZoneDisplays != null) awarenessZoneDisplays.clear();
-        if (detectionZoneDisplays != null) detectionZoneDisplays.clear();
-        if (relevanceZoneDisplays != null) relevanceZoneDisplays.clear();
+        awarenessZoneDisplays.clear();
+        detectionZoneDisplays.clear();
+        relevanceZoneDisplays.clear();
     }
 
-    public void initDisplay(GridLayout awarenessZone, GridLayout detectionZone, GridLayout relevanceZone, ImagelistIndexer imageListIndexer) {
+    public void initDisplay(GridLayout awarenessZone, GridLayout detectionZone, GridLayout relevanceZone, ImageListManager imageListIndexer) {
         this.awarenessZoneDisplays = new DisplayManager(imageListIndexer);
         this.detectionZoneDisplays = new DisplayManager(imageListIndexer);
         this.relevanceZoneDisplays = new DisplayManager(imageListIndexer);
@@ -40,6 +38,10 @@ public class DisplayController {
 
         List<ImageView> displayControls = new ArrayList<>();
         List<TextView> textDisplayControls = new ArrayList<>();
+
+        for (ImageView display : awarenessZoneDisplays.getDisplays()) {
+            awarenessZoneGrid.addView(display);
+        }
 
         // Bind awarenessZone Displays
         for (int i = 0; i < awarenessZone.getChildCount(); i++) {

@@ -2,7 +2,6 @@ package com.example.its_app;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,7 +39,7 @@ import retrofit2.Response;
 public class MainActivity3Zones extends AppCompatActivity {
     private JsonController ivimController = new JsonController();
     private IVIMEngine ivimEngine;
-    private ImagelistIndexer imagelistIndexer;
+    private ImageListManager imageListManager;
     private DisplayController displayController;
     private GPSController gpsController;
     private List<SignalCode> signalCodes;
@@ -102,7 +101,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40", 620, 12, 558));
         signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50", 620, 12, 559));
 
-        imagelistIndexer = new ImagelistIndexer(signalCodes);
+        imageListManager = new ImageListManager();
     }
 
     private void setupDisplayController() {
@@ -111,7 +110,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                 findViewById(R.id.awarenessImageContainer),
                 findViewById(R.id.detectionImageContainer),
                 findViewById(R.id.relevanceImageContainer),
-                imagelistIndexer);
+                imageListManager);
     }
 
     private void initializeImageContainer() {

@@ -1,5 +1,7 @@
 package com.example.its_app;
 
+import android.graphics.drawable.Drawable;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -9,14 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DisplayManager {
-    private ImagelistIndexer imageListIndexer;
-    private Map<String, ImageView> imageDisplays;
-    private Map<String, TextView> textDisplays;
+    private List<DataDisplay>  dataDisplays;
+    private GridLayout displayGrid;
+    private List<ImageView> imageList;
 
-    public DisplayManager(ImagelistIndexer imageListIndexer) {
-        this.imageListIndexer = imageListIndexer;
-        this.imageDisplays = new HashMap<>();
-        this.textDisplays = new HashMap<>();
+    public DisplayManager(GridLayout displayGrid, List<ImageView> imageList) {
+        this.displayGrid = displayGrid;
+        this.imageList = imageList;
     }
 
     public void addDisplay(ImageView imageView, TextView textView) {
@@ -28,22 +29,7 @@ public class DisplayManager {
     }
 
     public boolean showSignal(long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
-        String key = generateKey(stationID, iviIdentificationNumber);
-        ImageView imageView = imageDisplays.get(key);
-        TextView textView = textDisplays.get(key);
-
-        //if (imageView != null) {
-            // Use ImageListIndexer to get drawable ID
-            int drawableId = imageListIndexer.getDrawableId(pictogramCategoryCode);
-            imageView.setImageResource(drawableId);
-        //}
-
-        //if (textView != null) {
-            textView.setText(textContent);
-        //}
-
-        //return imageView != null;
-        return true;
+        DataDisplay dataDisplay = new DataDisplay(imageList);
     }
 
     public boolean removeSignal(long stationID, long iviIdentificationNumber) {
