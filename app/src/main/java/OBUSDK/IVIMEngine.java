@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
+import OBUSDK.JsonData.IVIM;
+
 public class IVIMEngine {
 
     // Event interfaces
@@ -80,16 +82,16 @@ public class IVIMEngine {
     }
 
     // Methods
-    public void run() {
-        IVIMMemoryStructures newIVIMMemoryStructures = ivimController.readNewIVIMMessages();
+    public void run(IVIM ivim) {
+        IVIMMemoryStructures newIVIMMemoryStructures = ivimController.readNewIVIMMessages(ivim);
         if (newIVIMMemoryStructures != null) {
             copyNewIVIMessagesToEngine(newIVIMMemoryStructures);
         }
     }
 
-    public void stopIVIController() {
+    /*public void stopIVIController() {
         ivimController.disconnectFromServer();
-    }
+    }*/
 
     public void setIVIController(IIVIMController ivimController) {
         this.ivimController = ivimController;

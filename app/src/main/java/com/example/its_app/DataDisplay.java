@@ -1,5 +1,6 @@
 package com.example.its_app;
 
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
@@ -20,43 +21,33 @@ public class DataDisplay {
     private long language;
     private String textContent;
 
-    public boolean hasId(long stationID, long iviIdentificationNumber) {
-        return this.stationID == stationID && this.iviIdentificationNumber == iviIdentificationNumber;
-    }
-
     public DataDisplay(ImageView display) {
         this.display = display;
         this.textDisplay = null;
         this.clearData();
     }
 
+    public boolean hasId(long stationID, long iviIdentificationNumber) {
+        return this.stationID == stationID && this.iviIdentificationNumber == iviIdentificationNumber;
+    }
+
     public void attachTextDisplay(TextView textDisplay) {
         this.textDisplay = textDisplay;
     }
 
-    private void setImageThreadSafe(final android.graphics.drawable.Drawable sourceImage) {
-        if (Looper.myLooper() == Looper.getMainLooper()) {
-            display.setImageDrawable(sourceImage);
-        } else {
-            new Handler(Looper.getMainLooper()).post(() -> display.setImageDrawable(sourceImage));
-        }
+    private void setImage(Drawable sourceImage) {
+        display.setImageDrawable(sourceImage);
     }
 
-    private void setTextThreadSafe(final String textContent) {
+    private void setText(String textContent) {
+        textDisplay.setText(textContent);
+    }
+
+    public void setData(Drawable sourceImage, long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
+        setImage(sourceImage);
+
         if (textDisplay != null) {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
-                textDisplay.setText(textContent);
-            } else {
-                new Handler(Looper.getMainLooper()).post(() -> textDisplay.setText(textContent));
-            }
-        }
-    }
-
-    public void setData(android.graphics.drawable.Drawable sourceImage, long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {
-        setImageThreadSafe(sourceImage);
-
-        if (this.textDisplay != null) {
-            setTextThreadSafe(textContent);
+            setText(textContent);
         }
 
         this.stationID = stationID;
@@ -68,10 +59,10 @@ public class DataDisplay {
     }
 
     public void clearData() {
-        setImageThreadSafe(null);
+        setImage(null);
 
-        if (this.textDisplay != null) {
-            setTextThreadSafe("");
+        if (textDisplay != null) {
+            setText("");
         }
 
         this.stationID = -1;
@@ -83,18 +74,18 @@ public class DataDisplay {
     }
 
     public void copyDataTo(DataDisplay dataDisplay) {
-        dataDisplay.setData(this.display.getDrawable(), this.stationID, this.iviIdentificationNumber, this.signalCountryCode, this.serviceCategoryCode, this.pictogramCategoryCode, this.language, this.textContent);
+        dataDisplay.setData(display.getDrawable(), stationID, iviIdentificationNumber, signalCountryCode, serviceCategoryCode, pictogramCategoryCode, language, textContent);
     }
 
     public void copyDataFrom(DataDisplay dataDisplay) {
         if (dataDisplay != null) {
-            setImageThreadSafe(dataDisplay.display.getDrawable());
+            setImage(dataDisplay.display.getDrawable());
 
-            if (this.textDisplay != null) {
+            if (textDisplay != null) {
                 if (dataDisplay.textDisplay != null) {
-                    setTextThreadSafe(dataDisplay.textDisplay.getText().toString());
+                    setText(dataDisplay.textDisplay.getText().toString());
                 } else {
-                    setTextThreadSafe("");
+                    setText("");
                 }
             }
 
