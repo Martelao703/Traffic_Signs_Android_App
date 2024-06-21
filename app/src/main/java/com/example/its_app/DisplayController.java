@@ -27,7 +27,7 @@ public class DisplayController {
         relevanceZoneDisplays.clear();
     }
 
-    public void initDisplay(GridLayout awarenessZone, GridLayout detectionZone, GridLayout relevanceZone, ImageListManager imageListIndexer) {
+    public void initDisplay(GridLayout awarenessZone, GridLayout detectionZone, GridLayout relevanceZone) {
         this.awarenessZoneDisplays = new DisplayManager(context);
         this.detectionZoneDisplays = new DisplayManager(context);
         this.relevanceZoneDisplays = new DisplayManager(context);

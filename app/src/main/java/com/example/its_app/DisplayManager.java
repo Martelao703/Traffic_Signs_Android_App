@@ -35,6 +35,7 @@ public class DisplayManager {
         if (textDisplay != null) {
             dataDisplay.attachTextDisplay(textDisplay);
         }
+        dataDisplays.add(dataDisplay);
     }
 
     public boolean showSignal(long stationID, long iviIdentificationNumber, long signalCountryCode, long serviceCategoryCode, long pictogramCategoryCode, long language, String textContent) {

@@ -1,6 +1,7 @@
 package com.example.its_app;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -67,7 +68,6 @@ public class MainActivity3Zones extends AppCompatActivity {
         setContentView(R.layout.main_page_3_zones);
 
         initializeIVIEngine();
-        setupImageListIndexer();
         setupDisplayController();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -75,8 +75,6 @@ public class MainActivity3Zones extends AppCompatActivity {
         } else {
             getLocation();
         }
-
-        initializeImageContainer();
     }
 
     private void initializeIVIEngine() {
@@ -91,27 +89,12 @@ public class MainActivity3Zones extends AppCompatActivity {
         ivimEngine.setRelevanceZoneLeaved(this::relevanceZoneLeaved);
     }
 
-    private void setupImageListIndexer() {
-        signalCodes = new ArrayList<>();
-        signalCodes.add(new SignalCode("image_not_found", 0, 0, 0));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_b1_v1", 620, 12, 116));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_e12aa_v1", 620, 13, 815));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_30", 620, 12, 557));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_40", 620, 12, 558));
-        signalCodes.add(new SignalCode("image_180px_vienna_convention_road_sign_c14_v1_50", 620, 12, 559));
-    }
-
     private void setupDisplayController() {
         displayController = new DisplayController(this);
         displayController.initDisplay(
                 findViewById(R.id.awarenessImageContainer),
                 findViewById(R.id.detectionImageContainer),
-                findViewById(R.id.relevanceImageContainer),
-                imageListManager);
-    }
-
-    private void initializeImageContainer() {
-        imageContainer = findViewById(R.id.detectionImageContainer);
+                findViewById(R.id.relevanceImageContainer));
     }
 
     private void addImageToContainer(int resId) {
@@ -182,13 +165,10 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("RSU", "RSU: " + rsu.toString());
                         Log.d("IVIMap", "IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
 
-                        if (rsu.getData().getITSApp().getFacilities().getIVIMap().size() > 0) {
+                        if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
                             IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim();
-                            ivimController = new JsonController();
                             ivimEngine.setIVIController(ivimController);
                             ivimEngine.run(ivim);
-                            //ivimController.readNewIVIMMessages(ivim);
-                            //jsonAdapter.buildIVIMStructures();
                             jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                             gpsController.updateGPSLocation(latitude, longitude, 0);
                             //updateSignalImages(jsonAdapter);
@@ -207,20 +187,6 @@ public class MainActivity3Zones extends AppCompatActivity {
             }
         });
     }
-
-    /*private void updateSignalImages(JsonAdapter jsonAdapter) {
-        runOnUiThread(() -> {
-            imageContainer.removeAllViews();
-            List<SignalCode> signals = jsonAdapter.getSignalCodes();  // Adjust according to your actual data
-
-            for (SignalCode signal : signals) {
-                Drawable drawable = getDrawableFromSignalCode(signal);
-                if (drawable != null) {
-                    addImageToContainer(drawable);
-                }
-            }
-        });
-    }*/
 
     //Obter a resposta do utilizador relativamente à permissão de aceder à localização
     @Override
@@ -241,8 +207,8 @@ public class MainActivity3Zones extends AppCompatActivity {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+                //latitude = location.getLatitude();
+                //longitude = location.getLongitude();
 
                 latitude = 39.734072584334;
                 longitude =  -8.8218917312143;
