@@ -108,6 +108,7 @@ public class IVIMEngine {
 
             for (IVIZone iviZone : iviMessage.getAwarenessZones().getIVIZones()) {
                     segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());
@@ -126,6 +127,7 @@ public class IVIMEngine {
             inDetectionZone = false;
             for (IVIZone iviZone : iviMessage.getDetectionZones().getIVIZones()) {
                     segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());
@@ -144,6 +146,7 @@ public class IVIMEngine {
             inRelevanceZone = false;
             for (IVIZone iviZone : iviMessage.getRelevanceZones().getIVIZones()) {
                     segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());

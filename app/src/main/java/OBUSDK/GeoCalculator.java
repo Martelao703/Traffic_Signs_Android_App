@@ -51,7 +51,7 @@ public class GeoCalculator {
         double delta = Math.toRadians(deltaDeg);
 
         double x = Math.cos(lat2) * Math.sin(delta);    //sofre arredondamento
-        double y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(delta);
+        double y = (Math.cos(lat1) * Math.sin(lat2)) - (Math.sin(lat1) * Math.cos(lat2) * Math.cos(delta));
         double rad = Math.atan2(x, y);
         return Math.toDegrees(rad);
     }
