@@ -111,7 +111,6 @@ public class DataTransformer {
 
     // TODO - zone so tem 1 tipo de segment
     private IVIZone processSegmentPart(Segment segment) {
-
         return this.processDeltaPositions(segment);
     }
 
