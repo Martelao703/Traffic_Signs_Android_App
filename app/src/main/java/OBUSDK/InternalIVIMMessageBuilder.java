@@ -93,7 +93,7 @@ public class InternalIVIMMessageBuilder {
                 } else {
                     segment.setBearing(gc.getBearing(this.lastGPSCoordinate, originPoint));
                 }
-                iviZone.setSegment(segment);
+                iviZone.addSegment(segment);
                 this.lastGPSCoordinate = originPoint;
             }
         }
@@ -120,14 +120,18 @@ public class InternalIVIMMessageBuilder {
 
     private void assignBearingsToZone(IVIZone zone, boolean isRelevanceZone) {
         GeoCalculator gc = new GeoCalculator();
+        for (IVIMSegment segment : zone.getSegments()) {
             if (isRelevanceZone) {
-                zone.getSegment().setBearing(gc.getBearing( zone.getSegment().getOrigin(),  zone.getSegment().getDestination()));
+                segment.setBearing(gc.getBearing(segment.getOrigin(), segment.getDestination()));
             } else {
-                zone.getSegment().setBearing(gc.getBearing( zone.getSegment().getDestination(),  zone.getSegment().getOrigin()));
+                segment.setBearing(gc.getBearing(segment.getDestination(), segment.getOrigin()));
             }
+        }
     }
 
     private void assignLaneWidthToZone(IVIZone zone, int laneWidth) {
-        zone.getSegment().setSegmentWidth(laneWidth);
+        for (IVIMSegment segment : zone.getSegments()) {
+            segment.setSegmentWidth(laneWidth);
+        }
     }
 }

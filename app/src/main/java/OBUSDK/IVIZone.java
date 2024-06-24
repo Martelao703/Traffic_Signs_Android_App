@@ -1,23 +1,25 @@
 package OBUSDK;
 
-import OBUSDK.JsonData.Segment;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IVIZone {
 
-    private IVIMSegment segment;
-
-    public IVIZone(IVIMSegment segments) {
-        this.segment = segments;
-    }
+    private List<IVIMSegment> segments;
 
     public IVIZone() {
+        this.segments = new ArrayList<>();
     }
 
-    public IVIMSegment getSegment() {
-        return segment;
+    public List<IVIMSegment> getSegments() {
+        return segments;
     }
 
-    public void setSegment(IVIMSegment segment) {
-        this.segment = segment;
+    public void setSegments(List<IVIMSegment> segments) {
+        this.segments = segments;
+    }
+
+    public void addSegment(IVIMSegment segment) {
+        this.segments.add(segment);
     }
 }
