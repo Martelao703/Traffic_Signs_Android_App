@@ -1,8 +1,6 @@
 package OBUSDK;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
 
 import OBUSDK.JsonData.IVIM;
 
@@ -107,15 +105,18 @@ public class IVIMEngine {
             inAwarenessZone = false;
 
             for (IVIZone iviZone : iviMessage.getAwarenessZones().getIVIZones()) {
-                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                for (IVIMSegment segment : iviZone.getSegments()) {
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, segment, segment.getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
-                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());
+                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
                         if (validBearing) {
                             inAwarenessZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_AWARENESS, iviMessage, segmentInsideZone);
                         }
                     }
+                }
             }
 
             if (!inAwarenessZone) {
@@ -125,15 +126,18 @@ public class IVIMEngine {
             // Iterate detectionZone
             inDetectionZone = false;
             for (IVIZone iviZone : iviMessage.getDetectionZones().getIVIZones()) {
-                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                for (IVIMSegment segment : iviZone.getSegments()) {
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, segment, segment.getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
-                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());
+                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
                         if (validBearing) {
                             inDetectionZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_DETECTION, iviMessage, segmentInsideZone);
                         }
                     }
+                }
             }
 
             if (!inDetectionZone) {
@@ -143,15 +147,18 @@ public class IVIMEngine {
             // Iterate relevanceZone
             inRelevanceZone = false;
             for (IVIZone iviZone : iviMessage.getRelevanceZones().getIVIZones()) {
-                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, iviZone.getSegment(), iviZone.getSegment().getSegmentWidth());
+                for (IVIMSegment segment : iviZone.getSegments()) {
+                    segmentInsideZone = geoOperator.isInsideZone(gpsLocation, segment, segment.getSegmentWidth());
+                    //segmentInsideZone = true;
 
                     if (segmentInsideZone) {
-                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, iviZone.getSegment());
+                        boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
                         if (validBearing) {
                             inRelevanceZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_RELEVANCE, iviMessage, segmentInsideZone);
                         }
                     }
+                }
             }
 
             if (!inRelevanceZone) {

@@ -1,6 +1,5 @@
 package OBUSDK.JsonController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
@@ -9,7 +8,6 @@ import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IsoSignalConverter;
 import OBUSDK.JsonData.DeltaPosition;
-import OBUSDK.JsonData.DeltaPositions;
 import OBUSDK.JsonData.GlcPart;
 import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.PictogramCodeType;
@@ -113,7 +111,6 @@ public class DataTransformer {
 
     // TODO - zone so tem 1 tipo de segment
     private IVIZone processSegmentPart(Segment segment) {
-
         return this.processDeltaPositions(segment);
     }
 
@@ -192,7 +189,7 @@ public class DataTransformer {
             if (endPoint != null) {
                 IVIMSegment internalSegment = new IVIMSegment(lastEndPoint, endPoint, (int) segment.getLaneWidth());
                 lastEndPoint = endPoint;
-                iviZone.setSegment(internalSegment);
+                iviZone.addSegment(internalSegment);
             }
         }
 
