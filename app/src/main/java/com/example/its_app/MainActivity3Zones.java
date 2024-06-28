@@ -108,6 +108,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
 
         callNearestRSU.enqueue(new Callback<List<VirtualRSU>>() {
+
             @Override
             public void onResponse(Call<List<VirtualRSU>> call, Response<List<VirtualRSU>> response) {
                 if (response.isSuccessful()) {
@@ -124,7 +125,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }*/
-                        getRSUdetailedData(8);
+                        getRSUdetailedData(9);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -199,8 +200,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.734088604934634;
-                longitude = -8.821884349297447;
+                latitude = 39.739376508492704;
+                longitude = -8.816464377486106;
 
                 //bearing = location.getBearing();
 
