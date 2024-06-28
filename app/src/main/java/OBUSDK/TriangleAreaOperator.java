@@ -31,6 +31,7 @@ public class TriangleAreaOperator implements IGeoOperator {
         double carDestinationBearing = geoCalculator.getBearing(point, line.getDestination());  // Inside when value are negative
         double carOriginBearing = geoCalculator.getBearing(point, line.getOrigin());  // Inside when value are positive
 
+
         if (segmentBearing < 0) {
             segmentBearing = 360 + segmentBearing;
         }
@@ -66,6 +67,7 @@ public class TriangleAreaOperator implements IGeoOperator {
         if (deltaAngle > 90 && deltaAngle < 270) {
             return false;
         }
+
 
         //calcular fora
         if (rectangle == null) {

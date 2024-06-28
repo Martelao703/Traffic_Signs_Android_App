@@ -97,17 +97,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                 findViewById(R.id.relevanceImageContainer));
     }
 
-    private void addImageToContainer(int resId) {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resId);
-
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = GridLayout.LayoutParams.WRAP_CONTENT;
-        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-        params.setMargins(0, 10, 0, 0);
-
-        imageContainer.addView(imageView, params);
-    }
 
     //Obter a lista de RSUs dentro do raio definido
     public void getRSUDentroRaio() {
@@ -135,7 +124,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }*/
-                        getRSUdetailedData(3);
+                        getRSUdetailedData(8);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -210,8 +199,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.73391348503566;
-                longitude = -8.821787288948268;
+                latitude = 39.734088604934634;
+                longitude = -8.821884349297447;
 
                 //bearing = location.getBearing();
 
@@ -227,38 +216,6 @@ public class MainActivity3Zones extends AppCompatActivity {
             // Obter a localização atual a cada 10 metros
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
         }
-    }
-
-    private void addImage1(int resId) {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resId);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        // Centraliza a imagem horizontalmente
-        params.gravity = android.view.Gravity.CENTER_HORIZONTAL;
-        // Adiciona margens superior e inferior
-        params.setMargins(0, 16, 0, 16);
-
-        imageContainer.addView(imageView, params);
-    }
-
-    private void addImage(int resId) {
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(resId);
-
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.width = GridLayout.LayoutParams.WRAP_CONTENT;
-        params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-
-        // Adiciona margens para espaçamento
-        params.setMargins(0, 10, 0, 0);
-
-        // Adiciona a imagem ao GridLayout
-        imageContainer.addView(imageView, params);
     }
 
     // IVIM Event Handlers

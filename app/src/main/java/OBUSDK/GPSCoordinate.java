@@ -5,9 +5,9 @@ public class GPSCoordinate {
     protected double longitude;
     protected double latitude;
 
-    public GPSCoordinate(double longitude, double latitude) {
-        this.longitude = longitude;
+    public GPSCoordinate(double latitude, double longitude) {
         this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public double getLongitude() {

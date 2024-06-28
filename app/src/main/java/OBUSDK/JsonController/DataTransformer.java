@@ -20,6 +20,7 @@ public class DataTransformer {
     private DataExtracter extracter;
     private CoordinateConverter converter;
     private IsoSignalConverter signalConverter;
+    private CoordinateConverter coordConverter;
     public static final int DEFAULT_LANE_WIDTH = 10;
 
     public DataTransformer(DataExtracter extracter) {
@@ -175,6 +176,7 @@ public class DataTransformer {
         GPSCoordinate lastEndPoint = new GPSCoordinate(0, 0);
 
         GPSCoordinate refPosition = getReferencePosition();
+        //GPSCoordinate refPosition = converter.convertCoordinateInt2Double(getReferencePosition());
 
         for (DeltaPosition deltaPosition : segment.getLine().getDeltaPositions().getDeltaPosition()) {
             if (isFirstDelta) {

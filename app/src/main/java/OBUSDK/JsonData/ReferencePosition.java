@@ -4,26 +4,26 @@ import com.google.gson.annotations.SerializedName;
 
 public class ReferencePosition {
     @SerializedName("lat")
-    private double latitude;
+    private float latitude;
     @SerializedName("lng")
-    private double longitude;
+    private float longitude;
     @SerializedName("positionConfidenceElipse")
     private PosConfidenceEllipse positionConfidenceEllipse;
     private Altitude altitude;
 
-    public double getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 
