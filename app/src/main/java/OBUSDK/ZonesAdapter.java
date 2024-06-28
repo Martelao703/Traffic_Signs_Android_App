@@ -14,7 +14,7 @@ public class ZonesAdapter {
         return zones;
     }
 
-    public ZoneAdapter AddZone(){
+    public ZoneAdapter addZone(){
         ZoneAdapter newZone = new ZoneAdapter();
         this.zones.add(newZone);
 

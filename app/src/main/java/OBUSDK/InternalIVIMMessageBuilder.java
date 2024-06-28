@@ -14,6 +14,18 @@ public class InternalIVIMMessageBuilder {
         this.relevanceZones = new ZonesAdapter();
     }
 
+    public ZonesAdapter getAwarenessZones() {
+        return awarenessZones;
+    }
+
+    public ZonesAdapter getDetectionZones() {
+        return detectionZones;
+    }
+
+    public ZonesAdapter getRelevanceZones() {
+        return relevanceZones;
+    }
+
     public boolean createHeader(int protocolVersion, int messageId, long stationId) {
         if (messageId != 6) { // 6 - IVI Message
             return false;
@@ -74,7 +86,6 @@ public class InternalIVIMMessageBuilder {
     private void buildZone(ZoneAdapter zoneAdapter, IVIZoneType messageZones, boolean isRelevanceZone) {
         boolean firstCoordinate = true;
         GPSCoordinate originPoint = null;
-        int idSegment = 0;
         IVIZone iviZone = new IVIZone();
         GeoCalculator gc = new GeoCalculator();
 

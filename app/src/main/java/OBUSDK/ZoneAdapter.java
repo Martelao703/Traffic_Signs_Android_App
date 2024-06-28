@@ -14,11 +14,11 @@ public class ZoneAdapter {
         return GPSCoordinates;
     }
 
-    public void AddCoordinate(GPSCoordinate coordinate) {
+    public void addCoordinate(GPSCoordinate coordinate) {
         this.GPSCoordinates.add(coordinate);
     }
 
-    public void AddCoordinate(double latitude, double longitude) {
+    public void addCoordinate(double latitude, double longitude) {
         this.GPSCoordinates.add(new GPSCoordinate(latitude, longitude));
     }
 

@@ -1,11 +1,11 @@
 package OBUSDK.JsonController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import OBUSDK.CoordinateConverter;
 import OBUSDK.GPSCoordinate;
 import OBUSDK.IControllerAdapter;
+import OBUSDK.IVIMSegment;
 import OBUSDK.IVIZone;
 import OBUSDK.IVIZoneEnum;
 import OBUSDK.InternalIVIMMessage;
@@ -17,6 +17,7 @@ import OBUSDK.JsonData.IviContainer;
 import OBUSDK.JsonData.IviManagementContainer;
 import OBUSDK.JsonData.ZoneIds;
 import OBUSDK.SafeByteConverter;
+import OBUSDK.ZoneAdapter;
 
 public class JsonAdapter implements IControllerAdapter {
     private IVIM rootIVI;
@@ -97,6 +98,19 @@ public class JsonAdapter implements IControllerAdapter {
             try {
                 zone = transformer.getZoneById(zoneID);
                 laneWidth = transformer.getZoneLaneWidthById(zoneID.getZid());
+                //ZoneAdapter detectionZone = builder.getDetectionZones().addZone();
+
+                /*List<IVIMSegment> segments = zone.getSegments();
+                int index = 0;
+                int lastIndex = segments.size() - 1;
+                for (IVIMSegment segment : segments) {
+                    detectionZone.addCoordinate(segment.getOrigin());
+                    if (index == lastIndex) {
+                        detectionZone.addCoordinate(segment.getDestination());
+                    }
+                    index++;
+                }*/
+
                 builder.addZone(zone, IVIZoneEnum.IVI_ZONE_DETECTION, laneWidth);
             } catch (Exception e) {
                 //TODO confirmar se é assim que se trata do erro
