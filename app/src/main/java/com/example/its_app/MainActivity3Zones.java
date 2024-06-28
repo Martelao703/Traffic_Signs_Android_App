@@ -41,16 +41,14 @@ public class MainActivity3Zones extends AppCompatActivity {
     private IVIMEngine ivimEngine;
     private GPSController gpsController;
     private JsonController ivimController = new JsonController();
-    private List<SignalCode> signalCodes;
-    private ImageListManager imageListManager;
     private DisplayController displayController;
 
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private static final int RADIUS_IN_METERS = 100000000;
-
+    private static final int RADIUS_IN_METERS = 1500;
+    private Location previousLocation;
     private double latitude;
     private double longitude;
     private double bearing;
@@ -81,6 +79,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         ivimEngine = new IVIMEngine();
         gpsController = new GPSController(ivimEngine);
 
+        ivimEngine.setIVIController(ivimController);
         ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
         ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
         ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
@@ -117,14 +116,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
                     } else {
                         Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
-
-                        /*if (virtualRSUs.size() > 0) {
-                            for (VirtualRSU rsu : virtualRSUs) {
-                                Log.d("RSU", "RSU: " + rsu.toString());
-                                getRSUdetailedData(rsu.getVirtualStationID());
-                            }
-                        }*/
-                        getRSUdetailedData(8);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -156,11 +147,10 @@ public class MainActivity3Zones extends AppCompatActivity {
 
                         if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
                             IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim();
-                            ivimEngine.setIVIController(ivimController);
+
                             ivimEngine.run(ivim);
-                            jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
-                            gpsController.updateGPSLocation(latitude, longitude, 0);
-                            //updateSignalImages(jsonAdapter);
+
+                            //jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
@@ -190,7 +180,6 @@ public class MainActivity3Zones extends AppCompatActivity {
         }
     }
 
-    //Obter a localização atual
     private void getLocation() {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -198,14 +187,30 @@ public class MainActivity3Zones extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
+                //bearing = location.getBearing();
 
                 latitude = 39.734088604934634;
                 longitude = -8.821884349297447;
 
-                //bearing = location.getBearing();
+                if (previousLocation == null) {
+                    previousLocation = location;
+                    getRSUDentroRaio();
+                    for (VirtualRSU virtualRSU : virtualRSUs) {
+                        getRSUdetailedData(virtualRSU.getVirtualStationID());
+                    }
+                    gpsController.updateGPSLocation(latitude, longitude, bearing);
+                } else {
+                    float distance = location.distanceTo(previousLocation);
+                    if (distance >= RADIUS_IN_METERS % 2) {
+                        previousLocation = location;
+                        getRSUDentroRaio();
+                        for (VirtualRSU virtualRSU : virtualRSUs) {
+                            getRSUdetailedData(virtualRSU.getVirtualStationID());
+                        }
+                    }
+                    gpsController.updateGPSLocation(latitude, longitude, bearing);
+                }
 
-
-                getRSUDentroRaio();
 
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
@@ -214,7 +219,7 @@ public class MainActivity3Zones extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Obter a localização atual a cada 10 metros
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
         }
     }
 
