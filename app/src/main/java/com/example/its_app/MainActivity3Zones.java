@@ -48,6 +48,7 @@ public class MainActivity3Zones extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener locationListener;
     private static final int RADIUS_IN_METERS = 1500;
+    private static final double threshold = RADIUS_IN_METERS * 0.75;
     private Location previousLocation;
     private double latitude;
     private double longitude;
@@ -189,28 +190,18 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //longitude = location.getLongitude();
                 //bearing = location.getBearing();
 
-                latitude = 39.734088604934634;
-                longitude = -8.821884349297447;
+                latitude = 39.734167880529476;
+                longitude = -8.821781377444182;
 
-                if (previousLocation == null) {
+                if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
                     previousLocation = location;
                     getRSUDentroRaio();
                     for (VirtualRSU virtualRSU : virtualRSUs) {
                         getRSUdetailedData(virtualRSU.getVirtualStationID());
                     }
-                    gpsController.updateGPSLocation(latitude, longitude, bearing);
-                } else {
-                    float distance = location.distanceTo(previousLocation);
-                    if (distance >= RADIUS_IN_METERS % 2) {
-                        previousLocation = location;
-                        getRSUDentroRaio();
-                        for (VirtualRSU virtualRSU : virtualRSUs) {
-                            getRSUdetailedData(virtualRSU.getVirtualStationID());
-                        }
-                    }
-                    gpsController.updateGPSLocation(latitude, longitude, bearing);
                 }
-
+                previousLocation = location;
+                gpsController.updateGPSLocation(latitude, longitude, bearing);
 
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
