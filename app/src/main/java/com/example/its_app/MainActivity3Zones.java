@@ -125,7 +125,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }*/
-                        getRSUdetailedData(1);
+                        getRSUdetailedData(8);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -200,8 +200,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.73452162188489;
-                longitude = -8.821206043610488;
+                latitude = 39.73457790619283;
+                longitude = -8.821186458499314;
 
                 //bearing = location.getBearing();
 
