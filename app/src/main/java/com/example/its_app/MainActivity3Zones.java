@@ -187,7 +187,7 @@ public class MainActivity3Zones extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
-                //bearing = location.getBearing();
+                //bearing = location.getBearing(); ss
 
                 latitude = 39.734447108685124;
                 longitude = -8.821397136094504;
