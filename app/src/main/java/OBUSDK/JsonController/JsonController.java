@@ -15,6 +15,14 @@ public class JsonController implements IIVIMController {
         this.ivimMemoryStructures = new IVIMMemoryStructures();
     }
 
+    public InternalIVIMMessage readNewIVIMMessage(IVIM ivim) {
+        jsonAdapter = new JsonAdapter(ivim);
+        internalIVIMMessage = jsonAdapter.buildIVIMStructure();
+        ivimMemoryStructures.getInternalIVIMessages().add(internalIVIMMessage);
+
+        return internalIVIMMessage;
+    }
+
     public IVIMMemoryStructures readNewIVIMMessages(IVIM ivim) {
         if (isJsonAdapterInitialized) {
             return null;
