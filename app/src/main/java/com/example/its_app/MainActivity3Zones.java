@@ -159,11 +159,11 @@ public class MainActivity3Zones extends AppCompatActivity {
                         if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
                             for (int i = 0; i < rsu.getData().getITSApp().getFacilities().getIVIMap().size(); i++) {
                                 IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(i).getIvim();
-                                if (i == 0) {
+                                /*if (i == 0) {
                                     ivimEngine.run(ivim);
                                 } else {
 
-                                }
+                                }*/
                                 ivimEngine.run(ivim);
                             }
 
@@ -207,8 +207,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.73457309333046;
-                longitude = -8.821194288248044;
+                latitude = 39.7345756716507;
+                longitude = -8.82119160603903;
 
                 //bearing = location.getBearing();
 

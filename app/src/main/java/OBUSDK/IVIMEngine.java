@@ -81,10 +81,8 @@ public class IVIMEngine {
 
     // Methods
     public void run(IVIM ivim) {
-        IVIMMemoryStructures newIVIMMemoryStructures = ivimController.readNewIVIMMessages(ivim);
-        if (newIVIMMemoryStructures != null) {
-            copyNewIVIMessagesToEngine(newIVIMMemoryStructures);
-        }
+        InternalIVIMMessage newInternalIVIMMessage = ivimController.readNewIVIMMessage(ivim);
+        addNewIVIMessageToEngine(newInternalIVIMMessage);
     }
 
     /*public void stopIVIController() {
