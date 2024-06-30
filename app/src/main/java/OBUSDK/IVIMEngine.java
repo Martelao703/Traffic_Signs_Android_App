@@ -109,10 +109,10 @@ public class IVIMEngine {
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
-                        //if (validBearing) {
+                        if (validBearing) {
                             inAwarenessZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_AWARENESS, iviMessage, segmentInsideZone);
-                        //}
+                        }
                     }
                 }
             }
@@ -130,10 +130,10 @@ public class IVIMEngine {
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
-                        //if (validBearing) {
+                        if (validBearing) {
                             inDetectionZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_DETECTION, iviMessage, segmentInsideZone);
-                        //}
+                        }
                     }
                 }
             }
@@ -151,10 +151,10 @@ public class IVIMEngine {
 
                     if (segmentInsideZone) {
                         boolean validBearing = bearingValidator.isBearingValid(gpsLocation, segment);
-                        //if (validBearing) {
+                        if (validBearing) {
                             inRelevanceZone = true;
                             eventHandler(IVIZoneEnum.IVI_ZONE_RELEVANCE, iviMessage, segmentInsideZone);
-                        //}
+                        }
                     }
                 }
             }

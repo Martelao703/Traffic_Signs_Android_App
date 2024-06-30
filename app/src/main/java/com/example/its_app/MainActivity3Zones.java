@@ -167,7 +167,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 ivimEngine.run(ivim);
                             }
 
-                            gpsController.updateGPSLocation(latitude, longitude, 0);
+                            gpsController.updateGPSLocation(latitude, longitude, -87);
                             //jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
@@ -207,8 +207,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.734123465859014;
-                longitude = -8.821921132898172;
+                latitude = 39.73409688159295;
+                longitude = -8.822127607049149;
 
                 //bearing = location.getBearing();
 
