@@ -126,7 +126,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 getRSUdetailedData(rsu.getVirtualStationID());
                             }
                         }*/
-                        getRSUdetailedData(8);
+                        getRSUdetailedData(1);
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -167,7 +167,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                                 ivimEngine.run(ivim);
                             }
 
-                            gpsController.updateGPSLocation(latitude, longitude, -87);
+                            gpsController.updateGPSLocation(latitude, longitude, bearing);
                             //jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
@@ -206,12 +206,11 @@ public class MainActivity3Zones extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
-
-                latitude = 39.73409688159295;
-                longitude = -8.822127607049149;
-
                 //bearing = location.getBearing();
 
+                latitude = 39.73416443401747;
+                longitude = -8.822967809023064;
+                bearing = -87;
 
                 getRSUDentroRaio();
 
