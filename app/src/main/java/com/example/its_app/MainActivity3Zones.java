@@ -41,25 +41,21 @@ public class MainActivity3Zones extends AppCompatActivity {
     private IVIMEngine ivimEngine;
     private GPSController gpsController;
     private JsonController ivimController = new JsonController();
-    private List<SignalCode> signalCodes;
-    private ImageListManager imageListManager;
     private DisplayController displayController;
 
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private LocationManager locationManager;
     private LocationListener locationListener;
-    private static final int RADIUS_IN_METERS = 100000000;
-
+    private static final int RADIUS_IN_METERS = 1500;
+    private static final double threshold = RADIUS_IN_METERS * 0.75;
+    private Location previousLocation;
     private double latitude;
     private double longitude;
     private double bearing;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
     private List<VirtualRSU> virtualRSUs;
-    private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
-
-    private GridLayout imageContainer;
 
 
     @Override
@@ -119,14 +115,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
                     } else {
                         Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
-
-                        /*if (virtualRSUs.size() > 0) {
-                            for (VirtualRSU rsu : virtualRSUs) {
-                                Log.d("RSU", "RSU: " + rsu.toString());
-                                getRSUdetailedData(rsu.getVirtualStationID());
-                            }
-                        }*/
-                        getRSUdetailedData(1);
+                        getRSUdetailedData(virtualRSU.getVirtualStationID());
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -159,16 +148,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                         if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
                             for (int i = 0; i < rsu.getData().getITSApp().getFacilities().getIVIMap().size(); i++) {
                                 IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(i).getIvim();
-                                /*if (i == 0) {
-                                    ivimEngine.run(ivim);
-                                } else {
-
-                                }*/
                                 ivimEngine.run(ivim);
                             }
-
-                            gpsController.updateGPSLocation(latitude, longitude, bearing);
-                            //jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
@@ -208,11 +189,21 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //longitude = location.getLongitude();
                 //bearing = location.getBearing();
 
-                latitude = 39.73416443401747;
-                longitude = -8.822967809023064;
-                bearing = -87;
+                latitude = 39.734447108685124;
+                longitude = -8.821397136094504;
+                bearing = -129;
 
-                getRSUDentroRaio();
+                if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
+                    previousLocation = location;
+                    getRSUDentroRaio();
+                    if (virtualRSUs != null && !virtualRSUs.isEmpty()) {
+                        for (VirtualRSU virtualRSU : virtualRSUs) {
+                            getRSUdetailedData(virtualRSU.getVirtualStationID());
+                        }
+                    }
+                }
+                previousLocation = location;
+                gpsController.updateGPSLocation(latitude, longitude, bearing);
 
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
