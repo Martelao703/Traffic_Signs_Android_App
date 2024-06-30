@@ -81,6 +81,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         ivimEngine = new IVIMEngine();
         gpsController = new GPSController(ivimEngine);
 
+        ivimEngine.setIVIController(ivimController);
         ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
         ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
         ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
@@ -156,12 +157,18 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("IVIMap", "IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
 
                         if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
-                            IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim();
-                            ivimEngine.setIVIController(ivimController);
-                            ivimEngine.run(ivim);
-                            jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
+                            for (int i = 0; i < rsu.getData().getITSApp().getFacilities().getIVIMap().size(); i++) {
+                                IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(i).getIvim();
+                                if (i == 0) {
+                                    ivimEngine.run(ivim);
+                                } else {
+
+                                }
+                                ivimEngine.run(ivim);
+                            }
+
                             gpsController.updateGPSLocation(latitude, longitude, 0);
-                            //updateSignalImages(jsonAdapter);
+                            //jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
                         }
                         //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
@@ -200,8 +207,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //latitude = location.getLatitude();
                 //longitude = location.getLongitude();
 
-                latitude = 39.73457790619283;
-                longitude = -8.821186458499314;
+                latitude = 39.73457309333046;
+                longitude = -8.821194288248044;
 
                 //bearing = location.getBearing();
 
