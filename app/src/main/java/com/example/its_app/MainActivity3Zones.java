@@ -97,7 +97,7 @@ public class MainActivity3Zones extends AppCompatActivity {
 
 
     //Obter a lista de RSUs dentro do raio definido
-    public void getRSUDentroRaio() {
+    public void getRSUDentroRaio(Runnable onSuccess) {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("latitude", latitude);
         requestBody.put("longitude", longitude);
@@ -116,6 +116,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
                     } else {
                         Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
+                        onSuccess.run();
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -191,16 +192,32 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //longitude = location.getLongitude();
                 //bearing = location.getBearing(); ss
 
-                latitude = 39.73424504125985;
-                longitude = -8.82165080396843;
-                bearing = 0;
+                latitude = 39.73415205800571;
+                longitude = -8.821874138297241;
+                bearing = -129;
 
-                getRSUDentroRaio();
-                getRSUdetailedData(8, () -> {
+                if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
+                    previousLocation = location;
+                    // Fetch and process RSUs only if significant movement is detected
+                    getRSUDentroRaio(() -> {
+                        if (virtualRSUs != null) {
+                            for (VirtualRSU virtualRSU : virtualRSUs) {
+                                getRSUdetailedData(virtualRSU.getVirtualStationID(), () -> {
+                                    // Update GPS location after processing each RSU
+                                    gpsController.updateGPSLocation(latitude, longitude, bearing);
+                                });
+                            }
+                        } else {
+                            Log.e("RSU", "No virtual RSUs available.");
+                        }
+                    });
+                } else {
+                    // Directly update GPS location if movement is within the threshold
                     gpsController.updateGPSLocation(latitude, longitude, bearing);
-                    String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
-                    Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
-                });
+                }
+
+                String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
+                Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
             }
         };
 
