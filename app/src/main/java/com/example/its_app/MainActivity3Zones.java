@@ -192,8 +192,8 @@ public class MainActivity3Zones extends AppCompatActivity {
                 //longitude = location.getLongitude();
                 //bearing = location.getBearing(); ss
 
-                latitude = 39.73427384502887;
-                longitude = -8.821680109145575;
+                latitude = 39.734123465859014;
+                longitude = -8.821921132898172;
                 bearing = -129;
 
                 if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
@@ -204,17 +204,16 @@ public class MainActivity3Zones extends AppCompatActivity {
                             for (VirtualRSU virtualRSU : virtualRSUs) {
                                 getRSUdetailedData(virtualRSU.getVirtualStationID(), () -> {
                                     // Update GPS location after processing each RSU
-                                    gpsController.updateGPSLocation(latitude, longitude, bearing);
+                                    //gpsController.updateGPSLocation(latitude, longitude, bearing);
                                 });
                             }
                         } else {
                             Log.e("RSU", "No virtual RSUs available.");
                         }
                     });
-                } else {
-                    // Directly update GPS location if movement is within the threshold
-                    gpsController.updateGPSLocation(latitude, longitude, bearing);
                 }
+                // Directly update GPS location if movement is within the threshold
+                gpsController.updateGPSLocation(latitude, longitude, bearing);
 
                 String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
                 Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
