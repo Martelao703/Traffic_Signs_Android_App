@@ -1,11 +1,14 @@
 package com.example.its_app;
 
+import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,7 +21,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +50,6 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
-
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RADIUS_IN_METERS = 1500;
     private static final double threshold = RADIUS_IN_METERS * 0.75;
@@ -220,10 +222,13 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     //Obter a localização atual
     private void getLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationCallback = new LocationCallback() {
+        latitude = 39.734123465859014;
+        longitude = -8.821921132898172;
+        bearing = -129;
+        getRSUDentroRaio();
+        String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
+        Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
+        /*locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -233,10 +238,13 @@ public class MainActivity3Zones extends AppCompatActivity {
                     latitude = 39.734123465859014;
                     longitude = -8.821921132898172;
                     bearing = -129;
+                    getRSUDentroRaio();
 
-                    if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
-                        previousLocation = location;
-                        getRSUDentroRaio();
+                    if (previousLocation != null) {
+                        if (location.distanceTo(previousLocation) >= threshold) {
+                            previousLocation = location;
+                            getRSUDentroRaio();
+                        }
                     } else {
                         gpsController.updateGPSLocation(latitude, longitude, bearing);
                     }
@@ -246,27 +254,16 @@ public class MainActivity3Zones extends AppCompatActivity {
                 }
             }
         };
-        fusedLocationClient.getCurrentLocation(0, null)
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            latitude = 39.734123465859014;
-                            longitude = -8.821921132898172;
-                            bearing = -129;
 
-                            if (previousLocation == null || location.distanceTo(previousLocation) >= threshold) {
-                                previousLocation = location;
-                                getRSUDentroRaio();
-                            } else {
-                                gpsController.updateGPSLocation(latitude, longitude, bearing);
-                            }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationRequest locationRequest = new LocationRequest.Builder(1000)
+                    .setIntervalMillis(1000)
+                    .setPriority(PRIORITY_HIGH_ACCURACY)
+                    .setMinUpdateDistanceMeters(1)
+                    .build();
 
-                            String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
-                            Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        }*/
     }
 
     // IVIM Event Handlers
