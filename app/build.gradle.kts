@@ -44,6 +44,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
+    implementation(libs.google.play.services.location)
+
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.ext.junit)
