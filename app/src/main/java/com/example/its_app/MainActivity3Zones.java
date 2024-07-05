@@ -230,12 +230,6 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     //Obter a localização atual
     private void getLocation() {
-        /*latitude = 39.734123465859014;
-        longitude = -8.821921132898172;
-        bearing = -129;
-        getRSUDentroRaio();
-        String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
-        Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();*/
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
