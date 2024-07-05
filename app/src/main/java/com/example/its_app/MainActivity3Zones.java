@@ -52,7 +52,7 @@ public class MainActivity3Zones extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final int RADIUS_IN_METERS = 1500;
+    private static final int RADIUS_IN_METERS = 1000;
     private static final double threshold = RADIUS_IN_METERS * 0.5;
     private Location previousCallLocation;
 
@@ -239,9 +239,10 @@ public class MainActivity3Zones extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+                    //bearing = location.getBearing();
 
                     // Used for the emulated version ----------------------------------------------
-                    if (testPinLocation.distanceTo(location) >= 78) {
+                    if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
                         bearing = -129;
                     } else {
                         bearing = -87;
