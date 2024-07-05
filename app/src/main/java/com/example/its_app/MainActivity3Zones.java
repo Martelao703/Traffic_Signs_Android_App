@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import OBUSDK.GPSController;
+import OBUSDK.GPSCoordinate;
 import OBUSDK.GPSLocation;
 import OBUSDK.IVIMDataEventArgs;
 import OBUSDK.IVIMEngine;
@@ -52,22 +53,29 @@ public class MainActivity3Zones extends AppCompatActivity {
     private LocationCallback locationCallback;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RADIUS_IN_METERS = 1500;
-    private static final double threshold = RADIUS_IN_METERS * 0.75;
-    private Location previousLocation;
+    private static final double threshold = RADIUS_IN_METERS * 0.5;
+    private Location previousCallLocation;
 
     private double latitude;
     private double longitude;
     private double bearing;
+    private int bearingCounter = 0;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
     private List<VirtualRSU> virtualRSUs;
     private List<GPSLocation> simulatedCoordinates;
-
+    private boolean apiCallFlag = false;
+    Location testPinLocation = new Location("gps");  //Used for the emulated version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_3_zones);
+
+        // Used for the emulated version ----------------------------------------------
+        testPinLocation.setLatitude(39.73416274775048);
+        testPinLocation.setLongitude(-8.82285464425065);
+        // Used for the emulated version ----------------------------------------------
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -222,34 +230,40 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     //Obter a localização atual
     private void getLocation() {
-        latitude = 39.734123465859014;
+        /*latitude = 39.734123465859014;
         longitude = -8.821921132898172;
         bearing = -129;
         getRSUDentroRaio();
         String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
-        Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
-        /*locationCallback = new LocationCallback() {
+        Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();*/
+        locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    latitude = 39.734123465859014;
-                    longitude = -8.821921132898172;
-                    bearing = -129;
-                    getRSUDentroRaio();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
 
-                    if (previousLocation != null) {
-                        if (location.distanceTo(previousLocation) >= threshold) {
-                            previousLocation = location;
-                            getRSUDentroRaio();
-                        }
+                    // Used for the emulated version ----------------------------------------------
+                    if (testPinLocation.distanceTo(location) >= 78) {
+                        bearing = -129;
+                    } else {
+                        bearing = -87;
+                    }
+                    // Used for the emulated version ----------------------------------------------
+
+                    if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
+                        getRSUDentroRaio();
+                        previousCallLocation = location;
+                        apiCallFlag = true;
                     } else {
                         gpsController.updateGPSLocation(latitude, longitude, bearing);
+                        apiCallFlag = false;
                     }
 
-                    String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
+                    String coordinates = "Latitude:" + latitude + ", Longitude:" + longitude + " " + apiCallFlag;
                     Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
                 }
             }
@@ -263,7 +277,7 @@ public class MainActivity3Zones extends AppCompatActivity {
                     .build();
 
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-        }*/
+        }
     }
 
     // IVIM Event Handlers
