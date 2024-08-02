@@ -1,16 +1,15 @@
 package com.example.its_app;
 
+import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
+
 import android.Manifest;
-import android.app.Application;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,17 +17,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationRequest;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import OBUSDK.GPSController;
+import OBUSDK.GPSCoordinate;
+import OBUSDK.GPSLocation;
 import OBUSDK.IVIMDataEventArgs;
 import OBUSDK.IVIMEngine;
 import OBUSDK.JsonController.APIClient;
 import OBUSDK.JsonController.APIService;
-import OBUSDK.JsonController.JsonAdapter;
 import OBUSDK.JsonController.JsonController;
 import OBUSDK.JsonData.IVIM;
 import OBUSDK.JsonData.Rsu;
@@ -40,32 +46,38 @@ import retrofit2.Response;
 public class MainActivity3Zones extends AppCompatActivity {
     private IVIMEngine ivimEngine;
     private GPSController gpsController;
-    private JsonController ivimController = new JsonController();
-    private List<SignalCode> signalCodes;
-    private ImageListManager imageListManager;
+    private final JsonController ivimController = new JsonController();
     private DisplayController displayController;
 
-
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private static final int RADIUS_IN_METERS = 100000000;
+    private static final int RADIUS_IN_METERS = 1000;
+    private static final double threshold = RADIUS_IN_METERS * 0.5;
+    private Location previousCallLocation;
 
     private double latitude;
     private double longitude;
     private double bearing;
+    private int bearingCounter = 0;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
     private List<VirtualRSU> virtualRSUs;
-    private List<JsonAdapter> jsonAdaptersBuilt = new ArrayList<>();
-
-    private GridLayout imageContainer;
-
+    private List<GPSLocation> simulatedCoordinates;
+    private boolean apiCallFlag = false;
+    Location testPinLocation = new Location("gps");  //Used for the emulated version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_3_zones);
+
+        // Used for the emulated version ----------------------------------------------
+        testPinLocation.setLatitude(39.73416274775048);
+        testPinLocation.setLongitude(-8.82285464425065);
+        // Used for the emulated version ----------------------------------------------
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         initializeIVIEngine();
         setupDisplayController();
@@ -81,6 +93,7 @@ public class MainActivity3Zones extends AppCompatActivity {
         ivimEngine = new IVIMEngine();
         gpsController = new GPSController(ivimEngine);
 
+        ivimEngine.setIVIController(ivimController);
         ivimEngine.setAwarenessZoneEntered(this::awarenessZoneEntered);
         ivimEngine.setAwarenessZoneLeaved(this::awarenessZoneLeaved);
         ivimEngine.setDetectionZoneEntered(this::detectionZoneEntered);
@@ -97,6 +110,27 @@ public class MainActivity3Zones extends AppCompatActivity {
                 findViewById(R.id.relevanceImageContainer));
     }
 
+    private void initCoordinates() {
+        simulatedCoordinates = new ArrayList<>();
+        simulatedCoordinates.add(new GPSLocation(39.734679157542466, -8.821018864937866, -129));
+        simulatedCoordinates.add(new GPSLocation(39.73458169711753, -8.821183820792282, -129));
+        simulatedCoordinates.add(new GPSLocation(39.734447108685124, -8.821397136094504, -129));
+        simulatedCoordinates.add(new GPSLocation(39.73430994165984, -8.821621771099501, -129));
+        simulatedCoordinates.add(new GPSLocation(39.73427384502887, -8.821680109145575, -129));
+        simulatedCoordinates.add(new GPSLocation(39.73424585421858, -8.821714643544576, -129));
+        simulatedCoordinates.add(new GPSLocation(39.734237087887514, -8.821743477291486, -129));
+        simulatedCoordinates.add(new GPSLocation(39.734194079209516, -8.821806305091949, -129));
+        simulatedCoordinates.add(new GPSLocation(39.73415205800571, -8.821874138297241, -129));
+        simulatedCoordinates.add(new GPSLocation(39.734123465859014, -8.821921132898172, -129));
+        simulatedCoordinates.add(new GPSLocation(39.734093271919534, -8.821991484941643, -87));
+        simulatedCoordinates.add(new GPSLocation(39.73409636592532, -8.822060551823776, -87));
+        simulatedCoordinates.add(new GPSLocation(39.73409688159295, -8.822127607049149, -87));
+        simulatedCoordinates.add(new GPSLocation(39.73411441428964, -8.822293233455818, -85));
+        simulatedCoordinates.add(new GPSLocation(39.73414741700073, -8.822719034136933, -85));
+        simulatedCoordinates.add(new GPSLocation(39.73416443401747, -8.822967809023064, -85));
+        simulatedCoordinates.add(new GPSLocation(39.73416804368715, -8.82307675530474, -85));
+    }
+
 
     //Obter a lista de RSUs dentro do raio definido
     public void getRSUDentroRaio() {
@@ -108,23 +142,15 @@ public class MainActivity3Zones extends AppCompatActivity {
         Call<List<VirtualRSU>> callNearestRSU = apiService.doGetRsuByDistance(requestBody);
 
         callNearestRSU.enqueue(new Callback<List<VirtualRSU>>() {
+
             @Override
             public void onResponse(Call<List<VirtualRSU>> call, Response<List<VirtualRSU>> response) {
                 if (response.isSuccessful()) {
                     virtualRSUs = response.body();
-
                     if (virtualRSUs == null) {
-                        Log.d("RSU", "Virtual RSUs is null: " + virtualRSUs.toString());
+                        Log.d("RSU", "VirtualRSUs is null: " + virtualRSUs.toString());
                     } else {
-                        Log.d("RSU", "Virtual RSUs: " + virtualRSUs.toString());
-
-                        /*if (virtualRSUs.size() > 0) {
-                            for (VirtualRSU rsu : virtualRSUs) {
-                                Log.d("RSU", "RSU: " + rsu.toString());
-                                getRSUdetailedData(rsu.getVirtualStationID());
-                            }
-                        }*/
-                        getRSUdetailedData(8);
+                        getRSUsDetailedData(virtualRSUs, () -> gpsController.updateGPSLocation(latitude, longitude, bearing));
                     }
                 } else {
                     Log.d("API", "Response not successful: " + response.raw().body().toString());
@@ -140,7 +166,7 @@ public class MainActivity3Zones extends AppCompatActivity {
     }
 
     //Obter os detalhes de um RSU específico após obter a lista de RSUs dentro do raio definido
-    public void getRSUdetailedData(int id) {
+    public void getRSUdetailedData(int id, final Runnable callback) {
         Call<Rsu> call = apiService.doGetRsu(id);
         call.enqueue(new Callback<Rsu>() {
             @Override
@@ -155,26 +181,38 @@ public class MainActivity3Zones extends AppCompatActivity {
                         Log.d("IVIMap", "IVIMap size" + rsu.getData().getITSApp().getFacilities().getIVIMap().size());
 
                         if (!rsu.getData().getITSApp().getFacilities().getIVIMap().isEmpty()) {
-                            IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(0).getIvim();
-                            ivimEngine.setIVIController(ivimController);
-                            ivimEngine.run(ivim);
-                            jsonAdaptersBuilt.add(ivimController.getJsonAdapter());
-                            gpsController.updateGPSLocation(latitude, longitude, 0);
-                            //updateSignalImages(jsonAdapter);
+                            for (int i = 0; i < rsu.getData().getITSApp().getFacilities().getIVIMap().size(); i++) {
+                                IVIM ivim = rsu.getData().getITSApp().getFacilities().getIVIMap().get(i).getIvim();
+                                ivimEngine.run(ivim);
+                            }
                         }
-                        //TODO Ver o que fazer quando nã temos IVIMs no request
                     }
                 } else {
                     Log.d("RSU", "Raw response (response not successful): " + response.raw().body().toString());
                 }
+                callback.run();
             }
 
             @Override
             public void onFailure(Call<Rsu> call, Throwable t) {
                 Log.d("RSU", "Failed to get RSU: " + t.getMessage());
                 call.cancel();
+                callback.run();
             }
         });
+    }
+
+    public void getRSUsDetailedData(List<VirtualRSU> virtualRSUs, Runnable callback) {
+        final int[] remainingCalls = {virtualRSUs.size()};
+
+        for (VirtualRSU virtualRSU : virtualRSUs) {
+            getRSUdetailedData(virtualRSU.getVirtualStationID(), () -> {
+                remainingCalls[0]--;
+                if (remainingCalls[0] == 0) {
+                    callback.run();
+                }
+            });
+        }
     }
 
     //Obter a resposta do utilizador relativamente à permissão de aceder à localização
@@ -192,29 +230,48 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     //Obter a localização atual
     private void getLocation() {
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
+        locationCallback = new LocationCallback() {
             @Override
-            public void onLocationChanged(Location location) {
-                //latitude = location.getLatitude();
-                //longitude = location.getLongitude();
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    //bearing = location.getBearing();
 
-                latitude = 39.734088604934634;
-                longitude = -8.821884349297447;
+                    // Used for the emulated version ----------------------------------------------
+                    if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
+                        bearing = -129;
+                    } else {
+                        bearing = -87;
+                    }
+                    // Used for the emulated version ----------------------------------------------
 
-                //bearing = location.getBearing();
+                    if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
+                        getRSUDentroRaio();
+                        previousCallLocation = location;
+                        apiCallFlag = true;
+                    } else {
+                        gpsController.updateGPSLocation(latitude, longitude, bearing);
+                        apiCallFlag = false;
+                    }
 
-
-                getRSUDentroRaio();
-
-                String coordinates = "Latitude: " + latitude + ", Longitude: " + longitude;
-                Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
+                    String coordinates = "Latitude:" + latitude + ", Longitude:" + longitude + " " + apiCallFlag;
+                    Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
+                }
             }
         };
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            // Obter a localização atual a cada 10 metros
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500000, 5, locationListener);
+            LocationRequest locationRequest = new LocationRequest.Builder(1000)
+                    .setIntervalMillis(1000)
+                    .setPriority(PRIORITY_HIGH_ACCURACY)
+                    .setMinUpdateDistanceMeters(1)
+                    .build();
+
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         }
     }
 
