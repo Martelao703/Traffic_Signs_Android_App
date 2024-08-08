@@ -1,18 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity3Zones">
+
+    <ImageButton
+        android:id="@+id/imgBtnAbout"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="-100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="1250dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contextClickable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/about_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        android:orientation="vertical">
 
         <!-- Relevance Zone -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -30,6 +47,7 @@
                 android:textStyle="bold" />
 
             <!-- Relevance Image Container -->
+
             <GridLayout
                 android:id="@+id/relevanceImageContainer"
                 android:layout_width="match_parent"
@@ -42,28 +60,43 @@
                 android:rowCount="1">
 
                 <!-- ImageView 1 -->
-                <ImageView
-                    android:id="@+id/relevanceImageView1"
+
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Relevance Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
+
+                    <ImageView
+                        android:id="@+id/relevanceImageView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Relevance Zone Image 1"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
 
                 <!-- ImageView 2 -->
-                <ImageView
-                    android:id="@+id/relevanceImageView2"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Relevance Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
 
+                    <ImageView
+                        android:id="@+id/relevanceImageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Relevance Zone Image 2"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
             </GridLayout>
+
         </LinearLayout>
 
         <!-- Separator Line -->
@@ -101,27 +134,40 @@
                 android:padding="16dp">
 
                 <!-- ImageView 1 -->
-                <ImageView
-                    android:id="@+id/detectionImageView1"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Detection Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
+
+                    <ImageView
+                        android:id="@+id/detectionImageView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Detection Zone Image 1"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
 
                 <!-- ImageView 2 -->
-                <ImageView
-                    android:id="@+id/detectionImageView2"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Detection Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
 
+                    <ImageView
+                        android:id="@+id/detectionImageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Detection Zone Image 2"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
             </GridLayout>
         </LinearLayout>
 
@@ -160,27 +206,40 @@
                 android:padding="16dp">
 
                 <!-- ImageView 1 -->
-                <ImageView
-                    android:id="@+id/awarenessImageView1"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Awareness Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
+
+                    <ImageView
+                        android:id="@+id/awarenessImageView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Awareness Zone Image 1"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
 
                 <!-- ImageView 2 -->
-                <ImageView
-                    android:id="@+id/awarenessImageView2"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
-                    android:contentDescription="Awareness Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/blue_fade_border">
 
+                    <ImageView
+                        android:id="@+id/awarenessImageView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Awareness Zone Image 2"
+                        android:scaleType="centerCrop" />
+                </FrameLayout>
             </GridLayout>
         </LinearLayout>
 
