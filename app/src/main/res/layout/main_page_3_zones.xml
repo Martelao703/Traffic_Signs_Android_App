@@ -10,7 +10,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="330dp"
-        android:layout_marginTop="-100dp"
+        android:layout_marginTop="-105dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="1250dp"
         android:background="?android:attr/selectableItemBackground"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Relevance Zone"
+                android:text="@string/relevance_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Detection Zone"
+                android:text="@string/detection_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Awareness Zone"
+                android:text="@string/awareness_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
