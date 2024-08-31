@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">ITS_APP</string>
+    <string name="app_name">ITS Traffic Signs</string>
+    <string name="relevance_zone">Relevance Zone</string>
+    <string name="detection_zone">Detection Zone</string>
+    <string name="awareness_zone">Awareness Zone</string>
+    <string name="about_the_project">About the Project</string>
+    <string name="about_the_project_data">This project, utilizing the concept of Intelligent Transportation Systems (ITS), aims to simplify the perception and visualization of signals for a user or transmit traffic signals to an intelligent vehicle through an Android application that uses geographic coordinates to communicate with a database and receive various data that will be processed.</string>
+    <string name="about_us">About us</string>
+    <string name="about_us_data">This work was carried out as part of the Computer Project course during the final semester of the Bachelor\'s Degree in Computer Engineering. The project was developed by Gonçalo Correia and David Alves, under the support and guidance of Professor Sílvio Priem Mendes, Professor Paulo Jorge Gonçalves Loureiro, and Professor Anabela Moreira Bernardino.</string>
 </resources>

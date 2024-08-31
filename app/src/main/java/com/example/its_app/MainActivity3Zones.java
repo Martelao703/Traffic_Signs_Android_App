@@ -3,6 +3,7 @@ package com.example.its_app;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,6 +11,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,12 +66,22 @@ public class MainActivity3Zones extends AppCompatActivity {
     APIService apiService = APIClient.getClient().create(APIService.class);
     private List<VirtualRSU> virtualRSUs;
     private boolean apiCallFlag = false;
+    private ImageButton imgBtnAbout;
     Location testPinLocation = new Location("gps");  //Used for the emulated version
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_3_zones);
+        imgBtnAbout = findViewById(R.id.imgBtnAbout);
+
+        imgBtnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity3Zones.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Used for the emulated version ----------------------------------------------
         testPinLocation.setLatitude(39.73416274775048);
