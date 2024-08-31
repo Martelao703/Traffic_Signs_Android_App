@@ -213,8 +213,10 @@ public class MainActivity3Zones extends AppCompatActivity {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
+                    //latitude = location.getLatitude();
+                    //longitude = location.getLongitude();
+                    latitude = 39.73441485987463;
+                    longitude = -8.821453127228153;
                     //bearing = location.getBearing();
 
                     // Used for the emulated version ----------------------------------------------
@@ -246,8 +248,8 @@ public class MainActivity3Zones extends AppCompatActivity {
         };
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationRequest locationRequest = new LocationRequest.Builder(1000)
-                    .setIntervalMillis(1000)
+            LocationRequest locationRequest = new LocationRequest.Builder(1500)
+                    .setIntervalMillis(1500)
                     .setPriority(PRIORITY_HIGH_ACCURACY)
                     .setMinUpdateDistanceMeters(1)
                     .build();
