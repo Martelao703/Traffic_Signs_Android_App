@@ -53,17 +53,15 @@ public class MainActivity3Zones extends AppCompatActivity {
     private LocationCallback locationCallback;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RADIUS_IN_METERS = 1000;
-    private static final double threshold = RADIUS_IN_METERS * 0.5;
+    private static final double threshold = RADIUS_IN_METERS * 0.75;
     private Location previousCallLocation;
 
     private double latitude;
     private double longitude;
     private double bearing;
-    private int bearingCounter = 0;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
     private List<VirtualRSU> virtualRSUs;
-    private List<GPSLocation> simulatedCoordinates;
     private boolean apiCallFlag = false;
     Location testPinLocation = new Location("gps");  //Used for the emulated version
 
@@ -109,28 +107,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                 findViewById(R.id.detectionImageContainer),
                 findViewById(R.id.relevanceImageContainer));
     }
-
-    private void initCoordinates() {
-        simulatedCoordinates = new ArrayList<>();
-        simulatedCoordinates.add(new GPSLocation(39.734679157542466, -8.821018864937866, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73458169711753, -8.821183820792282, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734447108685124, -8.821397136094504, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73430994165984, -8.821621771099501, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73427384502887, -8.821680109145575, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73424585421858, -8.821714643544576, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734237087887514, -8.821743477291486, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734194079209516, -8.821806305091949, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73415205800571, -8.821874138297241, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734123465859014, -8.821921132898172, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734093271919534, -8.821991484941643, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73409636592532, -8.822060551823776, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73409688159295, -8.822127607049149, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73411441428964, -8.822293233455818, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73414741700073, -8.822719034136933, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73416443401747, -8.822967809023064, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73416804368715, -8.82307675530474, -85));
-    }
-
 
     //Obter a lista de RSUs dentro do raio definido
     public void getRSUDentroRaio() {
@@ -242,11 +218,14 @@ public class MainActivity3Zones extends AppCompatActivity {
                     //bearing = location.getBearing();
 
                     // Used for the emulated version ----------------------------------------------
+
                     if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
                         bearing = -129;
                     } else {
+
                         bearing = -87;
                     }
+
                     // Used for the emulated version ----------------------------------------------
 
                     if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
@@ -258,8 +237,10 @@ public class MainActivity3Zones extends AppCompatActivity {
                         apiCallFlag = false;
                     }
 
+                    /*
                     String coordinates = "Latitude:" + latitude + ", Longitude:" + longitude + " " + apiCallFlag;
                     Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
+                     */
                 }
             }
         };
