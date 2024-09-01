@@ -64,11 +64,11 @@ public class MainActivity3Zones extends AppCompatActivity {
     private double bearing;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
+    Location testPinLocation = new Location("gps");
+    Location testPinLocation2 = new Location("gps");
     private List<VirtualRSU> virtualRSUs;
     private boolean apiCallFlag = false;
     private ImageButton imgBtnAbout;
-    Location testPinLocation = new Location("gps");
-    Location testPinLocation2 = new Location("gps");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +84,8 @@ public class MainActivity3Zones extends AppCompatActivity {
             }
         });
 
-        testPinLocation.setLatitude(39.73416274775048);
-        testPinLocation.setLongitude(-8.82285464425065);
-        testPinLocation2.setLatitude(39.733616916903074);
-        testPinLocation2.setLongitude(-8.821500120452285);
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        setTestLocations();
         initializeIVIEngine();
         setupDisplayController();
 
@@ -227,18 +222,11 @@ public class MainActivity3Zones extends AppCompatActivity {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
+                    //latitude = 39.73412496334538; debug
+                    //longitude = -8.821922080493893; debug
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
-                    //latitude = 39.733858472231546;
-                    //longitude = -8.821720318291808;
-                    //bearing = location.getBearing();
-                    if (testPinLocation2.distanceTo(location) <= 53) {
-                        bearing = 150;
-                    } else if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
-                        bearing = -129;
-                    } else {
-                        bearing = -87;
-                    }
+                    bearing = getBearing(location);
 
                     if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
                         getRSUDentroRaio();
@@ -248,11 +236,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                         gpsController.updateGPSLocation(latitude, longitude, bearing);
                         apiCallFlag = false;
                     }
-
-                    /*
-                    String coordinates = "Latitude:" + latitude + ", Longitude:" + longitude + " " + apiCallFlag;
-                    Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
-                     */
                 }
             }
         };
@@ -306,5 +289,22 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     public void relevanceZoneLeaved(Object sender, IVIMDataEventArgs e) {
         displayController.removeRelevanceZoneSignal(e.getStationID(), e.getIviIdentificationNumber());
+    }
+
+    public double getBearing(Location location) {
+        if (testPinLocation2.distanceTo(location) <= 53) {
+            return  150;
+        } else if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
+            return  -129;
+        } else {
+            return -87;
+        }
+    }
+
+    public void setTestLocations() {
+        testPinLocation.setLatitude(39.73416274775048);
+        testPinLocation.setLongitude(-8.82285464425065);
+        testPinLocation2.setLatitude(39.733616916903074);
+        testPinLocation2.setLongitude(-8.821500120452285);
     }
 }

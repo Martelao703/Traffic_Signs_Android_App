@@ -1,5 +1,7 @@
 package OBUSDK;
 
+import android.location.Location;
+
 public class GPSController {
     private IVIMEngine engine;
     private double currentLatitude = -1;
