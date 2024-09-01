@@ -64,7 +64,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Relevance Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
                 <!-- ImageView 2 -->
                 <ImageView
@@ -75,7 +75,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Relevance Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
@@ -123,7 +123,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Detection Zone Image 1"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     />
 
                 <!-- ImageView 2 -->
@@ -135,7 +135,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Detection Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
@@ -183,7 +183,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Awareness Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
                 <!-- ImageView 2 -->
                 <ImageView
@@ -194,7 +194,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Awareness Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
