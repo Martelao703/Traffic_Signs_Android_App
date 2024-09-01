@@ -226,10 +226,10 @@ public class MainActivity3Zones extends AppCompatActivity {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    //latitude = location.getLatitude();
-                    //longitude = location.getLongitude();
-                    latitude = 39.73411876982962;
-                    longitude = -8.822294772414178;
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    //latitude = 39.73411876982962;
+                    //longitude = -8.822294772414178;
                     //bearing = location.getBearing();
 
                     // Used for the emulated version ----------------------------------------------
