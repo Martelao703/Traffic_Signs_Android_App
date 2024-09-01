@@ -67,7 +67,8 @@ public class MainActivity3Zones extends AppCompatActivity {
     private List<VirtualRSU> virtualRSUs;
     private boolean apiCallFlag = false;
     private ImageButton imgBtnAbout;
-    Location testPinLocation = new Location("gps");  //Used for the emulated version
+    Location testPinLocation = new Location("gps");
+    Location testPinLocation2 = new Location("gps");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,10 @@ public class MainActivity3Zones extends AppCompatActivity {
             }
         });
 
-        // Used for the emulated version ----------------------------------------------
         testPinLocation.setLatitude(39.73416274775048);
         testPinLocation.setLongitude(-8.82285464425065);
-        // Used for the emulated version ----------------------------------------------
+        testPinLocation2.setLatitude(39.733616916903074);
+        testPinLocation2.setLongitude(-8.821500120452285);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -228,20 +229,16 @@ public class MainActivity3Zones extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
-                    //latitude = 39.73411876982962;
-                    //longitude = -8.822294772414178;
+                    //latitude = 39.733858472231546;
+                    //longitude = -8.821720318291808;
                     //bearing = location.getBearing();
-
-                    // Used for the emulated version ----------------------------------------------
-
-                    if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
+                    if (testPinLocation2.distanceTo(location) <= 53) {
+                        bearing = 150;
+                    } else if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
                         bearing = -129;
                     } else {
-
                         bearing = -87;
                     }
-
-                    // Used for the emulated version ----------------------------------------------
 
                     if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
                         getRSUDentroRaio();
