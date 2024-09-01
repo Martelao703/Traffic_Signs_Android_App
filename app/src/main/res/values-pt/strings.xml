@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ITS Sinais de Trânsito</string>
+    <string name="relevance_zone">Zona de Relevância</string>
+    <string name="detection_zone">Zona de Deteção</string>
+    <string name="awareness_zone">Zona de Reconhecimento</string>
+    <string name="about_the_project">Sobre o Projeto</string>
+    <string name="about_the_project_data">Este projeto, utiliza o conceito de Sistemas de Transporte Inteligente (ITS), tem como objetivo simplificar a perceção e visualização dos sinais para o utilizador, bem como transmitir os sinais de trânsito para um veículo inteligente. Através de uma aplicação Android que utiliza coordenadas geográficas, a aplicação comunica com uma base de dados para receber e processar diversos dados.</string>
+    <string name="about_us">Sobre nós</string>
+    <string name="about_us_data">Este trabalho foi realizado no âmbito da Unidade Curricular de Projeto Informático, durante o último semestre da Licenciatura em Engenharia Informática. O projeto foi desenvolvido por Gonçalo Correia e David Alves, com o apoio e orientação do Professor Sílvio Priem Mendes, do Professor Paulo Jorge Gonçalves Loureiro e da Professora Anabela Moreira Bernardino.</string>
+</resources>

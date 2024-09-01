@@ -15,6 +15,7 @@ public class ImageListManager {
         pictogramMap.put(557L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_30);
         pictogramMap.put(558L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_40);
         pictogramMap.put(559L, R.drawable.image_180px_vienna_convention_road_sign_c14_v1_50);
+        pictogramMap.put(268L, R.drawable.image_180px_vienna_convention_road_sign_aa_7a_v1);
     }
 
     public static synchronized ImageListManager getInstance() {

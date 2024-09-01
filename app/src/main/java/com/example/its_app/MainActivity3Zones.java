@@ -3,6 +3,7 @@ package com.example.its_app;
 import static com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,6 +11,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,32 +56,36 @@ public class MainActivity3Zones extends AppCompatActivity {
     private LocationCallback locationCallback;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int RADIUS_IN_METERS = 1000;
-    private static final double threshold = RADIUS_IN_METERS * 0.5;
+    private static final double threshold = RADIUS_IN_METERS * 0.75;
     private Location previousCallLocation;
 
     private double latitude;
     private double longitude;
     private double bearing;
-    private int bearingCounter = 0;
 
     APIService apiService = APIClient.getClient().create(APIService.class);
+    Location testPinLocation = new Location("gps");
+    Location testPinLocation2 = new Location("gps");
     private List<VirtualRSU> virtualRSUs;
-    private List<GPSLocation> simulatedCoordinates;
     private boolean apiCallFlag = false;
-    Location testPinLocation = new Location("gps");  //Used for the emulated version
+    private ImageButton imgBtnAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_3_zones);
+        imgBtnAbout = findViewById(R.id.imgBtnAbout);
 
-        // Used for the emulated version ----------------------------------------------
-        testPinLocation.setLatitude(39.73416274775048);
-        testPinLocation.setLongitude(-8.82285464425065);
-        // Used for the emulated version ----------------------------------------------
+        imgBtnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity3Zones.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
+        setTestLocations();
         initializeIVIEngine();
         setupDisplayController();
 
@@ -109,28 +116,6 @@ public class MainActivity3Zones extends AppCompatActivity {
                 findViewById(R.id.detectionImageContainer),
                 findViewById(R.id.relevanceImageContainer));
     }
-
-    private void initCoordinates() {
-        simulatedCoordinates = new ArrayList<>();
-        simulatedCoordinates.add(new GPSLocation(39.734679157542466, -8.821018864937866, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73458169711753, -8.821183820792282, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734447108685124, -8.821397136094504, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73430994165984, -8.821621771099501, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73427384502887, -8.821680109145575, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73424585421858, -8.821714643544576, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734237087887514, -8.821743477291486, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734194079209516, -8.821806305091949, -129));
-        simulatedCoordinates.add(new GPSLocation(39.73415205800571, -8.821874138297241, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734123465859014, -8.821921132898172, -129));
-        simulatedCoordinates.add(new GPSLocation(39.734093271919534, -8.821991484941643, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73409636592532, -8.822060551823776, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73409688159295, -8.822127607049149, -87));
-        simulatedCoordinates.add(new GPSLocation(39.73411441428964, -8.822293233455818, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73414741700073, -8.822719034136933, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73416443401747, -8.822967809023064, -85));
-        simulatedCoordinates.add(new GPSLocation(39.73416804368715, -8.82307675530474, -85));
-    }
-
 
     //Obter a lista de RSUs dentro do raio definido
     public void getRSUDentroRaio() {
@@ -237,19 +222,11 @@ public class MainActivity3Zones extends AppCompatActivity {
                     return;
                 }
                 for (Location location : locationResult.getLocations()) {
-                    latitude = 39.7342690782473;
-                    //latitude = location.getLatitude();
-                    longitude = -8.821686542265592;
-                    //longitude = location.getLongitude();
-                    //bearing = location.getBearing();
-
-                    // Used for the emulated version ----------------------------------------------
-                    if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
-                        bearing = -129;
-                    } else {
-                        bearing = -87;
-                    }
-                    // Used for the emulated version ----------------------------------------------
+                    //latitude = 39.73412496334538; debug
+                    //longitude = -8.821922080493893; debug
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    bearing = getBearing(location);
 
                     if (previousCallLocation == null || location.distanceTo(previousCallLocation) >= threshold) {
                         getRSUDentroRaio();
@@ -259,16 +236,13 @@ public class MainActivity3Zones extends AppCompatActivity {
                         gpsController.updateGPSLocation(latitude, longitude, bearing);
                         apiCallFlag = false;
                     }
-
-                    String coordinates = "Latitude:" + latitude + ", Longitude:" + longitude + " " + apiCallFlag;
-                    Toast.makeText(MainActivity3Zones.this, coordinates, Toast.LENGTH_LONG).show();
                 }
             }
         };
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationRequest locationRequest = new LocationRequest.Builder(1000)
-                    .setIntervalMillis(1000)
+            LocationRequest locationRequest = new LocationRequest.Builder(1500)
+                    .setIntervalMillis(1500)
                     .setPriority(PRIORITY_HIGH_ACCURACY)
                     .setMinUpdateDistanceMeters(1)
                     .build();
@@ -315,5 +289,22 @@ public class MainActivity3Zones extends AppCompatActivity {
 
     public void relevanceZoneLeaved(Object sender, IVIMDataEventArgs e) {
         displayController.removeRelevanceZoneSignal(e.getStationID(), e.getIviIdentificationNumber());
+    }
+
+    public double getBearing(Location location) {
+        if (testPinLocation2.distanceTo(location) <= 53) {
+            return  150;
+        } else if (testPinLocation.distanceTo(location) >= 78 && testPinLocation.distanceTo(location) <= 550) {
+            return  -129;
+        } else {
+            return -87;
+        }
+    }
+
+    public void setTestLocations() {
+        testPinLocation.setLatitude(39.73416274775048);
+        testPinLocation.setLongitude(-8.82285464425065);
+        testPinLocation2.setLatitude(39.733616916903074);
+        testPinLocation2.setLongitude(-8.821500120452285);
     }
 }

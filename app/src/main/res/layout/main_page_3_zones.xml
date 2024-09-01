@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageButton
+        android:id="@+id/imgBtnAbout"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contextClickable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/about_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/imgBtnAbout">
 
         <!-- Relevance Zone -->
         <LinearLayout
@@ -25,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Relevance Zone"
+                android:text="@string/relevance_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -50,7 +64,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Relevance Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
                 <!-- ImageView 2 -->
                 <ImageView
@@ -61,7 +75,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Relevance Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
@@ -85,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Detection Zone"
+                android:text="@string/detection_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -109,7 +123,8 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Detection Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter"
+                    />
 
                 <!-- ImageView 2 -->
                 <ImageView
@@ -120,7 +135,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Detection Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
@@ -144,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Awareness Zone"
+                android:text="@string/awareness_zone"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -168,7 +183,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Awareness Zone Image 1"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
                 <!-- ImageView 2 -->
                 <ImageView
@@ -179,7 +194,7 @@
                     android:layout_columnWeight="1"
                     android:layout_rowWeight="1"
                     android:contentDescription="Awareness Zone Image 2"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="fitCenter" />
 
             </GridLayout>
         </LinearLayout>
