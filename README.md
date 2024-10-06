@@ -14,6 +14,16 @@
 
 - After the driver has traveled a certain distance, the app makes another API request to refresh its traffic sign data, repeating the process.
 
+## Technologies and Libraries Used:
+
+- Code in Java
+
+- Interface in XML
+
+- Retrofit and OKHttp for API interactions and automatic JSON parsing
+
+- Google Play Services Location for interactions and management of driver's location
+  
 ## Exemplifying Images:
 
 <br>
