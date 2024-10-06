@@ -2,7 +2,7 @@
 
 - This Android app, developed using Java in Android Studio, is designed for drivers to receive real-time information about upcoming traffic signs based on their current GPS location.
 
-- The project was completed as part of my final university assignment, in collaboration with a partner. It is based on a desktop application initially developed in C# by university professors, which we analyzed and adapted into this mobile version.
+- The project was completed as part of my final university assignment, in collaboration with a partner. It is based on a desktop application initially developed in C# with the .NET Framework by university professors, which we analyzed and adapted into this mobile version.
 
 ## App Description:
 
